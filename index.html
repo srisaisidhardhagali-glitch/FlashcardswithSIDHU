@@ -716,47 +716,68 @@
         }
 
         function renderAtlas() {
-            const grid = document.getElementById('atlas-grid');
-            grid.innerHTML = '';
-            
-            triadsData.forEach(triad => {
-                const card = document.createElement('div');
-                card.className = `triad-item data-${triad.system} bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg hover:border-slate-700 transition duration-200`;
-                
-                let elementBlocks = '';
-                triad.elements.forEach((el, index) => {
-                    elementBlocks += `
-                        <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-center text-sm font-bold flex flex-col justify-center min-h-[64px] hover:border-slate-700 transition">
-                            <span class="text-[10px] uppercase tracking-widest block text-slate-500 mb-1">Component 0${index+1}</span>
-                            <span class="text-slate-200">${el}</span>
-                        </div>
-                    `;
-                });
+    const grid = document.getElementById('atlas-grid');
+    const search = document.getElementById('atlas-search').value.toLowerCase();
+    const activeSys = localStorage.getItem('activeSystem') || 'all';
+    const bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
+    
+    grid.innerHTML = '';
+    
+    triadsData.filter(triad => {
+        const matchesSearch = triad.name.toLowerCase().includes(search) || 
+                             triad.elements.some(e => e.toLowerCase().includes(search));
+        const matchesSys = (activeSys === 'all' || triad.system === activeSys);
+        return matchesSearch && matchesSys;
+    }).forEach(triad => {
+        const isBookmarked = bookmarks.includes(triad.id);
+        const card = document.createElement('div');
+        // Added 'triad-item' class for filtering compatibility
+        card.className = `triad-item data-${triad.system} bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg hover:border-slate-700 transition duration-200`;
+        
+        let elementBlocks = '';
+        triad.elements.forEach((el, index) => {
+            elementBlocks += `
+                <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-center text-sm font-bold flex flex-col justify-center min-h-[64px]">
+                    <span class="text-[10px] uppercase tracking-widest block text-slate-500 mb-1">Component 0${index+1}</span>
+                    <span class="text-slate-200">${el}</span>
+                </div>
+            `;
+        });
 
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
-                            ${triad.system}
-                        </span>
-                        <span class="text-xs font-bold text-slate-600">ID: #${triad.id}</span>
-                    </div>
-                    <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                        ${elementBlocks}
-                    </div>
-                    <div class="space-y-3 pt-3 border-t border-slate-800/60">
-                        <p class="text-xs text-slate-400 leading-relaxed text-left">
-                            <strong class="text-slate-300 font-bold">Pathophysiology:</strong> ${triad.mechanism}
-                        </p>
-                        <div class="bg-amber-950/20 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs text-amber-300/90 leading-relaxed">
-                            <strong class="font-extrabold block text-amber-400 mb-0.5">EXAM PEARL:</strong> ${triad.pearl}
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
+        card.innerHTML = `
+            <div class="flex justify-between items-start mb-4">
+                <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
+                    ${triad.system}
+                </span>
+                <button onclick="toggleBookmark(${triad.id})" class="text-xl cursor-pointer ${isBookmarked ? 'text-amber-400' : 'text-slate-600'}">★</button>
+            </div>
+            <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                ${elementBlocks}
+            </div>
+            <div class="space-y-3 pt-3 border-t border-slate-800/60">
+                <p class="text-xs text-slate-400 leading-relaxed text-left">
+                    <strong class="text-slate-300 font-bold">Pathophysiology:</strong> ${triad.mechanism}
+                </p>
+                <div class="bg-amber-950/20 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs text-amber-300/90 leading-relaxed">
+                    <strong class="font-extrabold block text-amber-400 mb-0.5">EXAM PEARL:</strong> ${triad.pearl}
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+        function toggleBookmark(id) {
+    let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
+    if (bookmarks.includes(id)) {
+        bookmarks = bookmarks.filter(b => b !== id);
+    } else {
+        bookmarks.push(id);
+    }
+    localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
+    renderAtlas(); // Refreshes the grid to update the star color
         }
-
+        
         function switchTab(target) {
             const btnAtlas = document.getElementById('tab-atlas');
             const btnFlash = document.getElementById('tab-flashcards');
