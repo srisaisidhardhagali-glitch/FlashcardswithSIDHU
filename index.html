@@ -718,11 +718,10 @@
         }
         function toggleBookmarksOnly() {
     showBookmarksOnly = !showBookmarksOnly;
-    // Visually toggle the button color
-    const btn = document.getElementById('bookmark-filter-btn');
-    btn.classList.toggle('bg-amber-900', showBookmarksOnly);
-    renderAtlas(); // Re-render the list with the filter applied
-        }
+    const currentSys = localStorage.getItem('activeSystem') || 'all';
+    filterSystem(currentSys); 
+}
+
 
         function renderAtlas() {
     const grid = document.getElementById('atlas-grid');
@@ -784,7 +783,6 @@
         grid.appendChild(card);
     });
 }
-
         function toggleBookmark(id) {
     let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
     if (bookmarks.includes(id)) {
@@ -793,9 +791,13 @@
         bookmarks.push(id);
     }
     localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
-    filterSystem(localStorage.getItem('activeSystem') || 'all');
+    
+    // This uses the system currently saved in memory, 
+    // ensuring the UI stays consistent after starring/unstarring.
+    const currentSys = localStorage.getItem('activeSystem') || 'all';
+    filterSystem(currentSys); 
 }
- 
+
         function switchTab(target) {
             const btnAtlas = document.getElementById('tab-atlas');
             const btnFlash = document.getElementById('tab-flashcards');
@@ -853,6 +855,7 @@
         function filterSystem(sys) {
     localStorage.setItem('activeSystem', sys);
 
+    // 1. Update Specialty Buttons
     const buttons = document.querySelectorAll('.sys-btn');
     buttons.forEach(btn => {
         const btnText = btn.innerText.toLowerCase().trim();
@@ -860,24 +863,31 @@
                         (sys !== 'all' && btnText.includes(sys));
 
         if (isMatch) {
+            // Highlight: Add active classes
             btn.classList.add('bg-slate-800', 'border-slate-600', 'text-white');
+            // Remove inactive classes
             btn.classList.remove('border-slate-800', 'hover:bg-slate-900');
         } else {
+            // Remove active classes
             btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-white');
+            // Add inactive classes
             btn.classList.add('border-slate-800', 'hover:bg-slate-900');
         }
     });
 
-    // NEW: Sync the bookmark button visual state
+    // 2. Sync the bookmark button visual state
     const bookmarkBtn = document.getElementById('bookmark-filter-btn');
-    if (showBookmarksOnly) {
-        bookmarkBtn.classList.add('bg-amber-900', 'border-amber-600', 'text-white');
-    } else {
-        bookmarkBtn.classList.remove('bg-amber-900', 'border-amber-600', 'text-white');
+    if (bookmarkBtn) { // Safety check
+        if (showBookmarksOnly) {
+            bookmarkBtn.classList.add('bg-amber-900', 'border-amber-600', 'text-white');
+        } else {
+            bookmarkBtn.classList.remove('bg-amber-900', 'border-amber-600', 'text-white');
+        }
     }
 
     renderAtlas(); 
 }
+
     function generateNextFlashcard() {
             const randomIndex = Math.floor(Math.random() * triadsData.length);
             currentFlashcardTriad = triadsData[randomIndex];
