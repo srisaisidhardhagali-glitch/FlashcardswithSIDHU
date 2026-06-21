@@ -793,9 +793,9 @@
         bookmarks.push(id);
     }
     localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
-    renderAtlas(); // Refreshes the grid to update the star color
-        }
-        
+    filterSystem(localStorage.getItem('activeSystem') || 'all');
+}
+ 
         function switchTab(target) {
             const btnAtlas = document.getElementById('tab-atlas');
             const btnFlash = document.getElementById('tab-flashcards');
@@ -855,21 +855,29 @@
 
     const buttons = document.querySelectorAll('.sys-btn');
     buttons.forEach(btn => {
-        // Logic to match the button text to the system key
         const btnText = btn.innerText.toLowerCase().trim();
         const isMatch = (sys === 'all' && btnText.includes('all')) || 
                         (sys !== 'all' && btnText.includes(sys));
 
         if (isMatch) {
-            btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg bg-slate-800 border border-slate-600 text-white transition-all cursor-pointer";
+            btn.classList.add('bg-slate-800', 'border-slate-600', 'text-white');
+            btn.classList.remove('border-slate-800', 'hover:bg-slate-900');
         } else {
-            btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-900 transition-all cursor-pointer";
+            btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-white');
+            btn.classList.add('border-slate-800', 'hover:bg-slate-900');
         }
     });
 
+    // NEW: Sync the bookmark button visual state
+    const bookmarkBtn = document.getElementById('bookmark-filter-btn');
+    if (showBookmarksOnly) {
+        bookmarkBtn.classList.add('bg-amber-900', 'border-amber-600', 'text-white');
+    } else {
+        bookmarkBtn.classList.remove('bg-amber-900', 'border-amber-600', 'text-white');
+    }
+
     renderAtlas(); 
 }
-
     function generateNextFlashcard() {
             const randomIndex = Math.floor(Math.random() * triadsData.length);
             currentFlashcardTriad = triadsData[randomIndex];
