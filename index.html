@@ -756,20 +756,11 @@
                 <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
                     ${triad.system}
                 </span>
-                <button onclick="toggleBookmark('${triad.id}')" 
-        class="w-12 h-12 cursor-pointer transition-all duration-300 ${isBookmarked ? 'opacity-100 grayscale-0' : 'opacity-40 grayscale'}">
-  <svg viewBox="0 0 800 500" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-    <!-- The Iconic 1989 Yellow Oval -->
-    <ellipse cx="400" cy="250" rx="350" ry="200" fill="#FFCC00" />
-    
-    <!-- Inner Black Rim Frame for crisp separation -->
-    <ellipse cx="400" cy="250" rx="338" ry="188" fill="none" stroke="#000000" stroke-width="8" />
-
-    <!-- The Authentic Tim Burton 5-Point Tail Bat Emblem -->
-    <path d="M 400,105 L 412,145 C 425,145 450,150 495,160 C 585,180 685,215 700,245 C 705,255 680,270 655,275 C 610,285 570,335 575,340 C 580,345 520,335 480,315 C 465,310 460,330 455,345 C 445,375 425,405 400,410 C 375,405 355,375 345,345 C 340,330 335,310 320,315 C 280,335 220,345 225,340 C 230,335 190,285 145,275 C 120,270 95,255 100,245 C 115,215 215,180 305,160 C 350,150 375,145 388,145 Z M 400,105 L 388,145 C 392,148 396,150 400,150 C 404,150 408,148 412,145 Z" 
-          fill="#000000" />
-  </svg>
+             <button onclick="toggleBookmark('${triad.id}')" 
+        class="text-2xl cursor-pointer transition-colors duration-200 ${isBookmarked ? 'text-pink-500' : 'text-slate-600'}">
+    ♥
 </button>
+
             </div>
             <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
