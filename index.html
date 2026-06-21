@@ -618,79 +618,83 @@
             "Prefer": "return=representation"
         });
 
-        async function fetchComments() {
-            const feed = document.getElementById('comments-feed');
-            const countBadge = document.getElementById('comment-count');
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/comments?order=created_at.desc`, {
-                    method: 'GET',
-                    headers: getHeaders()
-                });
-                const data = await response.json();
-                
-                // Fixed undefined count badge bug by verifying length safely
-                if (data && typeof data.length !== 'undefined') {
-                    countBadge.innerText = `${data.length} suggestion${data.length === 1 ? '' : 's'}`;
-                } else {
-                    countBadge.innerText = "0 suggestions";
-                }
-                
-                if (!data || data.length === 0) {
-                    feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">No suggestions yet. Be the first to add one!</div>`;
-                    return;
-                }
-
-                feed.innerHTML = data.map(c => `
-                    <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-900/80 text-left">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-semibold text-emerald-400">${escapeHTML(c.name)}</span>
-                            <span class="text-[10px] text-slate-600">${new Date(c.created_at).toLocaleDateString()}</span>
-                        </div>
-                        <p class="text-slate-400 leading-relaxed">${escapeHTML(c.text)}</p>
-                    </div>
-                `).join('');
-            } catch (err) {
-                feed.innerHTML = `<div class="text-center text-red-500/70 py-4">Failed to load comments.</div>`;
-                countBadge.innerText = "Suggestions Board"; // Clean fall-back text for load issues
-            }
+        // Fetch and display global comments
+async function fetchComments() {
+    const feed = document.getElementById('comments-feed');
+    const countBadge = document.getElementById('comment-count');
+    try {
+        // CHANGED rest/v1/comments to rest/v1/Comments to match your database table name
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/Comments?order=created_at.desc`, {
+            method: 'GET',
+            headers: getHeaders()
+        });
+        const data = await response.json();
+        
+        if (data && typeof data.length !== 'undefined') {
+            countBadge.innerText = `${data.length} suggestion${data.length === 1 ? '' : 's'}`;
+        } else {
+            countBadge.innerText = "0 suggestions";
+        }
+        
+        if (!data || data.length === 0) {
+            feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">No suggestions yet. Be the first to add one!</div>`;
+            return;
         }
 
-        async function postComment() {
-            const nameInput = document.getElementById('commenter-name');
-            const textInput = document.getElementById('commenter-text');
-            const btn = document.getElementById('submit-comment-btn');
+        feed.innerHTML = data.map(c => `
+            <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-900/80 text-left">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="font-semibold text-emerald-400">${escapeHTML(c.name)}</span>
+                    <span class="text-[10px] text-slate-600">${new Date(c.created_at).toLocaleDateString()}</span>
+                </div>
+                <p class="text-slate-400 leading-relaxed">${escapeHTML(c.text)}</p>
+            </div>
+        `).join('');
+    } catch (err) {
+        feed.innerHTML = `<div class="text-center text-red-500/70 py-4">Failed to load comments.</div>`;
+        countBadge.innerText = "Suggestions Board";
+    }
+}
 
-            const name = nameInput.value.trim();
-            const text = textInput.value.trim();
+// Post a new comment safely
+async function postComment() {
+    const nameInput = document.getElementById('commenter-name');
+    const textInput = document.getElementById('commenter-text');
+    const btn = document.getElementById('submit-comment-btn');
 
-            if (!name || !text) {
-                alert("Please enter both your name and a suggestion!");
-                return;
-            }
+    const name = nameInput.value.trim();
+    const text = textInput.value.trim();
 
-            btn.disabled = true;
-            btn.innerText = "Posting...";
+    if (!name || !text) {
+        alert("Please enter both your name and a suggestion!");
+        return;
+    }
 
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
-                    method: 'POST',
-                    headers: getHeaders(),
-                    body: JSON.stringify({ name, text })
-                });
+    btn.disabled = true;
+    btn.innerText = "Posting...";
 
-                if (response.ok) {
-                    textInput.value = '';
-                    await fetchComments();
-                } else {
-                    alert("Error saving comment. Please check your Supabase table schema parameters.");
-                }
-            } catch (err) {
-                alert("Network error. Could not establish sync pipeline.");
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Post Suggestion";
-            }
+    try {
+        // CHANGED rest/v1/comments to rest/v1/Comments to match your database table name
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/Comments`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify({ name, text })
+        });
+
+        if (response.ok) {
+            textInput.value = '';
+            await fetchComments();
+        } else {
+            alert("Error saving comment. Please check your Supabase table schema parameters.");
         }
+    } catch (err) {
+        alert("Network error. Could not establish sync pipeline.");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Post Suggestion";
+    }
+}
+
 
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, 
