@@ -593,7 +593,7 @@
                         ${elementBlocks}
                     </div>
                     <div class="space-y-3 pt-3 border-t border-slate-800/60">
-                        <p class="text-xs text-slate-400 leading-relaxed text-justify">
+                        <p class="text-xs text-slate-400 leading-relaxed text-left">
                             <strong class="text-slate-300 font-bold">Pathophysiology:</strong> ${triad.mechanism}
                         </p>
                         <div class="bg-amber-950/20 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs text-amber-300/90 leading-relaxed">
@@ -771,7 +771,7 @@
             }
 
             const expCard = document.createElement('div');
-            expCard.className = "mt-3 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400 leading-relaxed text-justify shadow-inner";
+            expCard.className = "mt-3 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400 leading-relaxed text-left shadow-inner";
             expCard.innerHTML = `<strong class="text-slate-200 block mb-1 font-bold text-sm">Pathophysiological Explanation:</strong> ${explanationText}`;
             feedback.appendChild(expCard);
 
