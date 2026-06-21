@@ -298,6 +298,15 @@
                 elements: ["Recurrent Orofacial Edema", "Ipsilateral Facial Nerve Palsy", "Lingua Plicata (Fissured Tongue)"],
                 mechanism: "An uncommon neuro-mucocutaneous granulomatous disorder characterized by non-caseating granulomas tracking within minor lymphatic paths and neural sheaths.",
                 pearl: "The fissured tongue is congenital and present in only 30-40% of cases, making the full clinical triad a rare find."
+            },
+            {
+                id: 21,
+                name: "Whipple's Triad (Insulinoma)",
+                system: "surgery",
+                colorClass: "border-red-500 text-red-400 bg-red-950/20",
+                elements: ["Symptomatic Hypoglycemia (Autonomic or Neuroglycopenic)", "Documented Plasma Glucose ≤ 50-60 mg/dL During Attack", "Prompt Relief of Symptoms Following Glucose Administration"],
+                mechanism: "An insulinoma is a rare neuroendocrine tumor derived from the pancreatic beta cells that inappropriately hypersecretes insulin completely independent of systemic glucose checkpoints. The resulting continuous tissue glucose uptake drives severe fasting hypoglycemia.",
+                pearl: "To biochemically confirm an insulinoma and rule out factitious hypoglycemia (surreptitious insulin injection), a 72-hour supervised fasting test must document high insulin, high C-peptide, and elevated proinsulin levels concurrently with low glucose levels."
             }
         ];
 
@@ -548,7 +557,20 @@
                 ],
                 correct: 1,
                 explanation: "The combination of hypertension (with a widened pulse pressure), reflex bradycardia, and bradypnea/irregular breathing constitutes Cushing's Triad, an ominous sign of critically elevated intracranial pressure."
-            }
+           },
+           {
+                subject: "General Surgery",
+                color: "bg-red-600",
+                question: "Match the following high-yield clinical surgical triads with their corresponding index condition:\n\n[TRIAD]\n1. Saint's triad\n2. Sandblom triad\n3. Charcot triad\n4. Rigler's triad\n\n[CONDITION]\na. Hemobilia\nb. Gallstone ileus\nc. Colonic diverticulosis\nd. Acute cholangitis",
+                options: [
+                    "1-a, 2-c, 3-b, 4-d",
+                    "1-b, 2-a, 3-d, 4-c",
+                    "1-c, 2-a, 3-d, 4-b",
+                    "1-c, 2-d, 3-a, 4-b"
+                ],
+                correct: 2, // Marks index position 2 (Option C) as the correct choice
+                explanation: "High-Yield Breakdown of Surgical Matching Matrix:\n• Saint's Triad: Co-existence of Cholelithiasis, Hiatal Hernia, and Colonic Diverticulosis.\n• Sandblom Triad (Hemobilia): Classic triad of GI bleeding (melena), upper abdominal pain, and obstructive jaundice following liver trauma.\n• Charcot Triad: High fever, RUQ pain, and jaundice indicating acute ascending cholangitis.\n• Rigler's Triad (Gallstone Ileus): Pneumobilia, small bowel obstruction, and an ectopic gallstone on radiography."
+           }
         ];
 
         let activeQuizIndex = 0;
