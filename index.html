@@ -66,12 +66,9 @@
                 <button onclick="filterSystem('ent')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-teal-900/50 text-teal-400 hover:bg-teal-950/30 transition-all cursor-pointer">ENT</button>
                 <button onclick="filterSystem('ophth')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-orange-900/50 text-orange-400 hover:bg-orange-950/30 transition-all cursor-pointer">Ophthalmology</button>
                 <button onclick="filterSystem('derma')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-indigo-900/50 text-indigo-400 hover:bg-indigo-950/30 transition-all cursor-pointer">Dermatology</button>
-           <button onclick="toggleBookmark(${triad.id})" class="text-xl cursor-pointer transition-colors ${isBookmarked ? 'text-pink-500' : 'text-slate-600'}">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="none">
-        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-    </svg>
-</button>
-
+           <button id="bookmark-filter-btn" 
+        onclick="toggleBookmarksOnly()" 
+        class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-amber-900/50 text-slate-400 hover:bg-slate-900 transition-all cursor-pointer">Show Bookmarks Only</button>
         </div>
 
             <div id="atlas-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
@@ -725,29 +722,19 @@
     const currentSys = localStorage.getItem('activeSystem') || 'all';
     filterSystem(currentSys); 
 }
-
-
         function renderAtlas() {
     const grid = document.getElementById('atlas-grid');
     const search = document.getElementById('atlas-search').value.toLowerCase();
     const activeSys = localStorage.getItem('activeSystem') || 'all';
-    
-    // JSON.parse logic is here!
     const bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
     
     grid.innerHTML = '';
     
     triadsData.filter(triad => {
-        // Logic for Name or Element search
         const matchesSearch = triad.name.toLowerCase().includes(search) || 
                              (triad.elements && triad.elements.some(e => e.toLowerCase().includes(search)));
-        
-        // Logic for System filter
         const matchesSys = (activeSys === 'all' || triad.system === activeSys);
-        
-        // Logic for Bookmark filter
         const matchesBookmark = (!showBookmarksOnly || bookmarks.includes(triad.id));
-        
         return matchesSearch && matchesSys && matchesBookmark;
     }).forEach(triad => {
         const isBookmarked = bookmarks.includes(triad.id);
@@ -769,7 +756,18 @@
                 <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
                     ${triad.system}
                 </span>
-                <button onclick="toggleBookmark(${triad.id})" class="text-xl cursor-pointer ${isBookmarked ? 'text-amber-400' : 'text-slate-600'}">★</button>
+                <button onclick="toggleBookmark('${triad.id}')" 
+                        class="w-8 h-8 cursor-pointer transition-all duration-300 ${isBookmarked ? 'opacity-100 grayscale-0' : 'opacity-40 grayscale'}">
+                  <svg viewBox="0 0 512 512" width="100%" height="100%">
+                    <polygon points="256,480 32,192 128,96 384,96 480,192" fill="#CC0000" stroke="#000000" stroke-width="8" stroke-linejoin="round"/>
+                    <polygon points="256,448 64,200 144,112 368,112 448,200" fill="#FFDD00"/>
+                    <g fill="#CC0000">
+                      <path d="M 216,160 C 176,160 144,180 144,220 C 144,250 168,265 208,275 C 256,285 304,300 304,350 C 304,390 264,416 216,416 C 180,416 150,400 144,380 L 184,360 C 192,380 208,390 230,390 C 256,390 264,375 264,350 C 264,320 232,310 192,300 C 152,290 130,265 130,225 C 130,175 174,135 230,135 C 266,135 292,150 304,170 Z" />
+                      <path d="M 232,135 L 296,135 L 280,185 L 220,185 Z" />
+                      <path d="M 280,336 C 304,336 320,315 320,290 C 320,250 280,230 256,230 C 230,230 220,245 220,245 L 240,265 C 240,265 250,255 260,255 C 276,255 280,265 280,280 C 280,300 256,305 230,305 C 214,305 192,295 192,295 L 176,336 Z" />
+                    </g>
+                  </svg>
+                </button>
             </div>
             <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
@@ -787,6 +785,7 @@
         grid.appendChild(card);
     });
 }
+
         function toggleBookmark(id) {
     let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
     if (bookmarks.includes(id)) {
