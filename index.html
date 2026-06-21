@@ -66,7 +66,9 @@
                 <button onclick="filterSystem('ent')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-teal-900/50 text-teal-400 hover:bg-teal-950/30 transition-all cursor-pointer">ENT</button>
                 <button onclick="filterSystem('ophth')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-orange-900/50 text-orange-400 hover:bg-orange-950/30 transition-all cursor-pointer">Ophthalmology</button>
                 <button onclick="filterSystem('derma')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-indigo-900/50 text-indigo-400 hover:bg-indigo-950/30 transition-all cursor-pointer">Dermatology</button>
-            </div>
+           <button onclick="toggleBookmarksOnly()" id="bookmark-filter-btn" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-amber-900/50 text-amber-400 hover:bg-amber-950/30 cursor-pointer">Show Bookmarks Only</button>
+            
+        </div>
 
             <div id="atlas-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
         </section>
@@ -606,7 +608,7 @@
                 explanation: "High-Yield Breakdown of Surgical Matching Matrix:\n• Saint's Triad: Co-existence of Cholelithiasis, Hiatal Hernia, and Colonic Diverticulosis.\n• Sandblom Triad (Hemobilia): Classic triad of GI bleeding (melena), upper abdominal pain, and obstructive jaundice following liver trauma.\n• Charcot Triad: High fever, RUQ pain, and jaundice indicating acute ascending cholangitis.\n• Rigler's Triad (Gallstone Ileus): Pneumobilia, small bowel obstruction, and an ectopic gallstone on radiography."
            }
         ];
-
+        let showBookmarksOnly = false;
         let activeQuizIndex = 0;
         let currentFlashcardTriad = null;
         let hiddenElementIndex = 0;
@@ -714,24 +716,39 @@
             }
             return array;
         }
+        function toggleBookmarksOnly() {
+    showBookmarksOnly = !showBookmarksOnly;
+    // Visually toggle the button color
+    const btn = document.getElementById('bookmark-filter-btn');
+    btn.classList.toggle('bg-amber-900', showBookmarksOnly);
+    renderAtlas(); // Re-render the list with the filter applied
+        }
 
         function renderAtlas() {
     const grid = document.getElementById('atlas-grid');
     const search = document.getElementById('atlas-search').value.toLowerCase();
     const activeSys = localStorage.getItem('activeSystem') || 'all';
+    
+    // JSON.parse logic is here!
     const bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
     
     grid.innerHTML = '';
     
     triadsData.filter(triad => {
+        // Logic for Name or Element search
         const matchesSearch = triad.name.toLowerCase().includes(search) || 
-                             triad.elements.some(e => e.toLowerCase().includes(search));
+                             (triad.elements && triad.elements.some(e => e.toLowerCase().includes(search)));
+        
+        // Logic for System filter
         const matchesSys = (activeSys === 'all' || triad.system === activeSys);
-        return matchesSearch && matchesSys;
+        
+        // Logic for Bookmark filter
+        const matchesBookmark = (!showBookmarksOnly || bookmarks.includes(triad.id));
+        
+        return matchesSearch && matchesSys && matchesBookmark;
     }).forEach(triad => {
         const isBookmarked = bookmarks.includes(triad.id);
         const card = document.createElement('div');
-        // Added 'triad-item' class for filtering compatibility
         card.className = `triad-item data-${triad.system} bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg hover:border-slate-700 transition duration-200`;
         
         let elementBlocks = '';
@@ -767,6 +784,7 @@
         grid.appendChild(card);
     });
 }
+
         function toggleBookmark(id) {
     let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
     if (bookmarks.includes(id)) {
@@ -833,26 +851,26 @@
         }
 
         function filterSystem(sys) {
-            const buttons = document.querySelectorAll('.sys-btn');
-            buttons.forEach(btn => {
-                if (btn.innerText.toLowerCase().includes(sys) || (sys === 'all' && btn.innerText.toLowerCase().includes('all'))) {
-                    btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg bg-slate-800 border border-slate-600 text-white transition-all cursor-pointer";
-                } else {
-                    btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-900 transition-all cursor-pointer";
-                }
-            });
+    // 1. Save the state
+    localStorage.setItem('activeSystem', sys);
 
-            const items = document.querySelectorAll('.triad-item');
-            items.forEach(item => {
-                if (sys === 'all' || item.classList.contains(`data-${sys}`)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+    // 2. Update button visual appearance
+    const buttons = document.querySelectorAll('.sys-btn');
+    buttons.forEach(btn => {
+        // This checks if the button matches the system passed
+        const btnText = btn.innerText.toLowerCase();
+        if (btnText.includes(sys) || (sys === 'all' && btnText.includes('all'))) {
+            btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg bg-slate-800 border border-slate-600 text-white transition-all cursor-pointer";
+        } else {
+            btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-900 transition-all cursor-pointer";
         }
+    });
 
-        function generateNextFlashcard() {
+    // 3. Instead of hiding items manually, just refresh the whole grid
+    renderAtlas(); 
+}
+
+    function generateNextFlashcard() {
             const randomIndex = Math.floor(Math.random() * triadsData.length);
             currentFlashcardTriad = triadsData[randomIndex];
             hiddenElementIndex = Math.floor(Math.random() * 3);
@@ -973,10 +991,11 @@
         }
 
         window.onload = function() {
-            shuffleArray(triadsData);
-            renderAtlas();
-            fetchComments();
-        };
+    shuffleArray(triadsData);
+    const savedSys = localStorage.getItem('activeSystem') || 'all';
+    filterSystem(savedSys); // This will call renderAtlas() automatically
+    fetchComments();
+};
     </script>
 </body>
 </html>
