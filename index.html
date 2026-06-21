@@ -780,19 +780,24 @@
 
 
         function toggleBookmark(id) {
+    // FIX: Changed || '' to || '[]' so JSON.parse receives valid data
     let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
-    if (bookmarks.includes(id)) {
-        bookmarks = bookmarks.filter(b => b !== id);
+    
+    // Ensure id is treated as a string to match how you save them
+    const idStr = String(id);
+    
+    if (bookmarks.includes(idStr)) {
+        bookmarks = bookmarks.filter(b => b !== idStr);
     } else {
-        bookmarks.push(id);
+        bookmarks.push(idStr);
     }
+    
     localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
     
-    // This uses the system currently saved in memory, 
-    // ensuring the UI stays consistent after starring/unstarring.
-    const currentSys = localStorage.getItem('activeSystem') || 'all';
-    filterSystem(currentSys); 
+    // Refresh the UI
+    renderAtlas(); 
 }
+
 
         function switchTab(target) {
             const btnAtlas = document.getElementById('tab-atlas');
