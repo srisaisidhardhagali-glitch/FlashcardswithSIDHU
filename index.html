@@ -851,32 +851,44 @@
         }
 
         function filterSystem(sys) {
-    // 1. Save the state
     localStorage.setItem('activeSystem', sys);
 
-    // 2. Update visual appearance while preserving original colors
+    // 1. Update Specialty Buttons
     const buttons = document.querySelectorAll('.sys-btn');
     buttons.forEach(btn => {
         const btnText = btn.innerText.toLowerCase().trim();
         const isMatch = (sys === 'all' && btnText.includes('all')) || 
                         (sys !== 'all' && btnText.includes(sys));
 
-        // Use standard classes for active/inactive state without overwriting the text-color class
         if (isMatch) {
-            // Apply active look (white background border)
+            // Highlight: Add active classes
             btn.classList.add('bg-slate-800', 'border-slate-600', 'text-white');
+            // Remove inactive classes
             btn.classList.remove('border-slate-800', 'hover:bg-slate-900');
         } else {
-            // Revert to inactive look
+            // Remove active classes
             btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-white');
+            // Add inactive classes
             btn.classList.add('border-slate-800', 'hover:bg-slate-900');
         }
     });
 
-    // 3. Refresh the grid
+        // 2. Sync the bookmark button visual state (Border-only highlight)
+    const bookmarkBtn = document.getElementById('bookmark-filter-btn');
+    if (bookmarkBtn) {
+        if (showBookmarksOnly) {
+            // Apply border-only highlight
+            bookmarkBtn.classList.add('border-amber-500', 'text-amber-400');
+            bookmarkBtn.classList.remove('border-amber-900/50');
+        } else {
+            // Revert to original muted border
+            bookmarkBtn.classList.remove('border-amber-500', 'text-amber-400');
+            bookmarkBtn.classList.add('border-amber-900/50');
+        }
+    }
+
     renderAtlas(); 
 }
-
     function generateNextFlashcard() {
             const randomIndex = Math.floor(Math.random() * triadsData.length);
             currentFlashcardTriad = triadsData[randomIndex];
