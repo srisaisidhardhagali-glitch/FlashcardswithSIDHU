@@ -4972,14 +4972,32 @@
                 reviewContainer.appendChild(card);
             });
         }
-
-        // Boot Init
-        window.onload = function() {
+// Boot Init - Safe Initialization
+window.addEventListener('DOMContentLoaded', (event) => {
+    console.log("Page structure loaded. Initializing logic...");
+    try {
+        if (typeof triadsData === 'undefined') {
+            console.error("CRITICAL ERROR: triadsData is not defined. Check if your data file is loaded.");
+            return;
+        }
+        
+        // Add a slight delay to ensure the UI is fully rendered before filtering
+        setTimeout(() => {
             shuffleArray(triadsData);
             const savedSys = localStorage.getItem('activeSystem') || 'all';
             filterSystem(savedSys); 
             fetchComments();
-        };
+            console.log("Initialization successful.");
+        }, 100);
+        
+    } catch (err) {
+        // This alert will show you the exact error on your Android screen
+        alert("Initialization failed: " + err.message);
+        console.error(err);
+    }
+});
+        
+        
     </script>
 </body>
 </html>
