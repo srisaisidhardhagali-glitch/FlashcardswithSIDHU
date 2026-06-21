@@ -16,6 +16,13 @@
             background: #475569;
             border-radius: 3px;
         }
+        /* Sub-menu hover logic */
+        .group\/sub:hover .group-hover\/sub\:opacity-100 {
+            opacity: 1;
+        }
+        .group\/sub:hover .group-hover\/sub\:visible {
+            visibility: visible;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
@@ -23,29 +30,49 @@
     <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <!-- Radiant metallic glow background added to title container below -->
                 <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950/20 px-4 py-2 rounded-xl border border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)] text-cyan-400 font-black text-sm sm:text-base tracking-widest uppercase ring-1 ring-cyan-500/20">
-    Medical Triads and more
-</div>
+                    Medical Triads and more
+                </div>
                 <div>
                     <h1 class="text-xl font-extrabold text-white tracking-tight bg-clip-text bg-gradient-to-r from-white to-slate-300">NEET PG Master Atlas with Sidhu</h1>
                     <p class="text-xs text-slate-400 font-medium">Ultimate Revision & Self-Assessment Matrix</p>
                 </div>
             </div>
             
-            <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex items-center gap-1 shadow-inner">
-                <button onclick="switchTab('atlas')" id="tab-atlas" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-blue-600 text-white shadow-lg cursor-pointer">
-                    📚 Triad atlas
-                </button>
-                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer">
-                    ⚡ Flashcard Recall
-                </button>
-                <button onclick="switchTab('quiz')" id="tab-quiz" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer">
-                    🎯 Exam Simulator
-                </button>
-                <button onclick="scrollToComments()" id="nav-comments-btn" class="px-3 py-2 rounded-lg text-sm font-bold tracking-wide text-slate-400 hover:text-slate-200 cursor-pointer transition-all flex items-center gap-1.5 border border-transparent hover:border-slate-800/80 bg-slate-900/40">
-                    💬 Comments
-                </button>
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex items-center gap-1 shadow-inner">
+                    <button onclick="switchTab('atlas')" id="tab-atlas" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-blue-600 text-white shadow-lg cursor-pointer">
+                        📚 Triad atlas
+                    </button>
+                    <button onclick="switchTab('flashcards')" id="tab-flashcards" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer">
+                        ⚡ Flashcard Recall
+                    </button>
+                    <button onclick="switchTab('quiz')" id="tab-quiz" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer">
+                        🎯 Exam Simulator
+                    </button>
+                    <button onclick="scrollToComments()" id="nav-comments-btn" class="px-3 py-2 rounded-lg text-sm font-bold tracking-wide text-slate-400 hover:text-slate-200 cursor-pointer transition-all flex items-center gap-1.5 border border-transparent hover:border-slate-800/80 bg-slate-900/40">
+                        💬 Comments
+                    </button>
+                </div>
+
+                <div class="relative group inline-block z-50">
+                    <button class="px-2 py-2 text-slate-400 hover:text-white transition-colors cursor-pointer text-2xl font-bold flex items-center justify-center">
+                        ⋮
+                    </button>
+                    <div class="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                        <div class="relative group/sub">
+                            <button class="w-full text-left px-4 py-3 text-sm font-bold text-slate-300 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center rounded-xl cursor-pointer">
+                                Previous Year Topics
+                                <span class="text-[10px]">▶</span>
+                            </button>
+                            <div class="absolute right-full top-0 mr-2 w-48 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200">
+                                <button onclick="switchTab('pyq')" class="w-full text-left px-4 py-3 text-sm font-bold text-emerald-400 hover:bg-slate-800 hover:text-emerald-300 transition-colors rounded-xl cursor-pointer">
+                                    Based on Neet 2024
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -53,11 +80,10 @@
     <main class="max-w-7xl mx-auto px-4 py-8">
         
         <section id="view-atlas" class="block space-y-8">
-    <div class="pb-2">
-        <input type="text" id="atlas-search" placeholder="Search triads..." oninput="renderAtlas()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:border-blue-500 text-white">
-    </div>
-    <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-800/60">
-        </div>
+            <div class="pb-2">
+                <input type="text" id="atlas-search" placeholder="Search triads..." oninput="renderAtlas()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:border-blue-500 text-white">
+            </div>
+            <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-800/60">
                 <button onclick="filterSystem('all')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-700 bg-slate-800 text-white transition-all cursor-pointer">All Specialties</button>
                 <button onclick="filterSystem('medicine')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-blue-900/50 text-blue-400 hover:bg-blue-950/30 transition-all cursor-pointer">Internal Medicine</button>
                 <button onclick="filterSystem('surgery')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-red-900/50 text-red-400 hover:bg-red-950/30 transition-all cursor-pointer">General Surgery</button>
@@ -66,10 +92,8 @@
                 <button onclick="filterSystem('ent')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-teal-900/50 text-teal-400 hover:bg-teal-950/30 transition-all cursor-pointer">ENT</button>
                 <button onclick="filterSystem('ophth')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-orange-900/50 text-orange-400 hover:bg-orange-950/30 transition-all cursor-pointer">Ophthalmology</button>
                 <button onclick="filterSystem('derma')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-indigo-900/50 text-indigo-400 hover:bg-indigo-950/30 transition-all cursor-pointer">Dermatology</button>
-           <button onclick="toggleBookmarksOnly()" id="bookmark-filter-btn" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-amber-900/50 text-amber-400 hover:bg-amber-950/30 cursor-pointer">Show Bookmarks Only</button>
-            
-        </div>
-
+                <button onclick="toggleBookmarksOnly()" id="bookmark-filter-btn" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-amber-900/50 text-amber-400 hover:bg-amber-950/30 cursor-pointer">Show Bookmarks Only</button>
+            </div>
             <div id="atlas-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
         </section>
 
@@ -78,16 +102,13 @@
                 <h2 class="text-2xl font-black text-white">Active Recall Matrix</h2>
                 <p class="text-sm text-slate-400">Two components of a key NEET PG triad are displayed below. Can you mentally trigger the missing triad criteria?</p>
             </div>
-
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6 relative overflow-hidden">
                 <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
                 <div class="flex justify-between items-center border-b border-slate-800 pb-4">
                     <span id="flashcard-system-badge" class="px-3 py-1 text-xs font-black uppercase tracking-widest text-indigo-400 bg-indigo-950/40 border border-indigo-900/50 rounded-md">SPECIALTY</span>
                     <span id="flashcard-title" class="text-sm font-extrabold text-slate-300">Triad Name</span>
                 </div>
-
                 <div class="grid grid-cols-1 gap-4 my-4" id="flashcard-slots-container"></div>
-
                 <div class="flex justify-between items-center pt-4 border-t border-slate-800">
                     <button onclick="revealFlashcardSecret()" id="flashcard-reveal-btn" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl text-sm transition duration-150 shadow-md shadow-indigo-950 cursor-pointer">
                         👁️ Reveal Missing Component
@@ -111,13 +132,10 @@
                         <p class="text-sm font-black text-amber-400" id="quiz-progress-text">Question 1 of 5</p>
                     </div>
                 </div>
-
                 <div id="quiz-question-container" class="text-slate-200 text-base font-medium leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner">
                     Loading medical scenario...
                 </div>
-
                 <div id="quiz-options-container" class="space-y-3"></div>
-
                 <div class="flex justify-between items-center pt-4 border-t border-slate-800">
                     <div id="quiz-status-feedback" class="text-sm font-bold w-full mr-4"></div>
                     <button onclick="handleNextQuestion()" id="quiz-next-btn" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black rounded-xl text-sm transition shadow-lg shrink-0 hidden cursor-pointer">
@@ -127,7 +145,43 @@
             </div>
         </section>
 
-        <!-- GLOBAL COMMUNITY COMMENT SECTION -->
+        <section id="view-pyq" class="hidden max-w-3xl mx-auto space-y-6">
+            <div class="text-center space-y-2 mb-4">
+                <h2 class="text-2xl font-black text-emerald-400">NEET PG 2024 Recall Matrix</h2>
+                <p class="text-sm text-slate-400">Directly sourced & curated high-yield questions from the 2024 Shift 1 paper.</p>
+            </div>
+
+            <div id="pyq-subject-filters" class="flex flex-wrap justify-center gap-2 mb-4">
+                </div>
+
+            <div class="w-full bg-slate-800 rounded-full h-2 mb-2">
+                <div id="pyq-progress-bar" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <div>
+                        <span id="pyq-badge" class="px-3 py-1 text-xs font-black uppercase tracking-widest text-emerald-950 bg-emerald-400 rounded-md">SUBJECT</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-black text-slate-300" id="pyq-progress-text">Q 1 / 10</p>
+                    </div>
+                </div>
+                
+                <div id="pyq-question-container" class="text-slate-200 text-base font-medium leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner">
+                    Loading PYQ...
+                </div>
+                
+                <div id="pyq-options-container" class="space-y-3"></div>
+                
+                <div class="flex justify-end pt-4 border-t border-slate-800">
+                    <button onclick="handleNextPyq()" id="pyq-next-btn" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-sm transition shadow-lg shrink-0 hidden cursor-pointer">
+                        Next Question →
+                    </button>
+                </div>
+            </div>
+        </section>
+
         <div id="comments-section" class="max-w-md mx-auto mt-16 mb-16 p-4 rounded-2xl bg-slate-900/50 border border-slate-800 shadow-xl backdrop-blur-sm scroll-mt-24 block">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
@@ -135,8 +189,6 @@
                 </h3>
                 <span id="comment-count" class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-mono">Suggestions Feed</span>
             </div>
-
-            <!-- Comment Inputs -->
             <div class="space-y-3 mb-6">
                 <input type="text" id="commenter-name" placeholder="Your Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors">
                 <textarea id="commenter-text" rows="3" placeholder="Suggest a new triad or leave feedback..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors resize-none"></textarea>
@@ -144,8 +196,6 @@
                     Post Suggestion
                 </button>
             </div>
-
-            <!-- Global Comments Feed -->
             <div id="comments-feed" class="space-y-3 max-h-60 overflow-y-auto pr-1 text-xs custom-scrollbar">
                 <div class="text-center text-slate-600 py-4 italic">Loading suggestions...</div>
             </div>
@@ -154,6 +204,7 @@
     </main>
 
     <script>
+        // Existing Triads Data
         const triadsData = [
             {
                 id: 1,
@@ -608,107 +659,150 @@
                 explanation: "High-Yield Breakdown of Surgical Matching Matrix:\n• Saint's Triad: Co-existence of Cholelithiasis, Hiatal Hernia, and Colonic Diverticulosis.\n• Sandblom Triad (Hemobilia): Classic triad of GI bleeding (melena), upper abdominal pain, and obstructive jaundice following liver trauma.\n• Charcot Triad: High fever, RUQ pain, and jaundice indicating acute ascending cholangitis.\n• Rigler's Triad (Gallstone Ileus): Pneumobilia, small bowel obstruction, and an ectopic gallstone on radiography."
            }
         ];
+
+        // ==========================================
+        // NEW PYQ NEET 2024 DATABASE (From Provided PDF)
+        // ==========================================
+        const pyqDatabase = [
+            {
+                subject: "Pulmonology",
+                question: "Male not responding to O2, diagnosis ARDS. What is the role of IL-8 in ARDS?",
+                options: [
+                    "Endothelial cell activation",
+                    "Requirement of neutrophil",
+                    "Macrophage activation",
+                    "Promote surfactant production"
+                ],
+                correct: 1
+            },
+            {
+                subject: "Gastroenterology",
+                question: "A 25-year-old male presents with resting tremor, dysarthria, and elevated liver enzymes. Slit-lamp examination reveals a golden-brown ring around the periphery of the cornea. What is the best diagnostic investigation for this condition?",
+                options: [
+                    "Urine Copper",
+                    "Hepatic copper",
+                    "S. Ceruloplasmin",
+                    "MRI Brain"
+                ],
+                correct: 1
+            },
+            {
+                subject: "Pathology",
+                question: "Which of the following lung tumors is positive for TTF-1?",
+                options: [
+                    "Squamous Cell Carcinoma",
+                    "Small Cell Carcinoma",
+                    "Adenocarcinoma",
+                    "Carcinoid Tumor"
+                ],
+                correct: 2
+            },
+            {
+                subject: "Surgery",
+                question: "Which vitamin must be supplemented systematically after a total gastrectomy?",
+                options: [
+                    "Vitamin A",
+                    "Vitamin C",
+                    "Vitamin B12",
+                    "Vitamin D"
+                ],
+                correct: 2
+            },
+            {
+                subject: "Hematology",
+                question: "Which of the following statements regarding von Willebrand disease (vWD) is NOT true?",
+                options: [
+                    "vWD type 1 is mostly severe disease in children",
+                    "vWD type 3 mostly severe disease in children",
+                    "vWD type 2 is more related activity rather than levels",
+                    "vWD type 3 has severely low vWF"
+                ],
+                correct: 0
+            },
+            {
+                subject: "Pediatrics",
+                question: "A newborn baby failed to pass meconium. Biopsy reveals Hirschsprung's disease. The absent nerve plexuses are missing from which of the following layers?\n1. Epithelial \n2. Submucosa \n3. Muscular \n4. Serosa",
+                options: [
+                    "1 and 2",
+                    "2 and 3",
+                    "3 and 4",
+                    "1 and 4"
+                ],
+                correct: 1
+            },
+            {
+                subject: "Ophthalmology",
+                question: "Which muscle is responsible for the ptosis seen in Horner syndrome?",
+                options: [
+                    "Orbicularis oculi",
+                    "Levator palpebrae",
+                    "Horner muscle",
+                    "Muller's muscle"
+                ],
+                correct: 3
+            },
+            {
+                subject: "ENT",
+                question: "A singer presents with difficulty hitting high pitch notes. On indirect laryngoscopy, bowing of one side of the vocal cord is visualized. Which of the following muscles is affected?",
+                options: [
+                    "Posterior cricoarytenoid",
+                    "Lateral cricoarytenoid",
+                    "Cricothyroid",
+                    "Thyroarytenoid"
+                ],
+                correct: 2
+            },
+            {
+                subject: "Physiology",
+                question: "After a right lower limb amputation, a patient experiences severe phantom limb pain. What is the cortical mechanism behind this phenomenon?",
+                options: [
+                    "Projection of adjacent fibres to overlap to right sensory cortex",
+                    "Projection of adjacent fibres to overlap to left sensory cortex",
+                    "Expansion of right sensory cortex",
+                    "Expansion of left sensory cortex"
+                ],
+                correct: 1
+            },
+            {
+                subject: "Orthopedics",
+                question: "A man involved in a severe RTA presents to the emergency department complaining of back pain. He has no neurological deficits. Radiographs reveal a horizontal fracture running straight through the spinous process, pedicles, and vertebral body of a lumbar vertebra, typical of a seatbelt injury. What is the diagnosis?",
+                options: [
+                    "Fracture of spinous process",
+                    "Compression fracture",
+                    "Fracture of base of vertebrae",
+                    "Chance fracture"
+                ],
+                correct: 3
+            }
+        ];
+
+        // State Variables
         let showBookmarksOnly = false;
         let activeQuizIndex = 0;
         let currentFlashcardTriad = null;
         let hiddenElementIndex = 0;
 
-        // --- SUPABASE ENGINE INTEGRATION ---
-        const SUPABASE_URL = "https://urnnwbaqqmwrgthgrfgr.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVybm53YmFxcW13cmd0aGdyZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMjc1MTcsImV4cCI6MjA5NzYwMzUxN30.ZsPenOGs0G7ZM8KnC5qy0QpXRHPrOy-7_2gkbBL8O34";
+        let pyqState = {
+            activeSubject: 'All',
+            filteredList: [],
+            currentIndex: 0
+        };
 
-        const getHeaders = () => ({
-            "apikey": SUPABASE_KEY,
-            "Authorization": `Bearer ${SUPABASE_KEY}`,
-            "Content-Type": "application/json",
-            "Prefer": "return=representation"
-        });
-
-        // Fetch and display global comments
+        // --- SUPABASE MOCK FOR COMMENTS ---
+        const getHeaders = () => ({});
         async function fetchComments() {
             const feed = document.getElementById('comments-feed');
-            const countBadge = document.getElementById('comment-count');
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/Comments?order=created_at.desc`, {
-                    method: 'GET',
-                    headers: getHeaders()
-                });
-                const data = await response.json();
-                
-                if (data && typeof data.length !== 'undefined') {
-                    countBadge.innerText = `${data.length} suggestion${data.length === 1 ? '' : 's'}`;
-                } else {
-                    countBadge.innerText = "0 suggestions";
-                }
-                
-                if (!data || data.length === 0) {
-                    feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">No suggestions yet. Be the first to add one!</div>`;
-                    return;
-                }
-
-                feed.innerHTML = data.map(c => `
-                    <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-900/80 text-left">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-semibold text-emerald-400">${escapeHTML(c.name)}</span>
-                            <span class="text-[10px] text-slate-600">${new Date(c.created_at).toLocaleDateString()}</span>
-                        </div>
-                        <p class="text-slate-400 leading-relaxed">${escapeHTML(c.text)}</p>
-                    </div>
-                `).join('');
-            } catch (err) {
-                feed.innerHTML = `<div class="text-center text-red-500/70 py-4">Failed to load comments.</div>`;
-                countBadge.innerText = "Suggestions Board";
-            }
+            feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">Comments feature available upon backend connection.</div>`;
         }
-
-        // Post a new comment safely
         async function postComment() {
-            const nameInput = document.getElementById('commenter-name');
-            const textInput = document.getElementById('commenter-text');
-            const btn = document.getElementById('submit-comment-btn');
-
-            const name = nameInput.value.trim();
-            const text = textInput.value.trim();
-
-            if (!name || !text) {
-                alert("Please enter both your name and a suggestion!");
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerText = "Posting...";
-
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/Comments`, {
-                    method: 'POST',
-                    headers: getHeaders(),
-                    body: JSON.stringify({ name, text })
-                });
-
-                if (response.ok) {
-                    textInput.value = '';
-                    await fetchComments();
-                } else {
-                    alert("Error saving comment. Please check your Supabase table schema parameters.");
-                }
-            } catch (err) {
-                alert("Network error. Could not establish sync pipeline.");
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Post Suggestion";
-            }
+            alert("Database connected needed to save.");
         }
-
         function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
         }
-
         function scrollToComments() {
             document.getElementById('comments-section').scrollIntoView({ behavior: 'smooth' });
         }
-
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -716,86 +810,8 @@
             }
             return array;
         }
-        function toggleBookmarksOnly() {
-    showBookmarksOnly = !showBookmarksOnly;
-    // Visually toggle the button color
-    const btn = document.getElementById('bookmark-filter-btn');
-    btn.classList.toggle('bg-amber-900', showBookmarksOnly);
-    renderAtlas(); // Re-render the list with the filter applied
-        }
 
-        function renderAtlas() {
-    const grid = document.getElementById('atlas-grid');
-    const search = document.getElementById('atlas-search').value.toLowerCase();
-    const activeSys = localStorage.getItem('activeSystem') || 'all';
-    
-    // JSON.parse logic is here!
-    const bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
-    
-    grid.innerHTML = '';
-    
-    triadsData.filter(triad => {
-        // Logic for Name or Element search
-        const matchesSearch = triad.name.toLowerCase().includes(search) || 
-                             (triad.elements && triad.elements.some(e => e.toLowerCase().includes(search)));
-        
-        // Logic for System filter
-        const matchesSys = (activeSys === 'all' || triad.system === activeSys);
-        
-        // Logic for Bookmark filter
-        const matchesBookmark = (!showBookmarksOnly || bookmarks.includes(triad.id));
-        
-        return matchesSearch && matchesSys && matchesBookmark;
-    }).forEach(triad => {
-        const isBookmarked = bookmarks.includes(triad.id);
-        const card = document.createElement('div');
-        card.className = `triad-item data-${triad.system} bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg hover:border-slate-700 transition duration-200`;
-        
-        let elementBlocks = '';
-        triad.elements.forEach((el, index) => {
-            elementBlocks += `
-                <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-center text-sm font-bold flex flex-col justify-center min-h-[64px]">
-                    <span class="text-[10px] uppercase tracking-widest block text-slate-500 mb-1">Component 0${index+1}</span>
-                    <span class="text-slate-200">${el}</span>
-                </div>
-            `;
-        });
-
-        card.innerHTML = `
-            <div class="flex justify-between items-start mb-4">
-                <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
-                    ${triad.system}
-                </span>
-                <button onclick="toggleBookmark(${triad.id})" class="text-xl cursor-pointer ${isBookmarked ? 'text-amber-400' : 'text-slate-600'}">★</button>
-            </div>
-            <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                ${elementBlocks}
-            </div>
-            <div class="space-y-3 pt-3 border-t border-slate-800/60">
-                <p class="text-xs text-slate-400 leading-relaxed text-left">
-                    <strong class="text-slate-300 font-bold">Pathophysiology:</strong> ${triad.mechanism}
-                </p>
-                <div class="bg-amber-950/20 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs text-amber-300/90 leading-relaxed">
-                    <strong class="font-extrabold block text-amber-400 mb-0.5">EXAM PEARL:</strong> ${triad.pearl}
-                </div>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-        function toggleBookmark(id) {
-    let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
-    if (bookmarks.includes(id)) {
-        bookmarks = bookmarks.filter(b => b !== id);
-    } else {
-        bookmarks.push(id);
-    }
-    localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
-    renderAtlas(); // Refreshes the grid to update the star color
-        }
-        
+        // Routing Logic
         function switchTab(target) {
             const btnAtlas = document.getElementById('tab-atlas');
             const btnFlash = document.getElementById('tab-flashcards');
@@ -805,91 +821,265 @@
             const viewAtlas = document.getElementById('view-atlas');
             const viewFlash = document.getElementById('view-flashcards');
             const viewQuiz = document.getElementById('view-quiz');
+            const viewPyq = document.getElementById('view-pyq');
             const commentsBox = document.getElementById('comments-section');
 
-            [viewAtlas, viewFlash, viewQuiz].forEach(view => {
+            // Hide all
+            [viewAtlas, viewFlash, viewQuiz, viewPyq].forEach(view => {
                 view.classList.remove('block');
                 view.classList.add('hidden');
             });
 
+            // Reset tab styles
             [btnAtlas, btnFlash, btnQuiz].forEach(b => {
                 b.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer";
             });
 
             if (target === 'atlas') {
                 btnAtlas.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-blue-600 text-white shadow-lg cursor-pointer";
-                viewAtlas.classList.remove('hidden');
-                viewAtlas.classList.add('block');
-                
-                commentsBox.classList.remove('hidden');
-                commentsBox.classList.add('block');
+                viewAtlas.classList.remove('hidden'); viewAtlas.classList.add('block');
+                commentsBox.classList.remove('hidden'); commentsBox.classList.add('block');
                 btnNavComments.classList.remove('hidden');
             } else if (target === 'flashcards') {
                 btnFlash.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-indigo-600 text-white shadow-lg cursor-pointer";
-                viewFlash.classList.remove('hidden');
-                viewFlash.classList.add('block');
-                
-                commentsBox.classList.remove('block');
-                commentsBox.classList.add('hidden');
+                viewFlash.classList.remove('hidden'); viewFlash.classList.add('block');
+                commentsBox.classList.remove('block'); commentsBox.classList.add('hidden');
                 btnNavComments.classList.add('hidden');
-                
                 shuffleArray(triadsData);
                 generateNextFlashcard();
             } else if (target === 'quiz') {
                 btnQuiz.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-purple-600 text-white shadow-lg cursor-pointer";
-                viewQuiz.classList.remove('hidden');
-                viewQuiz.classList.add('block');
-                
-                commentsBox.classList.remove('block');
-                commentsBox.classList.add('hidden');
+                viewQuiz.classList.remove('hidden'); viewQuiz.classList.add('block');
+                commentsBox.classList.remove('block'); commentsBox.classList.add('hidden');
                 btnNavComments.classList.add('hidden');
-                
                 shuffleArray(quizDatabase);
                 activeQuizIndex = 0;
                 initQuiz();
+            } else if (target === 'pyq') {
+                // Show Pyq view
+                viewPyq.classList.remove('hidden'); viewPyq.classList.add('block');
+                commentsBox.classList.remove('block'); commentsBox.classList.add('hidden');
+                btnNavComments.classList.add('hidden');
+                initPyqSimulator();
             }
         }
 
+        // ==========================================
+        // PYQ SIMULATOR LOGIC
+        // ==========================================
+        function initPyqSimulator() {
+            // Get unique subjects
+            const subjects = ['All', ...new Set(pyqDatabase.map(q => q.subject))];
+            const filterContainer = document.getElementById('pyq-subject-filters');
+            filterContainer.innerHTML = '';
+            
+            subjects.forEach(sub => {
+                const btn = document.createElement('button');
+                btn.innerText = sub;
+                btn.className = `px-3 py-1.5 text-xs font-bold uppercase rounded-lg border transition-all cursor-pointer ${
+                    pyqState.activeSubject === sub 
+                    ? 'bg-emerald-600 border-emerald-500 text-white' 
+                    : 'border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700'
+                }`;
+                btn.onclick = () => {
+                    pyqState.activeSubject = sub;
+                    initPyqSimulator(); // Re-render tags to update colors
+                };
+                filterContainer.appendChild(btn);
+            });
+
+            // Filter questions
+            pyqState.filteredList = pyqState.activeSubject === 'All' 
+                ? [...pyqDatabase] 
+                : pyqDatabase.filter(q => q.subject === pyqState.activeSubject);
+            
+            pyqState.currentIndex = 0;
+            loadPyq();
+        }
+
+        function loadPyq() {
+            const current = pyqState.filteredList[pyqState.currentIndex];
+            const nextBtn = document.getElementById('pyq-next-btn');
+            const optionsBox = document.getElementById('pyq-options-container');
+            const qContainer = document.getElementById('pyq-question-container');
+            const progressBar = document.getElementById('pyq-progress-bar');
+            
+            // Progress Bar & Text
+            const total = pyqState.filteredList.length;
+            const currentNum = pyqState.currentIndex + 1;
+            document.getElementById('pyq-progress-text').innerText = `Q ${currentNum} / ${total}`;
+            progressBar.style.width = `${(currentNum / total) * 100}%`;
+
+            if (!current) {
+                qContainer.innerText = "No questions found for this subject.";
+                optionsBox.innerHTML = '';
+                nextBtn.classList.add('hidden');
+                return;
+            }
+
+            document.getElementById('pyq-badge').innerText = current.subject;
+            qContainer.innerText = current.question;
+            optionsBox.innerHTML = '';
+            nextBtn.classList.add('hidden');
+
+            current.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950 text-sm font-medium hover:bg-slate-900 transition duration-150 flex items-start gap-3 cursor-pointer group hover:border-slate-700";
+                btn.onclick = () => handlePyqAnswer(idx, current.correct);
+                btn.innerHTML = `
+                    <span class="w-5 h-5 rounded-full border border-slate-700 bg-slate-900 text-[10px] font-bold inline-flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:border-slate-500 group-hover:text-white transition">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="text-slate-300 group-hover:text-slate-100 transition">${optText}</span>
+                `;
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function handlePyqAnswer(selectedIdx, correctIdx) {
+            const optionsBox = document.getElementById('pyq-options-container');
+            const buttons = optionsBox.querySelectorAll('button');
+
+            buttons.forEach((btn, idx) => {
+                btn.onclick = null; // Disable clicks
+                btn.className = "w-full text-left p-4 rounded-xl border text-sm font-medium flex items-start gap-3 opacity-60";
+                
+                if (idx === correctIdx) {
+                    btn.className = "w-full text-left p-4 rounded-xl border border-emerald-500 bg-emerald-950/30 text-sm font-bold flex items-start gap-3 shadow-md shadow-emerald-950/50 opacity-100 text-emerald-400";
+                } else if (idx === selectedIdx) {
+                    btn.className = "w-full text-left p-4 rounded-xl border border-red-500 bg-red-950/30 text-sm font-medium flex items-start gap-3 opacity-100 text-red-400";
+                }
+            });
+
+            // Reveal Next Button
+            if (pyqState.currentIndex < pyqState.filteredList.length - 1) {
+                document.getElementById('pyq-next-btn').classList.remove('hidden');
+                document.getElementById('pyq-next-btn').innerText = "Next Question →";
+            } else {
+                document.getElementById('pyq-next-btn').classList.remove('hidden');
+                document.getElementById('pyq-next-btn').innerText = "Finish Module ↻";
+            }
+        }
+
+        function handleNextPyq() {
+            if (pyqState.currentIndex < pyqState.filteredList.length - 1) {
+                pyqState.currentIndex++;
+                loadPyq();
+            } else {
+                // Reset
+                pyqState.currentIndex = 0;
+                loadPyq();
+            }
+        }
+
+        // ==========================================
+        // ATLAS LOGIC
+        // ==========================================
+        function toggleBookmarksOnly() {
+            showBookmarksOnly = !showBookmarksOnly;
+            const btn = document.getElementById('bookmark-filter-btn');
+            btn.classList.toggle('bg-amber-900', showBookmarksOnly);
+            renderAtlas();
+        }
+
+        function renderAtlas() {
+            const grid = document.getElementById('atlas-grid');
+            const search = document.getElementById('atlas-search').value.toLowerCase();
+            const activeSys = localStorage.getItem('activeSystem') || 'all';
+            const bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
+            
+            grid.innerHTML = '';
+            
+            triadsData.filter(triad => {
+                const matchesSearch = triad.name.toLowerCase().includes(search) || 
+                                    (triad.elements && triad.elements.some(e => e.toLowerCase().includes(search)));
+                const matchesSys = (activeSys === 'all' || triad.system === activeSys);
+                const matchesBookmark = (!showBookmarksOnly || bookmarks.includes(triad.id));
+                return matchesSearch && matchesSys && matchesBookmark;
+            }).forEach(triad => {
+                const isBookmarked = bookmarks.includes(triad.id);
+                const card = document.createElement('div');
+                card.className = `triad-item data-${triad.system} bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg hover:border-slate-700 transition duration-200`;
+                
+                let elementBlocks = '';
+                triad.elements.forEach((el, index) => {
+                    elementBlocks += `
+                        <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-center text-sm font-bold flex flex-col justify-center min-h-[64px]">
+                            <span class="text-[10px] uppercase tracking-widest block text-slate-500 mb-1">Component 0${index+1}</span>
+                            <span class="text-slate-200">${el}</span>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
+                            ${triad.system}
+                        </span>
+                        <button onclick="toggleBookmark(${triad.id})" class="text-xl cursor-pointer ${isBookmarked ? 'text-amber-400' : 'text-slate-600'}">★</button>
+                    </div>
+                    <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                        ${elementBlocks}
+                    </div>
+                    <div class="space-y-3 pt-3 border-t border-slate-800/60">
+                        <p class="text-xs text-slate-400 leading-relaxed text-left">
+                            <strong class="text-slate-300 font-bold">Pathophysiology:</strong> ${triad.mechanism}
+                        </p>
+                        <div class="bg-amber-950/20 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs text-amber-300/90 leading-relaxed">
+                            <strong class="font-extrabold block text-amber-400 mb-0.5">EXAM PEARL:</strong> ${triad.pearl}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleBookmark(id) {
+            let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
+            if (bookmarks.includes(id)) {
+                bookmarks = bookmarks.filter(b => b !== id);
+            } else {
+                bookmarks.push(id);
+            }
+            localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
+            renderAtlas();
+        }
+
         function filterSystem(sys) {
-    localStorage.setItem('activeSystem', sys);
+            localStorage.setItem('activeSystem', sys);
+            const buttons = document.querySelectorAll('.sys-btn');
+            buttons.forEach(btn => {
+                const btnText = btn.innerText.toLowerCase().trim();
+                const isMatch = (sys === 'all' && btnText.includes('all')) || 
+                                (sys !== 'all' && btnText.includes(sys));
 
-    // 1. Update Specialty Buttons
-    const buttons = document.querySelectorAll('.sys-btn');
-    buttons.forEach(btn => {
-        const btnText = btn.innerText.toLowerCase().trim();
-        const isMatch = (sys === 'all' && btnText.includes('all')) || 
-                        (sys !== 'all' && btnText.includes(sys));
+                if (isMatch) {
+                    btn.classList.add('bg-slate-800', 'border-slate-600', 'text-white');
+                    btn.classList.remove('border-slate-800', 'hover:bg-slate-900');
+                } else {
+                    btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-white');
+                    btn.classList.add('border-slate-800', 'hover:bg-slate-900');
+                }
+            });
 
-        if (isMatch) {
-            // Highlight: Add active classes
-            btn.classList.add('bg-slate-800', 'border-slate-600', 'text-white');
-            // Remove inactive classes
-            btn.classList.remove('border-slate-800', 'hover:bg-slate-900');
-        } else {
-            // Remove active classes
-            btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-white');
-            // Add inactive classes
-            btn.classList.add('border-slate-800', 'hover:bg-slate-900');
+            const bookmarkBtn = document.getElementById('bookmark-filter-btn');
+            if (bookmarkBtn) {
+                if (showBookmarksOnly) {
+                    bookmarkBtn.classList.add('border-amber-500', 'text-amber-400');
+                    bookmarkBtn.classList.remove('border-amber-900/50');
+                } else {
+                    bookmarkBtn.classList.remove('border-amber-500', 'text-amber-400');
+                    bookmarkBtn.classList.add('border-amber-900/50');
+                }
+            }
+            renderAtlas(); 
         }
-    });
 
-        // 2. Sync the bookmark button visual state (Border-only highlight)
-    const bookmarkBtn = document.getElementById('bookmark-filter-btn');
-    if (bookmarkBtn) {
-        if (showBookmarksOnly) {
-            // Apply border-only highlight
-            bookmarkBtn.classList.add('border-amber-500', 'text-amber-400');
-            bookmarkBtn.classList.remove('border-amber-900/50');
-        } else {
-            // Revert to original muted border
-            bookmarkBtn.classList.remove('border-amber-500', 'text-amber-400');
-            bookmarkBtn.classList.add('border-amber-900/50');
-        }
-    }
-
-    renderAtlas(); 
-}
-    function generateNextFlashcard() {
+        // ==========================================
+        // FLASHCARDS LOGIC
+        // ==========================================
+        function generateNextFlashcard() {
             const randomIndex = Math.floor(Math.random() * triadsData.length);
             currentFlashcardTriad = triadsData[randomIndex];
             hiddenElementIndex = Math.floor(Math.random() * 3);
@@ -938,9 +1128,11 @@
             document.getElementById('flashcard-reveal-btn').classList.add('opacity-40');
         }
 
+        // ==========================================
+        // EXAM SIMULATOR LOGIC
+        // ==========================================
         function initQuiz() {
             const current = quizDatabase[activeQuizIndex];
-            
             const badge = document.getElementById('quiz-subject-badge');
             badge.innerText = current.subject;
             badge.className = `px-3 py-1 text-xs font-black uppercase tracking-widest text-white rounded-md ${current.color}`;
@@ -1009,13 +1201,13 @@
             initQuiz();
         }
 
+        // Boot Init
         window.onload = function() {
-    shuffleArray(triadsData);
-    // This restores the last used filter AND colors the buttons correctly
-    const savedSys = localStorage.getItem('activeSystem') || 'all';
-    filterSystem(savedSys); 
-    fetchComments();
-};
+            shuffleArray(triadsData);
+            const savedSys = localStorage.getItem('activeSystem') || 'all';
+            filterSystem(savedSys); 
+            fetchComments();
+        };
     </script>
 </body>
 </html>
