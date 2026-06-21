@@ -653,6 +653,52 @@
                 feed.innerHTML = `<div class="text-center text-red-500/70 py-4">Failed to load comments.</div>`;
                 countBadge.innerText = "Suggestions Board";
             }
+        // --- SUPABASE ENGINE INTEGRATION ---
+        const SUPABASE_URL = "https://urnnwbaqqmwrgthgrfgr.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVybm53YmFxcW13cmd0aGdyZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMjc1MTcsImV4cCI6MjA5NzYwMzUxN30.ZsPenOGs0G7ZM8KnC5qy0QpXRHPrOy-7_2gkbBL8O34";
+
+        const getHeaders = () => ({
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json",
+            "Prefer": "return=representation"
+        });
+
+        // Fetch and display global comments
+        async function fetchComments() {
+            const feed = document.getElementById('comments-feed');
+            const countBadge = document.getElementById('comment-count');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/Comments?order=created_at.desc`, {
+                    method: 'GET',
+                    headers: getHeaders()
+                });
+                const data = await response.json();
+                
+                if (data && typeof data.length !== 'undefined') {
+                    countBadge.innerText = `${data.length} suggestion${data.length === 1 ? '' : 's'}`;
+                } else {
+                    countBadge.innerText = "0 suggestions";
+                }
+                
+                if (!data || data.length === 0) {
+                    feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">No suggestions yet. Be the first to add one!</div>`;
+                    return;
+                }
+
+                feed.innerHTML = data.map(c => `
+                    <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-900/80 text-left">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-semibold text-emerald-400">${escapeHTML(c.name)}</span>
+                            <span class="text-[10px] text-slate-600">${new Date(c.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <p class="text-slate-400 leading-relaxed">${escapeHTML(c.text)}</p>
+                    </div>
+                `).join('');
+            } catch (err) {
+                feed.innerHTML = `<div class="text-center text-red-500/70 py-4">Failed to load comments.</div>`;
+                countBadge.innerText = "Suggestions Board";
+            }
         }
 
         // Post a new comment safely
@@ -692,7 +738,7 @@
                 btn.innerText = "Post Suggestion";
             }
         }
-        
+
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
