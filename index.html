@@ -23,8 +23,8 @@
     <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <!-- Contrast background added to title container below -->
-                <div class="bg-slate-950/80 px-3 py-2 rounded-xl border border-slate-800 shadow-md shadow-slate-950 text-amber-500 font-black text-sm sm:text-base tracking-wider">
+                <!-- Radiant metallic glow background added to title container below -->
+                <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950/20 px-4 py-2 rounded-xl border border-amber-500/30 shadow-lg shadow-amber-950/40 text-amber-500 font-black text-sm sm:text-base tracking-wider ring-1 ring-amber-500/10">
                     Medical Triads and more
                 </div>
                 <div>
@@ -618,17 +618,17 @@
             "Prefer": "return=representation"
         });
 
+        // Fetch and display global comments
         async function fetchComments() {
             const feed = document.getElementById('comments-feed');
             const countBadge = document.getElementById('comment-count');
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/comments?order=created_at.desc`, {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/Comments?order=created_at.desc`, {
                     method: 'GET',
                     headers: getHeaders()
                 });
                 const data = await response.json();
                 
-                // Fixed undefined count badge bug by verifying length safely
                 if (data && typeof data.length !== 'undefined') {
                     countBadge.innerText = `${data.length} suggestion${data.length === 1 ? '' : 's'}`;
                 } else {
@@ -651,10 +651,11 @@
                 `).join('');
             } catch (err) {
                 feed.innerHTML = `<div class="text-center text-red-500/70 py-4">Failed to load comments.</div>`;
-                countBadge.innerText = "Suggestions Board"; // Clean fall-back text for load issues
+                countBadge.innerText = "Suggestions Board";
             }
         }
 
+        // Post a new comment safely
         async function postComment() {
             const nameInput = document.getElementById('commenter-name');
             const textInput = document.getElementById('commenter-text');
@@ -672,7 +673,7 @@
             btn.innerText = "Posting...";
 
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/Comments`, {
                     method: 'POST',
                     headers: getHeaders(),
                     body: JSON.stringify({ name, text })
@@ -777,7 +778,6 @@
                 viewAtlas.classList.remove('hidden');
                 viewAtlas.classList.add('block');
                 
-                // Show comments card and comment header shortcut button ONLY on Triad Atlas tab
                 commentsBox.classList.remove('hidden');
                 commentsBox.classList.add('block');
                 btnNavComments.classList.remove('hidden');
@@ -786,7 +786,6 @@
                 viewFlash.classList.remove('hidden');
                 viewFlash.classList.add('block');
                 
-                // Hide comments layout from Flashcards tab view completely
                 commentsBox.classList.remove('block');
                 commentsBox.classList.add('hidden');
                 btnNavComments.classList.add('hidden');
@@ -798,7 +797,6 @@
                 viewQuiz.classList.remove('hidden');
                 viewQuiz.classList.add('block');
                 
-                // Hide comments layout from Exam Simulator tab view completely
                 commentsBox.classList.remove('block');
                 commentsBox.classList.add('hidden');
                 btnNavComments.classList.add('hidden');
