@@ -4221,32 +4221,31 @@
         async function fetchComments() {
     const feed = document.getElementById('comments-feed');
     
-    // Using exact table name 'Comments'
     const { data, error } = await supabase
         .from('Comments')
         .select('*')
         .order('created_at', { ascending: false });
 
     if (error) {
-        feed.innerHTML = `<div class="text-rose-500 text-center py-4">Error loading suggestions: ${error.message}</div>`;
+        feed.innerHTML = `<div class="text-rose-500 text-center py-4">Error: ${error.message}</div>`;
         return;
     }
 
     if (!data || data.length === 0) {
-        feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">No suggestions yet. Be the first!</div>`;
+        feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">No suggestions yet.</div>`;
         return;
     }
 
     feed.innerHTML = data.map(item => `
         <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
             <div class="font-bold text-emerald-400 text-[10px]">${escapeHTML(item.name || 'Anonymous')}</div>
-            <div class="text-slate-300 mt-0.5">${escapeHTML(item.comment || '')}</div>
+            <div class="text-slate-300 mt-0.5">${escapeHTML(item.text || '')}</div>
         </div>
     `).join('');
     
     document.getElementById('comment-count').innerText = `${data.length} Suggestions`;
 }
-        async function postComment() {
+    async function postComment() {
     const nameInput = document.getElementById('commenter-name');
     const textInput = document.getElementById('commenter-text');
     
@@ -4255,18 +4254,19 @@
         return;
     }
 
-    // Using exact table name 'Comments'
+    // Changed 'comment' to 'text' to match your column
     const { error } = await supabase
         .from('Comments')
-        .insert([{ name: nameInput.value, comment: textInput.value }]);
+        .insert([{ name: nameInput.value, text: textInput.value }]);
 
     if (error) {
         alert("Error posting: " + error.message);
     } else {
-        textInput.value = ''; // Clear text area
-        fetchComments(); // Refresh the feed
+        textInput.value = ''; 
+        fetchComments(); 
     }
 }
+
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
         }
