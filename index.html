@@ -756,11 +756,10 @@
                 <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
                     ${triad.system}
                 </span>
-             <button onclick="toggleBookmark('${triad.id}')" 
-        class="text-2xl cursor-pointer transition-colors duration-200 ${isBookmarked ? 'text-pink-500' : 'text-slate-600'}">
-    ♥
-</button>
-
+                <button onclick="toggleBookmark('${triad.id}')" 
+                        class="text-3xl cursor-pointer hover:scale-110 transition-transform duration-200 ${isBookmarked ? 'text-pink-500' : 'text-slate-600'}">
+                    ♥
+                </button>
             </div>
             <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
@@ -778,6 +777,7 @@
         grid.appendChild(card);
     });
 }
+
 
         function toggleBookmark(id) {
     let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
