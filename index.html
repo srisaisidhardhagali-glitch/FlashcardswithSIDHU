@@ -851,22 +851,22 @@
         }
 
         function filterSystem(sys) {
-    // 1. Save the state
     localStorage.setItem('activeSystem', sys);
 
-    // 2. Update button visual appearance
     const buttons = document.querySelectorAll('.sys-btn');
     buttons.forEach(btn => {
-        // This checks if the button matches the system passed
-        const btnText = btn.innerText.toLowerCase();
-        if (btnText.includes(sys) || (sys === 'all' && btnText.includes('all'))) {
+        // Logic to match the button text to the system key
+        const btnText = btn.innerText.toLowerCase().trim();
+        const isMatch = (sys === 'all' && btnText.includes('all')) || 
+                        (sys !== 'all' && btnText.includes(sys));
+
+        if (isMatch) {
             btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg bg-slate-800 border border-slate-600 text-white transition-all cursor-pointer";
         } else {
             btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-900 transition-all cursor-pointer";
         }
     });
 
-    // 3. Instead of hiding items manually, just refresh the whole grid
     renderAtlas(); 
 }
 
@@ -992,8 +992,9 @@
 
         window.onload = function() {
     shuffleArray(triadsData);
+    // This restores the last used filter AND colors the buttons correctly
     const savedSys = localStorage.getItem('activeSystem') || 'all';
-    filterSystem(savedSys); // This will call renderAtlas() automatically
+    filterSystem(savedSys); 
     fetchComments();
 };
     </script>
