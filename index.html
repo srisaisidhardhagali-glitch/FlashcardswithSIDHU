@@ -66,9 +66,8 @@
                 <button onclick="filterSystem('ent')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-teal-900/50 text-teal-400 hover:bg-teal-950/30 transition-all cursor-pointer">ENT</button>
                 <button onclick="filterSystem('ophth')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-orange-900/50 text-orange-400 hover:bg-orange-950/30 transition-all cursor-pointer">Ophthalmology</button>
                 <button onclick="filterSystem('derma')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-indigo-900/50 text-indigo-400 hover:bg-indigo-950/30 transition-all cursor-pointer">Dermatology</button>
-           <button id="bookmark-filter-btn" 
-        onclick="toggleBookmarksOnly()" 
-        class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-amber-900/50 text-slate-400 hover:bg-slate-900 transition-all cursor-pointer">Show Bookmarks Only</button>
+           <button onclick="toggleBookmarksOnly()" id="bookmark-filter-btn" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-amber-900/50 text-amber-400 hover:bg-amber-950/30 cursor-pointer">Show Bookmarks Only</button>
+            
         </div>
 
             <div id="atlas-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
@@ -155,7 +154,6 @@
     </main>
 
     <script>
-        let showBookmarksOnly = false; 
         const triadsData = [
             {
                 id: 1,
@@ -720,13 +718,11 @@
         }
         function toggleBookmarksOnly() {
     showBookmarksOnly = !showBookmarksOnly;
-    
-    // Call filterSystem instead of renderAtlas.
-    // This forces the UI to re-evaluate the "active" states of all buttons 
-    // and correctly color the bookmark button.
-    const currentSys = localStorage.getItem('activeSystem') || 'all';
-    filterSystem(currentSys); 
-}
+    // Visually toggle the button color
+    const btn = document.getElementById('bookmark-filter-btn');
+    btn.classList.toggle('bg-amber-900', showBookmarksOnly);
+    renderAtlas(); // Re-render the list with the filter applied
+        }
 
         function renderAtlas() {
     const grid = document.getElementById('atlas-grid');
@@ -797,15 +793,9 @@
         bookmarks.push(id);
     }
     localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
-    
-    // This uses the system currently saved in memory, 
-    // ensuring the UI stays consistent after starring/unstarring.
-    const currentSys = localStorage.getItem('activeSystem') || 'all';
-    filterSystem(currentSys); 
-}
-
-
-
+    renderAtlas(); // Refreshes the grid to update the star color
+        }
+        
         function switchTab(target) {
             const btnAtlas = document.getElementById('tab-atlas');
             const btnFlash = document.getElementById('tab-flashcards');
@@ -861,42 +851,29 @@
         }
 
         function filterSystem(sys) {
+    // 1. Save the state
     localStorage.setItem('activeSystem', sys);
 
-    // 1. Update Specialty Buttons
+    // 2. Update visual appearance while preserving original colors
     const buttons = document.querySelectorAll('.sys-btn');
     buttons.forEach(btn => {
         const btnText = btn.innerText.toLowerCase().trim();
         const isMatch = (sys === 'all' && btnText.includes('all')) || 
                         (sys !== 'all' && btnText.includes(sys));
 
+        // Use standard classes for active/inactive state without overwriting the text-color class
         if (isMatch) {
-            // Highlight: Add active classes
+            // Apply active look (white background border)
             btn.classList.add('bg-slate-800', 'border-slate-600', 'text-white');
-            // Remove inactive classes
             btn.classList.remove('border-slate-800', 'hover:bg-slate-900');
         } else {
-            // Remove active classes
+            // Revert to inactive look
             btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-white');
-            // Add inactive classes
             btn.classList.add('border-slate-800', 'hover:bg-slate-900');
         }
     });
 
-        // 2. Sync the bookmark button visual state (Border-only highlight)
-    const bookmarkBtn = document.getElementById('bookmark-filter-btn');
-    if (bookmarkBtn) {
-        if (showBookmarksOnly) {
-            // Apply border-only highlight
-            bookmarkBtn.classList.add('border-amber-500', 'text-amber-400');
-            bookmarkBtn.classList.remove('border-amber-900/50');
-        } else {
-            // Revert to original muted border
-            bookmarkBtn.classList.remove('border-amber-500', 'text-amber-400');
-            bookmarkBtn.classList.add('border-amber-900/50');
-        }
-    }
-
+    // 3. Refresh the grid
     renderAtlas(); 
 }
 
