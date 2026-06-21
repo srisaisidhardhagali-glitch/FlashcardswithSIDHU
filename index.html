@@ -50,27 +50,31 @@
                     <button onclick="switchTab('quiz')" id="tab-quiz" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer">
                         🎯 Exam Simulator
                     </button>
+                  <button onclick="switchTab('exam')" id="tab-exam" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer">
+                        🏆 Grand Exam
+                    </button>
                     <button onclick="scrollToComments()" id="nav-comments-btn" class="px-3 py-2 rounded-lg text-sm font-bold tracking-wide text-slate-400 hover:text-slate-200 cursor-pointer transition-all flex items-center gap-1.5 border border-transparent hover:border-slate-800/80 bg-slate-900/40">
                         💬 Comments
                     </button>
                 </div>
 
-                <div class="relative group inline-block z-50">
-                    <button class="px-2 py-2 text-slate-400 hover:text-white transition-colors cursor-pointer text-2xl font-bold flex items-center justify-center">
-                        ⋮
-                    </button>
-                    <div class="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                        <div class="relative group/sub">
-                            <button class="w-full text-left px-4 py-3 text-sm font-bold text-slate-300 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center rounded-xl cursor-pointer">
-                                Previous Year Topics
-                                <span class="text-[10px]">▶</span>
-                            </button>
-                            <div class="absolute right-full top-0 mr-2 w-48 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200">
-                                <button onclick="switchTab('pyq')" class="w-full text-left px-4 py-3 text-sm font-bold text-emerald-400 hover:bg-slate-800 hover:text-emerald-300 transition-colors rounded-xl cursor-pointer">
-                                    Based on Neet 2024
-                                </button>
-                            </div>
-                        </div>
+               <div class="relative group inline-block z-50">
+    <button class="px-2 py-2 text-slate-400 hover:text-white transition-colors cursor-pointer text-2xl font-bold flex items-center justify-center">
+        ⋮
+    </button>
+    <div class="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-2">
+        <div class="px-3 py-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Previous Topics
+        </div>
+        <button onclick="switchTab('pyq')" class="w-full text-left px-4 py-2.5 text-sm font-bold text-emerald-400 hover:bg-slate-800 hover:text-emerald-300 transition-colors rounded-lg cursor-pointer mb-1">
+            NEET PG 2024 Questions
+        </button>
+        <button onclick="switchTab('pyq2025')" class="w-full text-left px-4 py-2.5 text-sm font-bold text-fuchsia-400 hover:bg-slate-800 hover:text-fuchsia-300 transition-colors rounded-lg cursor-pointer">
+            NEET PG 2025 Questions
+        </button>
+    </div>
+</div>
+                
                     </div>
                 </div>
             </div>
@@ -180,6 +184,105 @@
                     </button>
                 </div>
             </div>
+        </section>
+        <section id="view-pyq2025" class="hidden max-w-3xl mx-auto space-y-6">
+            <div class="text-center space-y-2 mb-4">
+                <h2 class="text-2xl font-black text-fuchsia-400">NEET PG 2025 Practice Matrix</h2>
+                <p class="text-sm text-slate-400">High-yield predicted patterns and clinical scenarios for the 2025 exam.</p>
+            </div>
+
+            <div id="pyq2025-subject-filters" class="flex flex-wrap justify-center gap-2 mb-4"></div>
+
+            <div class="w-full bg-slate-800 rounded-full h-2 mb-2">
+                <div id="pyq2025-progress-bar" class="bg-gradient-to-r from-fuchsia-500 to-purple-400 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <div>
+                        <span id="pyq2025-badge" class="px-3 py-1 text-xs font-black uppercase tracking-widest text-fuchsia-950 bg-fuchsia-400 rounded-md">SUBJECT</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-black text-slate-300" id="pyq2025-progress-text">Q 1 / 10</p>
+                    </div>
+                </div>
+                
+                <div id="pyq2025-question-container" class="text-slate-200 text-base font-medium leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner">
+                    Loading PYQ...
+                </div>
+                
+                <div id="pyq2025-options-container" class="space-y-3"></div>
+                
+                <div class="flex justify-end pt-4 border-t border-slate-800">
+                    <button onclick="handleNextPyq2025()" id="pyq2025-next-btn" class="px-6 py-2.5 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-black rounded-xl text-sm transition shadow-lg shrink-0 hidden cursor-pointer">
+                        Next Question →
+                    </button>
+                </div>
+            </div>
+        </section>
+                <section id="view-exam" class="hidden max-w-3xl mx-auto space-y-6">
+            <div class="text-center space-y-2 mb-4">
+                <h2 class="text-2xl font-black text-rose-500">Grand Exam Mode</h2>
+                <p class="text-sm text-slate-400">Randomized clinical scenarios pulled from all databases.</p>
+            </div>
+
+            <div class="w-full bg-slate-800 rounded-full h-2 mb-2">
+                <div id="exam-progress-bar" class="bg-gradient-to-r from-rose-500 to-orange-400 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <div id="exam-setup-screen" class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl text-center space-y-6 block">
+                <h3 class="text-xl font-black text-white">Select Exam Length</h3>
+                <p class="text-sm text-slate-400">Choose how many questions you want to tackle right now.</p>
+                <div class="flex justify-center gap-4 mt-4">
+                    <button onclick="startGrandExam(10)" class="px-6 py-3 bg-slate-800 border border-slate-700 hover:border-rose-500 hover:bg-rose-950/30 text-white font-black rounded-xl text-sm transition-all shadow-lg cursor-pointer">
+                        10 Questions
+                    </button>
+                    <button onclick="startGrandExam(20)" class="px-6 py-3 bg-slate-800 border border-slate-700 hover:border-rose-500 hover:bg-rose-950/30 text-white font-black rounded-xl text-sm transition-all shadow-lg cursor-pointer">
+                        20 Questions
+                    </button>
+                </div>
+            </div>
+
+                        <div id="exam-content-box" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <div class="flex gap-3 items-center">
+                        <span id="exam-badge" class="px-3 py-1 text-xs font-black uppercase tracking-widest text-rose-950 bg-rose-500 rounded-md">SUBJECT</span>
+                        <span id="exam-timer" class="text-sm font-mono font-bold text-slate-300 flex items-center gap-1.5 bg-slate-800 px-3 py-1 rounded-md border border-slate-700 transition-colors">
+                            ⏱️ 00:00
+                        </span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-black text-slate-300" id="exam-progress-text">Q 1 / 20</p>
+                    </div>
+                </div>
+                
+                <div id="exam-question-container" class="text-slate-200 text-base font-medium leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner">
+                    Loading Exam...
+                </div>
+                
+                <div id="exam-options-container" class="space-y-3"></div>
+                
+                <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+                    <div id="exam-status-feedback" class="text-sm font-bold w-full mr-4"></div>
+                    <button onclick="handleNextExamQuestion()" id="exam-next-btn" class="px-6 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-xl text-sm transition shadow-lg shrink-0 hidden cursor-pointer">
+                        Next Question →
+                    </button>
+                </div>
+            </div>
+                    
+                        <div id="exam-score-screen" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl text-center space-y-6">
+                <h3 class="text-3xl font-black text-white">Exam Complete!</h3>
+                <div class="text-6xl font-black text-rose-500" id="exam-final-score">0/20</div>
+                <p class="text-slate-400 font-medium" id="exam-final-message">Calculating...</p>
+                
+                <div id="exam-review-container" class="mt-8 space-y-4 max-h-96 overflow-y-auto custom-scrollbar pr-2 text-left border-t border-slate-800 pt-6">
+                    </div>
+
+                <button onclick="initGrandExamView()" class="px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-xl text-sm transition shadow-lg cursor-pointer mt-4">
+                    Take Another Exam ↻
+                </button>
+            </div>
+                    
         </section>
 
         <div id="comments-section" class="max-w-md mx-auto mt-16 mb-16 p-4 rounded-2xl bg-slate-900/50 border border-slate-800 shadow-xl backdrop-blur-sm scroll-mt-24 block">
@@ -665,7 +768,7 @@
         // ==========================================
         const pyqDatabase = [
             {
-                subject: "Pulmonology",
+                subject: "Medicine",
                 question: "Male not responding to O2, diagnosis ARDS. What is the role of IL-8 in ARDS?",
                 options: [
                     "Endothelial cell activation",
@@ -1617,7 +1720,7 @@
             },
 
             {
-                subject: "Gastroenterology",
+                subject: "Medicine",
                 question: "A 25-year-old male presents with resting tremor, dysarthria, and elevated liver enzymes. Slit-lamp examination reveals a golden-brown ring around the periphery of the cornea. What is the best diagnostic investigation for this condition?",
                 options: [
                     "Urine Copper",
@@ -1650,7 +1753,7 @@
                 correct: 2
             },
             {
-                subject: "Hematology",
+                subject: "Medicine",
                 question: "Which of the following statements regarding von Willebrand disease (vWD) is NOT true?",
                 options: [
                     "vWD type 1 is mostly severe disease in children",
@@ -1716,6 +1819,2390 @@
                 correct: 3
             }
         ];
+  // ==========================================
+        // NEW PYQ NEET 2025 DATABASE
+        // ==========================================
+        const pyq2025Database = [
+            {
+        "subject": "Anatomy",
+        "question": "Which of the following cranial nerves does NOT pass through the jugular foramen?[span_0](start_span)[span_0](end_span)",
+        "options": [
+            "Glossopharyngeal nerve",
+            "Accessory nerve",
+            "Vagus nerve",
+            "Hypoglossal nerve"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Anatomy",
+        "question": "Anomalous origin of the right subclavian artery (arteria lusoria) is most commonly associated with the aberrant development of which of the following embryonic structures?[span_1](start_span)[span_1](end_span)",
+        "options": [
+            "Left 4th aortic arch",
+            "Right 4th aortic arch",
+            "Left 6th aortic arch",
+            "Right 6th aortic arch"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Anatomy",
+        "question": "What are the contents of Umbilical cord?[span_2](start_span)[span_2](end_span)",
+        "options": [
+            "2 arteries, 2 veins",
+            "1 artery, 2 veins",
+            "2 arteries, 1 vein",
+            "1 artery, 1 vein"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Anatomy",
+        "question": "What is the root value responsible for Meralgia paresthetica?[span_3](start_span)[span_3](end_span)",
+        "options": [
+            "T12 and L1",
+            "L2 and L3",
+            "L2, L3 and L4",
+            "L1 and L2"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Anatomy",
+        "question": "A girl presented with foot injury and gave history of forceful eversion of foot. Which of the following structure is affected the most?[span_4](start_span)[span_4](end_span)",
+        "options": [
+            "Anterior talofibular ligament",
+            "Deltoid ligament",
+            "Posterior talofibular ligament",
+            "Calcaneofibular ligament"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Anatomy",
+        "question": "A patient presents with muscle wasting, reduced tone, and weakness in the left hand. Fine motor movements like dough kneading are impaired. Which of the following structure is most likely affected?[span_5](start_span)[span_5](end_span)",
+        "options": [
+            "Right anterior horn cells in spinal cord",
+            "Pyramidical lesion",
+            "Internal Capsule",
+            "Left Corticospinal tract in the cervical cord"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Anatomy",
+        "question": "Which of the following structures is lined by transitional epithelium (urothelium) characterized by the presence of superficial umbrella cells?[span_6](start_span)[span_6](end_span)",
+        "options": [
+            "Esophagus",
+            "Ureter",
+            "Fallopian tube",
+            "Trachea"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Anatomy",
+        "question": "What is the nerve supply of the anterior and posterior bellies of the digastric muscle, respectively?[span_7](start_span)[span_7](end_span)",
+        "options": [
+            "Nerve to mylohyoid and facial nerve",
+            "Facial nerve and mandibular nerve",
+            "Mandibular nerve and spinal accessory nerve",
+            "Facial nerve and spinal accessory nerve"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Anatomy",
+        "question": "During resection of submandibular gland, there is accidental injury to a structure running superior to the posterior belly of digastric muscle. Which of the following structure is likely to be injured?[span_8](start_span)[span_8](end_span)",
+        "options": [
+            "Lingual nerve",
+            "Marginal Mandibular Nerve",
+            "Trigeminal nerve",
+            "Hypoglossal nerve"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Anatomy",
+        "question": "A 20-year-old boy got severe pain due to hyperextension of shoulder while training in the gym. The trainer expected a probable disruption at the origin of the long head of the triceps brachii. Which bony site is affected?[span_9](start_span)[span_9](end_span)",
+        "options": [
+            "Shaft of humerus",
+            "Deltoid tubercle of humerus",
+            "Infraglenoid tubercle of scapula",
+            "Supraglenoid tubercle of scapula"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Anesthesia",
+        "question": "Patients administered sevoflurane and succinylcholine for abdominal surgery and develops post-operative muscle rigidity. What is the drug of choice here?[span_10](start_span)[span_10](end_span)",
+        "options": [
+            "Dantrolene",
+            "Diazepam",
+            "Propranolol",
+            "Paracetamol"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Anesthesia",
+        "question": "A patient was administered a muscle relaxant and subsequently developed erythema, facial flushing, and hypotension. Which drug is most likely responsible for these symptoms?[span_11](start_span)[span_11](end_span)",
+        "options": [
+            "Cisatracurium",
+            "Atracurium",
+            "Rocuronium",
+            "Vecuronium"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "In Hurler syndrome, which glycosaminoglycans accumulate and cause organ enlargement?[span_12](start_span)[span_12](end_span)",
+        "options": [
+            "Keratan sulfate and dermatan sulfate",
+            "Keratan sulfate and heparan sulfate",
+            "Heparan sulfate and dermatan sulfate",
+            "Keratan sulfate and hyaluronic acid"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A child presents with gum bleeding, perifollicular hemorrhages, petechiae, and recurrent fractures. Which enzyme deficiency is most likely?[span_13](start_span)[span_13](end_span)",
+        "options": [
+            "Lysyl oxidase",
+            "Prolyl hydroxylase",
+            "Tyrosinase",
+            "Alkaline phosphatase"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A man survives 5 days without food. What is the brain's primary energy source during this prolonged fasting period?[span_14](start_span)[span_14](end_span)",
+        "options": [
+            "Gluconeogenesis",
+            "Glycogenolysis",
+            "Ketosis",
+            "Lipolysis"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A patient has high phenylalanine levels despite normal phenylalanine hydroxylase. Which cofactor deficiency is most likely responsible?[span_15](start_span)[span_15](end_span)",
+        "options": [
+            "Tetrahydrofolate",
+            "Tetrahydrobiopterin (BH4)",
+            "Thiamine",
+            "Pyridoxine"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A patient with vitamin B12 deficiency presents with anemia, positive Romberg sign, and elevated homocysteine. Which amino acid is most likely deficient?[span_16](start_span)[span_16](end_span)",
+        "options": [
+            "Cysteine",
+            "Methionine",
+            "Tyrosine",
+            "Glutamate"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A patient on long-term hydrochlorothiazide develops neuropathy, heart failure, and symmetrical paresthesia. Which nutrient deficiency is most likely responsible?[span_17](start_span)[span_17](end_span)",
+        "options": [
+            "Selenium",
+            "Thiamine",
+            "Vitamin B12",
+            "Zinc"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A frameshift mutation from nucleotide insertion at position 4 of a 900-base mRNA is observed. What is the likely outcome?[span_18](start_span)[span_18](end_span)",
+        "options": [
+            "No change in the final protein",
+            "Partial protein production",
+            "Complete change in protein production",
+            "No change due to RNA editing"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A patient develops skin cancer and worsening hyperpigmentation following sun exposure. Which DNA repair pathway is most likely impaired?[span_19](start_span)[span_19](end_span)",
+        "options": [
+            "Nucleotide excision repair",
+            "Base excision repair",
+            "Non-homologous end joining (NHEJ)",
+            "Mismatch repair"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A patient with orange-colored tonsils has a triglyceride level of 140 mg/dL and very low HDL cholesterol (5 mg/dL). What is the most probable diagnosis?[span_20](start_span)[span_20](end_span)",
+        "options": [
+            "Familial hypercholesterolemia",
+            "Tangier disease",
+            "Type I hyperlipoproteinemia",
+            "Abetalipoproteinemia"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A 10-year-old patient has high total cholesterol, tendon xanthomas, and a family history of similar findings. Triglyceride levels are normal. What type of familial dyslipidemia is most likely?[span_21](start_span)[span_21](end_span)",
+        "options": [
+            "Type I",
+            "Type IIa",
+            "Type IIb",
+            "Type II"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "To diagnose a syndromic illness like meningitis, which PCR technique is most appropriate?[span_22](start_span)[span_22](end_span)",
+        "options": [
+            "Multiplex PCR",
+            "Uniplex PCR",
+            "Attributed PCR",
+            "Nested PCR"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Biochemistry",
+        "question": "A 45-year-old man is evaluated for electrolyte imbalance: Na+ = 130 mmol/L, Cl- = 84 mmol/L, HCO3- = 16 mmol/L. What is his anion-gap?[span_23](start_span)[span_23](end_span)",
+        "options": [
+            "26",
+            "30",
+            "18",
+            "22"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Community medicine",
+        "question": "For prevention of coronary artery disease, what is the recommended dietary cholesterol intake limit per day?[span_24](start_span)[span_24](end_span)",
+        "options": [
+            "100 mg/1000 kcal",
+            "200 mg/1000 kcal",
+            "400 mg/1000 kcal",
+            "500 mg/1000 kcal"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Community medicine",
+        "question": "Toxic fumes are released after industry explosion. What advise should be given to the residents?[span_25](start_span)[span_25](end_span)",
+        "options": [
+            "Use telephone and call friends",
+            "Seal the cracks and close the windows",
+            "Open the window for ventilation",
+            "Use the mask"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Community medicine",
+        "question": "A new community intervention is initiated to reduce prenatal sepsis. Researchers allocated 20 PHCs to receive standard care and 20 PHCs to receive a community-based intervention. What type of study design is this?[span_26](start_span)[span_26](end_span)",
+        "options": [
+            "Cross-sectional study",
+            "Case-control study",
+            "Quasi-experimental study",
+            "Cluster-randomized control trial"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Community medicine",
+        "question": "A 20-year-old resident of Andhra Pradesh presents with outward bending of the lower limbs and signs of osteoporosis. His diet mainly consists of rice and jowar roti. Which of the following intervention will not be helpful?[span_27](start_span)[span_27](end_span)",
+        "options": [
+            "Provision of running surface water for drinking",
+            "Change the water source",
+            "Fluoride supplementation",
+            "Add lime and alum to drinking water"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Community medicine",
+        "question": "A student was asked to bring the correct boxes from lab for Nalgonda technique:[span_28](start_span)[span_28](end_span)",
+        "options": [
+            "Alum and Gypsum",
+            "Alum and Charcoal",
+            "Alum and Lime",
+            "Charcoal and Lime"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Community medicine",
+        "question": "A study is conducted to compare the mean hemoglobin (Hb) levels between two groups. Which test is most appropriate?[span_29](start_span)[span_29](end_span)",
+        "options": [
+            "Paired t-test",
+            "Unpaired t-test",
+            "Chi-square test",
+            "ANOVA"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Community medicine",
+        "question": "An urban city has a population of 70,00,000, with 30% residing in slum areas. How many UPHCs are required for the slum population?[span_30](start_span)[span_30](end_span)",
+        "options": [
+            "22",
+            "32",
+            "42",
+            "52"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Community medicine",
+        "question": "Identify the mosquito without a siphon tube and which rests parallel to the surface of water?[span_31](start_span)[span_31](end_span)",
+        "options": [
+            "Anopheles",
+            "Culex",
+            "Aedes",
+            "Mansonia"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Community medicine",
+        "question": "A 60-year-old diabetic patient with COVID-19 succumbed to death in the hospital. Which type of surveillance does this death report fall under?[span_32](start_span)[span_32](end_span)",
+        "options": [
+            "Active surveillance",
+            "Passive surveillance",
+            "Sentinel surveillance",
+            "Syndromic surveillance"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Community medicine",
+        "question": "A dietary survey report indicates that the 5-year survival rate for breast cancer has increased following the introduction of a new screening method. However, autopsy data shows no change in overall mortality. What type of bias does this scenario illustrate?[span_33](start_span)[span_33](end_span)",
+        "options": [
+            "Survival bias",
+            "Lead time bias",
+            "Berksonian bias",
+            "Detection bias"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Community medicine",
+        "question": "In 'de facto' method of census data collection, collected data based on which of the following?[span_34](start_span)[span_34](end_span)",
+        "options": [
+            "Place of birth",
+            "Location at the time of enumeration",
+            "Place of employment",
+            "Usual place of residence"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Community medicine",
+        "question": "Which of the following is the correct sequence in a Randomized Controlled Trial (RCT)?[span_35](start_span)[span_35](end_span)",
+        "options": [
+            "Follow-up -> Manipulation -> Assessment -> Randomization",
+            "Randomization -> Manipulation -> Follow-up -> Assessment",
+            "Assessment -> Randomization -> Follow-up -> Manipulation",
+            "Manipulation -> Assessment -> Follow-up -> Randomization"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Community medicine",
+        "question": "Under the Weekly Iron and Folic Acid Supplementation scheme, what is the composition of IFA tablets given to children aged 10-19 years old?[span_36](start_span)[span_36](end_span)",
+        "options": [
+            "60 mg elemental iron + 100 µg folic acid",
+            "100 mg elemental iron + 500 µg folic acid",
+            "100 mg elemental iron + 100 µg folic acid",
+            "60 mg elemental iron + 500 µg folic acid"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Community medicine",
+        "question": "What is the time interval between acquiring an infection and reaching the period of maximum infectivity is known as?[span_37](start_span)[span_37](end_span)",
+        "options": [
+            "Generation time",
+            "Communicable period",
+            "Incubation period",
+            "Serial interval"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Community medicine",
+        "question": "Which of the following is used to measure the degree of objective and target achievement, and assess the quality of results obtained in a health program?[span_38](start_span)[span_38](end_span)",
+        "options": [
+            "Planning",
+            "Surveillance",
+            "Monitoring",
+            "Evaluation"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Community medicine",
+        "question": "A young boy presents with clinical signs of rickets. Which government program specifically addresses this type of nutritional deficiency?[span_39](start_span)[span_39](end_span)",
+        "options": [
+            "Integrated Child Development Services (ICDS)",
+            "National Nutritional Deficiency Control Programme",
+            "Anemia Mukt Bharat",
+            "Mid-Day Meal Scheme"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Community medicine",
+        "question": "A recently diagnosed HIV-positive patient with a CD4 count of 250 cells/mm3 also tests positive for active tuberculosis. He has not yet been started on ART. What is the correct approach to initiating treatment?[span_40](start_span)[span_40](end_span)",
+        "options": [
+            "Start ATT first, then initiate ART after 2 weeks",
+            "Start ART first, then begin ATT after 2 weeks",
+            "Start both ART and ATT simultaneously",
+            "Start ATT first, then initiate ART after 8 weeks"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Community medicine",
+        "question": "In a Vaccine Vial Monitor (VVM), stage A shows the inner square much lighter than the outer ring, and stage B shows the inner square slightly lighter than the outer ring. Stage C is matching, Stage D is darker. Under which of the following stages is a vaccine considered safe and usable in clinics?[span_41](start_span)[span_41](end_span)",
+        "options": [
+            "Use A only",
+            "Use A and B",
+            "Use A, B and C",
+            "Use D only"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Dermatology",
+        "question": "A young adult presents with facial pain and painful vesicular lesions in the mouth. Tzanck smear reveals multinucleated giant cells with intranuclear inclusions. What is the most likely causative organism?[span_42](start_span)[span_42](end_span)",
+        "options": [
+            "Adenovirus",
+            "Cytomegalovirus",
+            "EBV",
+            "HSV"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Dermatology",
+        "question": "What is the most common cause for Squamous cell carcinoma at the base of the tongue?[span_43](start_span)[span_43](end_span)",
+        "options": [
+            "EBV",
+            "HPV",
+            "HCV",
+            "CMV"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Dermatology",
+        "question": "A patient presents with an irregular swelling over the foot, multiple discharging sinuses, and black granules suggestive of Madura foot. A KOH mount is performed on the discharge showing eumycetoma. What is the most likely microscopic observation?[span_44](start_span)[span_44](end_span)",
+        "options": [
+            "Arthrospores",
+            "Slender dematiaceous fungi",
+            "Yeast",
+            "Septate hyphae"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Dermatology",
+        "question": "A 45-year-old patient presents with a chronic granulomatous skin lesion suggestive of cutaneous tuberculosis (Lupus vulgaris). What is the most confirmatory diagnostic test for this condition?[span_45](start_span)[span_45](end_span)",
+        "options": [
+            "PCR (Polymerase Chain Reaction)",
+            "Slit skin smear",
+            "Mantoux test",
+            "Skin biopsy with histopathology"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Dermatology",
+        "question": "A 20-year-old patient presents with a non-progressive hypopigmented lesion on the trunk. On Wood's lamp examination, there is white accentuation. Diascopy is negative. What is the most likely diagnosis?[span_46](start_span)[span_46](end_span)",
+        "options": [
+            "Vitiligo",
+            "Nevus depigmentosus",
+            "Nevus anemicus",
+            "Indeterminate leprosy"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Dermatology",
+        "question": "A patient with intense itchy vesicular lesion on extensor surface presents with history of gluten senstivity. Likely diagnosis?[span_47](start_span)[span_47](end_span)",
+        "options": [
+            "Bullous pemphigoid",
+            "Pemphigus vulgaris",
+            "Dermatitis herpetiformis",
+            "Psoriasis"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "ENT",
+        "question": "A patient presents with a displaced fracture of the nasal bones following direct facial trauma. What instrument is most appropriately used to reduce this fracture?[span_48](start_span)[span_48](end_span)",
+        "options": [
+            "Tilley's probe",
+            "Luc's forceps",
+            "Denis Browne probe",
+            "Walsham's forceps"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "ENT",
+        "question": "A 78-year-old male, known case of diabetes mellitus and hypertension presents with nasal bleeding. The initial management such as packing were not successful in controlling the bleed. Which of the following artery should be ligated to control the bleeding?[span_49](start_span)[span_49](end_span)",
+        "options": [
+            "Sphenopalatine artery",
+            "Anterior Ethmoidal artery",
+            "Poster Ethmoidal artery",
+            "Greater Palatine artery"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "ENT",
+        "question": "A 16-year-old male presents with recurrent profuse nasal bleeding in the right nasal cavity. Endoscopy shows a globular mass in the right nasal cavity. CT shows bowing of the posterior wall of maxillary sinus. What is the most probable diagnosis?[span_50](start_span)[span_50](end_span)",
+        "options": [
+            "Juvenile Nasopharyngeal Angiofibroma (JNA)",
+            "Antrochoanal polyp",
+            "Rhinosporidiosis",
+            "Rhinoscleroma"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "ENT",
+        "question": "On a soft tissue AP radiograph of the neck, a distinct anatomical recess is observed lateral to the aryepiglottic folds. What is this structure?[span_51](start_span)[span_51](end_span)",
+        "options": [
+            "Thyroid cartilage",
+            "Pyriform sinus",
+            "Epiglottis",
+            "Vallecula"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "ENT",
+        "question": "A 27-year-old male presents with complaints of recurrent ear infection. Otoscopic examination shows central performation of tympanic membrane. Result of a tuning fork examination of a patient revealed the following: Rinne: -ve on left and +ve on Right; Weber: Lateralization on Left. What is the type and localization of Hearing loss?[span_52](start_span)[span_52](end_span)",
+        "options": [
+            "Left Sensorineural Hearing Loss",
+            "Right Sensorineural Hearing Loss",
+            "Left Conductive Hearing Loss",
+            "Right Conductive Hearing Loss"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "ENT",
+        "question": "A 75-year-old male, smoker presents with complains of hoarseness of voice, difficulty in swallowing. He has been diagnosed as large advanced SCC, and undergoes surgery. What is most appropriate surgical procedure done?[span_53](start_span)[span_53](end_span)",
+        "options": [
+            "Total laryngectomy",
+            "Partial laryngectomy",
+            "Percutaneous tracheostomy",
+            "Standard tracheostomy"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "ENT",
+        "question": "A 20-year-old patient presents with recurrent ear discharge. On otoscopic examination, the examiner notes complete absence of Tympanic membrane. What is the best option for treatment?[span_54](start_span)[span_54](end_span)",
+        "options": [
+            "Myringoplasty",
+            "Radical mastoidectomy",
+            "Ossciculoplasty",
+            "Tympanoplasty"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "ENT",
+        "question": "A 27-year-old male presents with complaints of reduced hearing in the left ear for 2 months. He denies tinnitus or vertigo. Pure tone audiometry shows an air-bone gap of 40 dB in the left ear with normal bone conduction thresholds. Right ear parameters are normal. Which of the following is the most likely diagnosis?[span_55](start_span)[span_55](end_span)",
+        "options": [
+            "Left ear SNHL",
+            "Left ear CHL",
+            "Right ear mixed hearing loss",
+            "Normal hearing"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Forensic Medicine",
+        "question": "During an autopsy of a 35-year-old female, the doctor noted bruises below the right angle of the jaw covered with scratches over the upper border and three group bruises on left side of neck below thyroid cartilage, and additional bruises over shoulder blade, backside of trunk and hip crests. What is the most likely cause of death?[span_56](start_span)[span_56](end_span)",
+        "options": [
+            "Throttling",
+            "Garroting",
+            "Mugging",
+            "Ligature Strangulation"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Forensic Medicine",
+        "question": "A 16-year-old girl and a 23-year-old man are medically examined after the girl's parents accuse the man of rape. The girl reports that the sexual activity was consensual, and no physical injuries are noted. According to the law, which of the following is the correct statement?[span_57](start_span)[span_57](end_span)",
+        "options": [
+            "Consent is invalid as the girl is under 18 years",
+            "No punishment since the act was consensual",
+            "Parents must prove that the act was non-consensual",
+            "No punishment since there are no injuries"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Forensic Medicine",
+        "question": "What is ZASKO's phenomena?[span_58](start_span)[span_58](end_span)",
+        "options": [
+            "Tendon reflex occurring after death",
+            "Blood clotting after death",
+            "Gaping of wound along skin tension lines",
+            "Seeping of blood through bones after death"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Forensic Medicine",
+        "question": "Under the POCSO Act 2012, which group is protected by the law?[span_59](start_span)[span_59](end_span)",
+        "options": [
+            "All children under 16 years of age",
+            "All children under 18 years of age",
+            "Girls under 16 years of age",
+            "Girls under 18 years of age"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Forensic Medicine",
+        "question": "A male patient with recent history of RTA was brought to hospital. His CT scan was normal, but he died within three hours of admission. His autopsy revealed retraction ball appearance and petechial hemorrhages in the corpus callosum. What is the most likely diagnosis?[span_60](start_span)[span_60](end_span)",
+        "options": [
+            "Diffuse vascular injury",
+            "Diffuse axonal injury",
+            "Intracerebral hemorrhage",
+            "None of the above"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Forensic Medicine",
+        "question": "A 68-year-old female presented with breathlessness and poor health status. She also has multiple metastasis. On examination, she is awake and anxious. The doctors believed that aggressive chemotherapy, radiotherapy and ICU admission will not be helpful. However, her daughter insists on 'trying everything'. How should the attending doctor handle such a scenario?[span_61](start_span)[span_61](end_span)",
+        "options": [
+            "Convene to family members and consider the patient's needs",
+            "Shift to ICU and start aggressive treatment",
+            "Discharge the patient and shift to palliative care",
+            "Give placebo care to relieve anxiety"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 65-year-old patient with a history of atrial flutter is being considered for long-term prophylaxis to prevent recurrence. The cardiologist decides to start a calcium channel blocker for rate control and prevention of rapid ventricular response. Which calcium channel blocker is most appropriate for atrial flutter prophylaxis?[span_62](start_span)[span_62](end_span)",
+        "options": [
+            "Amlodipine",
+            "Nifedipine",
+            "Diltiazem",
+            "Felodipine"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Medicine",
+        "question": "A diabetic patient on insulin glargine and metformin has persistent hyperglycemia (HbA1c 8.3%) and signs of heart failure. Which is the most appropriate medication to add next?[span_63](start_span)[span_63](end_span)",
+        "options": [
+            "Sitagliptin",
+            "Pioglitazone",
+            "Empagliflozin",
+            "Gliclazide"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Medicine",
+        "question": "A patient with atrial fibrillation (AF) and mitral stenosis presents within 4 hours of symptom onset and is hemodynamically stable. What is the next best step?[span_64](start_span)[span_64](end_span)",
+        "options": [
+            "Ventricular rate control",
+            "Cardioversion",
+            "Anticoagulation",
+            "Wait and watch"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 2-year-old child presents to the emergency department with a generalized tonic-clonic seizure lasting 3 minutes associated with high fever (39.5°C). The child has no previous history of seizures or neurological problems. The seizure has now stopped, but the parents are concerned about recurrence. What is the most appropriate immediate management for this febrile seizure?[span_65](start_span)[span_65](end_span)",
+        "options": [
+            "Ethosuximide",
+            "Sodium valproate",
+            "Diazepam",
+            "No antiepileptic medication needed"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 45-year-old female presents with a 6-month history of paroxysmal nocturnal dyspnea, palpitations, and breathlessness. On evaluation, her blood pressure and SpO2 are within normal limits. Jugular venous pressure is elevated, and she has an irregularly irregular pulse. Examination reveals tender hepatomegaly, a heaving apex beat, and a mid-diastolic murmur heard at the apex. She also has a history of acute rheumatic fever. Which of the following statements is false?[span_66](start_span)[span_66](end_span)",
+        "options": [
+            "This patient has an increased risk of stroke",
+            "The 'a' wave is absent in the JVP",
+            "This patient shows features of right heart failure",
+            "Presystolic accentuation is a hallmark feature"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 15-year-old adolescent with known type 1 diabetes mellitus presents with fatigue, vomiting, and diarrhea. Laboratory findings reveal a random blood glucose level of 700 mg/dL, serum sodium of 125 mEq/L, and potassium of 4.2 mEq/L. Which of the following is NOT recommended during the initial management of this patient?[span_67](start_span)[span_67](end_span)",
+        "options": [
+            "Administration of 3% saline",
+            "Initiation of 0.9% normal saline infusion",
+            "Intravenous insulin therapy",
+            "Frequent monitoring of serum potassium levels"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Medicine",
+        "question": "A patient with an irregularly irregular pulse and palpitations. He arrives 2.5 hours after symptom onset. No H/O diabetes and BP is 160/100 mmHg. What is the next best step?[span_68](start_span)[span_68](end_span)",
+        "options": [
+            "Control ventricular rate with verapamil",
+            "Emergent cardioversion",
+            "Transesophageal echo (TEE)",
+            "Wait and watch"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 36-year-old woman with symmetrical small joint arthritis tests positive for anti-CCP. Which histological feature is most characteristic?[span_69](start_span)[span_69](end_span)",
+        "options": [
+            "Synovial granulomas",
+            "Pannus formation and reactive lymphocytic infiltrate",
+            "Uric acid crystal deposits",
+            "Non-caseating granulomas"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 65-year-old man presents with enlarged hat size, shin pain, elevated alkaline phosphatase, and normal calcium and PTH levels. X-ray reveals mixed lytic and sclerotic bone lesions. What is the most likely diagnosis?[span_70](start_span)[span_70](end_span)",
+        "options": [
+            "Paget's disease",
+            "Primary hyperparathyroidism",
+            "Osteomalacia",
+            "Bone metastasis"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 64-year-old man with chronic kidney disease presents with pallor, exertional breathlessness, and signs of heart failure. Investigations reveal normocytic anemia. What is the most appropriate next step in management?[span_71](start_span)[span_71](end_span)",
+        "options": [
+            "Oral iron",
+            "Darbepoetin alfa",
+            "Intravenous iron",
+            "Blood transfusion"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 42-year-old woman presents with enlarged hands, coarsened facial features, and an increased shoe size. Her IGF-1 level is elevated. Which of the following is the most specific test to confirm the diagnosis?[span_72](start_span)[span_72](end_span)",
+        "options": [
+            "Measurement of IGF-1 alone",
+            "Lack of GH suppression following oral glucose tolerance test (OGTT)",
+            "Lack of IGF-1 suppression after OGTT",
+            "Random growth hormone level"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 54-year-old man with a history of chronic hyponatremia develops sudden-onset quadriparesis after rapid sodium correction. Which investigation is most appropriate to confirm the diagnosis?[span_73](start_span)[span_73](end_span)",
+        "options": [
+            "Brainstem evoked potential",
+            "Electroencephalogram (EEG)",
+            "MRI of the brain",
+            "Nerve conduction studies"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Medicine",
+        "question": "Which hormone is elevated in Addison's disease, leading to hyperpigmentation?[span_74](start_span)[span_74](end_span)",
+        "options": [
+            "Cortisol",
+            "ACTH",
+            "Aldosterone",
+            "Renin"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 50-year-old man presents with altered sensorium and deep labored breathing. ABG shows pH: 7.20, pCO2: 35 mmHg, HCO3: 16 mEq/L, PaO2: 80 mmHg, Na: 130 mEq/L, Cl: 84 mEq/L. What is the most likely acid-base abnormality?[span_75](start_span)[span_75](end_span)",
+        "options": [
+            "Acute metabolic acidosis with AG 30",
+            "Chronic metabolic acidosis with AG 30",
+            "Acute respiratory acidosis",
+            "Chronic respiratory acidosis"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Medicine",
+        "question": "A patient collapses with breathlessness and pink frothy sputum. Autopsy shows hemosiderin-laden macrophages. In which condition is this not seen?[span_76](start_span)[span_76](end_span)",
+        "options": [
+            "Protein-losing enteropathy",
+            "Right heart failure",
+            "Volume overload",
+            "Pulmonary vein obstruction"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 14-year-old boy presents with fatigue, mild jaundice, and splenomegaly. His hemoglobin is 10.5 g/dL, MCV is 82 fL, and MCHC is high 37 g/dL. His father had a similar history of chronic anemia and underwent splenectomy. What is the most likely diagnosis?[span_77](start_span)[span_77](end_span)",
+        "options": [
+            "Autoimmune hemolytic anemia",
+            "Hereditary spherocytosis",
+            "Thalassemia minor",
+            "G6PD deficiency"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Medicine",
+        "question": "A patient arrives with hypotension, fever, joint pain, petechiae on limbs, and respiratory distress. Which of the following is the most likely diagnosis?[span_78](start_span)[span_78](end_span)",
+        "options": [
+            "Disseminated gonococcal infection",
+            "Septic shock",
+            "Rheumatoid arthritis",
+            "Septic arthritis"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Medicine",
+        "question": "A critically ill patient with COVID-19 is admitted to the ICU and is currently on mechanical ventilation. The PaO2/FiO2 ratio is 100, indicating severe ARDS. Which of the following is the most appropriate ventilatory strategy to manage this patient?[span_79](start_span)[span_79](end_span)",
+        "options": [
+            "High PEEP and low tidal volume",
+            "High PEEP and high tidal volume",
+            "Low PEEP and low tidal volume",
+            "Low PEEP and high tidal volume"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 58-year-old patient has prolonged PT. Factor IX deficiency (vitamin K-dependent). Parenteral vitamin K planned. In which condition will this help?[span_80](start_span)[span_80](end_span)",
+        "options": [
+            "Hepatitis A",
+            "Pernicious anemia",
+            "Hemophilia B",
+            "Bile duct obstruction"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Medicine",
+        "question": "Case of sudden onset Aphasia and right arm weakness for last 5 hours. Which is indicated investigation[span_81](start_span)[span_81](end_span)",
+        "options": [
+            "MRI barin",
+            "Carotid Doppler",
+            "TEE",
+            "Tranthoracic echocardiography"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Medicine",
+        "question": "A patient already on salbutamol and ipratropium continues to have nocturnal exacerbations of asthma. What is the next step?[span_82](start_span)[span_82](end_span)",
+        "options": [
+            "Oral corticosteroids",
+            "Montelukast",
+            "LABA plus inhalation steroids",
+            "Increase the dose of salbutamol"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Medicine",
+        "question": "A 32-year-old male with history of recurrent paroxysmal supraventricular tachycardia is stable in sinus rhythm. What is the best choice for long-term prophylaxis?[span_83](start_span)[span_83](end_span)",
+        "options": [
+            "IV adenosine",
+            "IV Esmolol",
+            "Oral diltiazem",
+            "IV amiodarone"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Microbiology",
+        "question": "A farmer presents with a necrotic ulcerative skin lesion. Microscopy using polychrome methylene blue stain reveals capsulated bacilli showing a positive McFadyean reaction. What is the most likely causative organism?",
+        "options": [
+            "Clostridium perfringens",
+            "Bacillus anthracis",
+            "Yersinia pestis",
+            "Francisella tularensis"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Microbiology",
+        "question": "Which structural component of Group A Streptococcus enables its attachment to pharyngeal epithelium by binding to fibronectin?",
+        "options": [
+            "Lipoprotein",
+            "Lipoteichoic acid",
+            "Capsule",
+            "Flagella"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Microbiology",
+        "question": "Several residents in a village develop watery followed by bloody diarrhea after consuming unpasteurized milk. Stool microscopy reveals Gram-negative curved bacilli with polymorphonuclear leukocytes. Identify the most likely pathogen.",
+        "options": [
+            "Clostridium perfringens",
+            "Staphylococcus aureus",
+            "Vibrio parahaemolyticus",
+            "Campylobacter jejuni"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Microbiology",
+        "question": "A man presents with hemoptysis, fever, and breathlessness. Microscopic analysis of bronchoalveolar lavage reveals septate hyphae with acute angle branching. Which fungal infection is most likely?",
+        "options": [
+            "Mucormycosis",
+            "Histoplasmosis",
+            "Aspergillosis",
+            "Candidiasis"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Microbiology",
+        "question": "A 5-year-old child presents with intense perianal itching, predominantly during nighttime. Microscopic examination of a cellophane tape swab reveals characteristic D-shaped (plano-convex) eggs. Which organism is most likely responsible for the condition?",
+        "options": [
+            "Enterobius vermicularis",
+            "Ancylostoma duodenale",
+            "Hymenolepis nana",
+            "Trichuris trichiura"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Microbiology",
+        "question": "A patient presents with chronic cough, weight loss, and intermittent low-grade fever. Fungal culture from respiratory samples shows a yeast with narrow-based budding. Which of the following is the most probable diagnosis?",
+        "options": [
+            "Blastomycosis",
+            "Histoplasmosis",
+            "Cryptococcosis",
+            "Coccidioidomycosis"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Microbiology",
+        "question": "A case of brain abscess, reveals Gram-positive, branching, filamentous organisms on microscopy. The organism is weakly acid-fast and grows on paraffin bait media. Which is the most likely etiologic agent?",
+        "options": [
+            "Actinomyces israelii",
+            "Mycobacterium tuberculosis",
+            "Nocardia asteroides",
+            "Cryptococcus neoformans"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Microbiology",
+        "question": "A case of recurrent Neisseria gonorrhoeae infection is being evaluated. Which immunological investigation would best detect a complement pathway defect?",
+        "options": [
+            "C1 esterase inhibitor assay",
+            "Quantitative immunoglobulin levels",
+            "Nitroblue tetrazolium test",
+            "Terminal complement (C5-C9) assay"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Microbiology",
+        "question": "A man from an endemic region has developed progressive leg swelling. Peripheral smear reveals the presence of sheathed microfilariae. Which pathophysiologic mechanism is most likely responsible?",
+        "options": [
+            "Hypoalbuminemia",
+            "Lymphatic obstruction",
+            "Hypoproteinemia",
+            "Increased hydrostatic pressure"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Microbiology",
+        "question": "A 25-year-old sewage worker presents with fever lasting a week, followed by sudden weakness. He has scleral congestion, jaundice, and oliguria. Lab findings show raised bilirubin. What is the most likely diagnosis?",
+        "options": [
+            "Brucellosis",
+            "Weil's disease",
+            "Enteric fever",
+            "DHF"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "1st trimester pregnancy, previous toxoplasmosis. IgG positive. What is the advice?",
+        "options": [
+            "Continue pregnancy, no risk",
+            "Abort - high risk",
+            "Continue, risk exists",
+            "Repeat IgM serology"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "Child born with absent finger. Likely diagnosis?",
+        "options": [
+            "Amniotic band syndrome",
+            "Arthrogryposis multiplex",
+            "Polyhydramnios",
+            "Congenital constriction ring"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "G2L2 delivered at home by trained dai presents with uterine prolapse. Which structure is weak?",
+        "options": [
+            "Round ligament",
+            "Broad ligament",
+            "Cardinal ligament",
+            "Uterosacral ligament"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "Gross examination of an ovarian mass reveals a large cystic structure with papillary excrescences on the inner wall. The patient presented with abdominal heaviness and is CA-125 positive. Diagnosis?",
+        "options": [
+            "Serous cystadenocarcinoma",
+            "Mucinous carcinoma",
+            "Dysgerminoma",
+            "Yolk sac tumor"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A 28-year-old pregnant woman at 34 weeks gestation is diagnosed with severe preeclampsia. The decision is made to start magnesium sulfate using the Pritchard regimen for seizure prophylaxis. What is the correct loading dose of magnesium sulfate in this regimen?",
+        "options": [
+            "4 gm IV",
+            "6 gm IV + 5 gm IM each buttock",
+            "14 gm total",
+            "20 gm total"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "What is the correct sequence of tissue repair when suturing an episiotomy?",
+        "options": [
+            "Mucosa → Muscle → Skin",
+            "Skin → Muscle → Mucosa",
+            "Muscle → Mucosa → Skin",
+            "Mucosa → Skin → Muscle"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "During vaginal breech delivery, the baby develops winging of the scapula. Identify the maneuver most likely associated with this delivery complication:",
+        "options": [
+            "McRoberts",
+            "Pinard",
+            "Lovset",
+            "Woods corkscrew maneuver"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A resident is performing a normal vaginal delivery. He is seen applying counterpressure above the pubic symphysis while gently pulling the umbilical cord. Which maneuver is being demonstrated?",
+        "options": [
+            "Controlled cord traction",
+            "Replacement of prolapsed cord",
+            "Manual removal of placenta",
+            "Delivery of shoulder using Lovset maneuver"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A postmenopausal woman presents with blood-stained discharge. Her BP is 170/100 mm Hg. What is the next best step?",
+        "options": [
+            "Reassure",
+            "PV exam, Pap smear, TVUSG",
+            "Refer to cardiologist",
+            "Wait and watch"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A 65-year-old postmenopausal woman presents with bleeding per vagina. She undergoes a total hysterectomy. Gross specimen shows a bulky uterus with a friable mass growing from the endometrial cavity and invading the myometrium. What is the most likely diagnosis?",
+        "options": [
+            "Fibroid",
+            "Endometriosis",
+            "Adenomyosis",
+            "Endometrial cancer"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "What is the postpartum anticoagulant of choice?",
+        "options": [
+            "LMWH",
+            "Warfarin",
+            "Aspirin",
+            "Clopidogrel"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A 36-year-old P2L2 with 9 months secondary amenorrhea has FSH 36, LH 56, AMH 0.5. What is the diagnosis?",
+        "options": [
+            "PCOS",
+            "Premature ovarian failure",
+            "Hyperprolactinemia",
+            "Hypothalamic amenorrhea"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A 46-year-old woman presents with heavy menstrual bleeding. USG shows endometrial thickness of 16 mm. Next best step?",
+        "options": [
+            "Hysterectomy",
+            "Endometrial biopsy",
+            "HPV testing",
+            "Progesterone therapy"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "Atonic PPH is not responding to medical management. What is the next best step?",
+        "options": [
+            "Uterine devascularization",
+            "Hysterectomy",
+            "Bakri balloon tamponade",
+            "Compression suture"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "What is the correct order of maneuvers in shoulder dystocia?",
+        "options": [
+            "McRoberts → Rubin → Gaskin → Zavanelli",
+            "Zavanelli → McRoberts → Gaskin → Rubin",
+            "Rubin → Gaskin → McRoberts → Zavanelli",
+            "McRoberts → Suprapubic pressure → Rubin → Zavanelli"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A 30 yr old G2P1 woman present in labor. Previous cesarean, active labor, fetal bradycardia, maternal tachycardia, cervix 8 cm. Next step?",
+        "options": [
+            "Instrumental delivery",
+            "ARM",
+            "Increase oxytocin dose",
+            "Emergency Cesarean section"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "On Day 21 of a normal 28-day menstrual cycle, which hormone profile is correct?",
+        "options": [
+            "High Progesterone, High Estrogen, Low FSH, High LH",
+            "High Progesterone, High Estrogen, Low FSH, Low LH",
+            "Low Progesterone, Low Estrogen, High LH, High FSH",
+            "High Estrogen, Low Progesterone, High LH, High FSH"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A female in labor presents with cord prolapse. What is the next best step?",
+        "options": [
+            "Push cord back into cervix",
+            "Emergency C-section",
+            "Head-low, lift part, fill bladder",
+            "Vaginal delivery with forceps"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A patient is diagnosed with cervical cancer accompanied by hydronephrosis. What is her FIGO stage?",
+        "options": [
+            "IIA",
+            "IIIA",
+            "IIIB",
+            "IV"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A woman presents with amenorrhea, linea nigra, nausea, vomiting, and a bluish discoloration of the vagina. These represent:",
+        "options": [
+            "Probable signs of pregnancy",
+            "Confirmed pregnancy",
+            "Menopause",
+            "Normal menstrual cycle"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A woman presents with chronic lower abdominal pain and dysmenorrhea. MRI reveals an asymmetrically thickened junctional zone in the myometrium. Diagnosis?",
+        "options": [
+            "Adenomyosis",
+            "Endometriosis",
+            "Endometrial carcinoma",
+            "Fibroid"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A woman in her first antenatal visit reports LMP 2 months ago. Which ultrasound parameter is most accurate for dating pregnancy at this stage?",
+        "options": [
+            "Biparietal diameter",
+            "Mean gestational sac diameter",
+            "Abdominal circumference",
+            "Crown-rump length"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Obstetrics and Gynecology",
+        "question": "A patient at 36 weeks pregnant reports fetal movements. NST shows 1 acceleration and no decelerations in 20 minutes. What is the next step?",
+        "options": [
+            "Emergency C-section",
+            "Induce labor",
+            "Wait and observe",
+            "Continue NST for 40 min"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Ophthalmology",
+        "question": "An elderly patient presents with white dandruff-like deposits on the anterior lens capsule seen on slit-lamp examination. What is the most likely diagnosis?",
+        "options": [
+            "Anterior capsular opacity",
+            "Iris cyst",
+            "Pseudoexfoliation syndrome",
+            "Pigment dispersion syndrome"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Ophthalmology",
+        "question": "Intrastromal corneal ring segments (INTACS) are surgical devices implanted into the cornea. What is the primary indication for their use?",
+        "options": [
+            "Glaucoma",
+            "Cataract",
+            "Keratoconus",
+            "Corneal ulcer"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Ophthalmology",
+        "question": "A 16-year-old female presents with a gradually enlarging, painless cystic swelling near the superotemporal orbital rim that has persisted for 10 years. What is the most likely diagnosis?",
+        "options": [
+            "Dermoid cyst",
+            "Capillary Hemangioma",
+            "Lacrimal gland carcinoma",
+            "Osteoma"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Ophthalmology",
+        "question": "A patient presents with guttate lesions in one eye and bullous keratopathy in the other. What is the most likely diagnosis?",
+        "options": [
+            "Fuchs' endothelial dystrophy",
+            "Viral corneal ulcer",
+            "Interstitial keratitis",
+            "Keratoconjunctivitis"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Ophthalmology",
+        "question": "Which of the following is true about orbital cellulitis?",
+        "options": [
+            "The inflammation is confined anterior to the orbital septum",
+            "Ethmoidal sinusitis is the most common cause in all age groups",
+            "It presents with proptosis, but pupillary reflexes and extraocular movements remain normal",
+            "Broad-spectrum topical antibiotics are the treatment of choice"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Ophthalmology",
+        "question": "During a binocular vision assessment, test slide 'A' checks if a patient can superimpose two dissimilar images (e.g., placing a bird inside a cage). Test slide 'B' checks the ability to combine two slightly disparate images into a single 3D image. What do A and B represent respectively?",
+        "options": [
+            "A- Simultaneous perception and B- Stereopsis",
+            "A- Simultaneous perception and B- Fusion",
+            "A- Fusion and B- Simultaneous perception",
+            "A- Stereopsis and B- Fusion"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Orthopedics",
+        "question": "A 27-year-old individual presents with chronic lower back pain that improves with physical activity and is associated with early morning stiffness. There is a past history of anterior uveitis. A recent X-ray of the sacroiliac joints appears normal. What is the most appropriate next step in evaluation?",
+        "options": [
+            "MRI of the sacroiliac joints",
+            "Anti-CCP antibody testing",
+            "Repeat plain radiograph",
+            "CT scan of the sacroiliac joints"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Orthopedics",
+        "question": "An oblique lumbar spine radiograph reveals a clear defect in the pars interarticularis with anterior slippage of the vertebral body. Based on typical examination formats, what is the most appropriate diagnosis?",
+        "options": [
+            "Spondylolisthesis",
+            "Spondylolysis",
+            "Vertebral compression fracture",
+            "Degenerative disc disease"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Orthopedics",
+        "question": "A 11-year-old boy presented with complaint of a painless limp. X-ray of the hip reveals sclerosis, flattening, and fragmentation of the capital femoral epiphysis. What is the most likely diagnosis?",
+        "options": [
+            "Perthes disease",
+            "Developmental dysplasia of the Hip",
+            "TB Hip",
+            "Slipped Capital Femoral Epiphysis"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Orthopedics",
+        "question": "A 25-year-old male presents to the emergency department following a motorbike accident. He has sustained a closed midshaft tibial fracture. Six hours later, he complains of severe pain disproportionate to the injury, which worsens with passive dorsiflexion. The pain is not relieved by analgesics. Distal pulses are palpable, but there is loss of sensation in the first web space. What is the most appropriate next step in management?",
+        "options": [
+            "Elevate the limb and observe",
+            "Immediate fasciotomy",
+            "Administer opioid analgesics",
+            "Apply a cast and schedule follow-up"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Orthopedics",
+        "question": "A male patient sustains a road traffic accident with closed midshaft fractures of the femur and tibia. Two days later, he develops breathlessness, tachycardia, and petechial rash on the chest and conjunctiva. What is the most probable diagnosis?",
+        "options": [
+            "Disseminated intravascular coagulation",
+            "Fat embolism syndrome",
+            "Pulmonary embolism",
+            "Sepsis"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Orthopedics",
+        "question": "A 45-year-old male presents with discomfort in his joints. Synovial fluid aspiration reveals Rhomboid shaped positively birefringent crystals under polarized light microscopy. What is the most likely diagnosis?",
+        "options": [
+            "Gout",
+            "Rheumatoid arthritis",
+            "Osteoarthritis",
+            "Pseudogout"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Pathology",
+        "question": "Which of the following types of cell death involves activation of caspase enzymes?",
+        "options": [
+            "Necrosis and Apoptosis",
+            "Apoptosis and Pyroptosis",
+            "Apoptosis and Necroptosis",
+            "Apoptosis only (+ Pyroptosis)"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pathology",
+        "question": "Anti-mitochondrial antibody (AMA) is most commonly seen in:",
+        "options": [
+            "Autoimmune hepatitis",
+            "Primary biliary cholangitis",
+            "Primary sclerosing cholangitis",
+            "Systemic lupus erythematosus"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pathology",
+        "question": "A family pedigree demonstrates that an affected mother passes the trait to all of her children (both sons and daughters), while an affected father passes it to none of his children. Which of the following conditions is most likely to follow this pattern of inheritance?",
+        "options": [
+            "Prader willi syndrome",
+            "Marfan syndrome",
+            "Kearns-Sayre syndrome",
+            "Duchenne muscular dystrophy"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pathology",
+        "question": "A 68-year-old man presents with complaints of persistent fatigue. On examination, there is generalized lymphadenopathy. CBC shows leukocytosis with an absolute lymphocyte count of 35,000/μL. Which of the following is the investigation of choice to confirm the diagnosis and determine CD markers of CLL?",
+        "options": [
+            "Bone marrow biopsy",
+            "Flow cytometry of peripheral blood",
+            "Serum LDH levels",
+            "Lymph node excisional biopsy"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pathology",
+        "question": "A 35-year-old woman undergoes abdominal imaging for nonspecific RUQ pain. A liver mass is identified and surgically excised. The gross specimen reveals a well-circumscribed lesion with a prominent central stellate scar. What is the most likely diagnosis?",
+        "options": [
+            "Hepatocellular carcinoma",
+            "Focal nodular hyperplasia",
+            "Hepatic adenoma",
+            "Metastasis"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pathology",
+        "question": "A patient with H/o cough chest pain and dyspnea. Imaging reveals giant cells granuloma formation and stellate inclusions (asteroid bodies). Likely diagnosis?",
+        "options": [
+            "Tuberculosis",
+            "Sarcoidosis",
+            "Lung cancer",
+            "Fungal infection"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pathology",
+        "question": "A very tall man presents with visual problems and is found to have ectopia lentis on ophthalmological evaluation. Which gene is most likely defective in this patient?",
+        "options": [
+            "FBN1 (chromosome 15)",
+            "COL1A1",
+            "FGFR3",
+            "PAX6"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pathology",
+        "question": "A patient presents with hearing loss and balance problems. Histopathology of the lesion shows Antony A and Antony B areas and Verocay bodies. What is the most likely diagnosis?",
+        "options": [
+            "Schwannoma",
+            "Ependymoma",
+            "Meningioma",
+            "Medulloblastoma"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pathology",
+        "question": "A child presents with visual disturbances and delayed growth. Imaging reveals a suprasellar mass, and histopathology shows the presence of wet keratin compact, eosinophilic anucleate keratin. What is the most likely diagnosis?",
+        "options": [
+            "Medulloblastoma",
+            "Rathke pouch cyst",
+            "Pituitary adenoma",
+            "Craniopharyngioma"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Pathology",
+        "question": "Which of the following lab techniques is most commonly used to compare and quantify CD markers in cells?",
+        "options": [
+            "ELISA",
+            "Western blot",
+            "Flow cytometry",
+            "IHC"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pathology",
+        "question": "Anti SCL 70 antibody is most strongly associated with:",
+        "options": [
+            "GAVE",
+            "Calcinosis cutis",
+            "Interstitial lung disease",
+            "Myositis"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pathology",
+        "question": "A 30-year-old man presents with a painless testicular mass. An ultrasound shows a well-circumscribed, homogeneous, non-hemorrhagic tumor. Histology shows uniform cells with clear cytoplasm and distinct cell borders separated by delicate fibrous septa infiltrated by lymphocytes. What is the likely diagnosis?",
+        "options": [
+            "Yolk sac tumor",
+            "Choriocarcinoma",
+            "Teratoma",
+            "Seminoma"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Pathology",
+        "question": "A lymphoma characterized by the presence of centrocytes and centroblasts, along with BCL2 positivity and CD10 expression, is most commonly associated with which chromosomal translocation?",
+        "options": [
+            "t(2;5)",
+            "t(11;14)",
+            "t(14;18)",
+            "t(8;14)"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pathology",
+        "question": "A 68-year-old man presents with bleeding. Peripheral smear shows a 'faggot cell' (cells packed with multiple Auer rods). Which translocation is associated?",
+        "options": [
+            "t(15;17)",
+            "t(14;18)",
+            "t(11;14)",
+            "t(8;21)"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pathology",
+        "question": "A middle-aged woman presents with dry eyes and mouth. Laboratory tests reveal positive anti-Ro (SSA) and anti-La (SSB) antibodies. What is the most likely underlying pathological mechanism?",
+        "options": [
+            "Destruction of exocrine glands by neutrophils",
+            "IgE-mediated hypersensitivity reaction",
+            "Lymphocytic infiltration and destruction of salivary and lacrimal glands",
+            "Deposition of amyloid in salivary glands"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pathology",
+        "question": "A patient has a neck mass with odynophagia and dyspnea. Histology shows amyloid deposition. What is the most likely diagnosis?",
+        "options": [
+            "Papillary thyroid carcinoma",
+            "Follicular thyroid carcinoma",
+            "Medullary thyroid carcinoma",
+            "Anaplastic thyroid carcinoma"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pathology",
+        "question": "A patient is diagnosed with Acute Promyelocytic Leukemia (AML M3). Which chromosomal translocation is characteristically associated with this condition?",
+        "options": [
+            "t(9;22)",
+            "t(8;21)",
+            "t(15;17)",
+            "t(11;14)"
+        ],
+        "correct": 2
+    },
+        
+        "correct": 0
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A 1-day-old newborn with significant respiratory distress is admitted to the ICU. A chest radiograph reveals cystic radiolucencies (resembling bowel loops) in the left hemithorax with a mediastinal shift to the right. What is the most probable diagnosis based on the clinical and radiological findings?",
+        "options": [
+            "Congenital Pulmonary Airway Malformation (CPAM)",
+            "Congenital Diaphragmatic Hernia (CDH)",
+            "Congenital lobar emphysema",
+            "Neonatal pneumonia"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "Which receptor does Benralizumab act on?",
+        "options": [
+            "IL-5",
+            "IL-4",
+            "IL-1",
+            "TNF - α"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "What is the drug of choice for chemoprophylaxis in close contacts of a patient diagnosed with meningococcal meningitis?",
+        "options": [
+            "Doxycycline",
+            "Amoxicillin",
+            "Ciprofloxacin",
+            "Vancomycin"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "Which of the following, if given in large volumes, can lead to hyperchloremic metabolic acidosis?",
+        "options": [
+            "Dextrose in NS (DNS)",
+            "Normal saline (NS)",
+            "5% dextrose in water",
+            "Ringer lactate"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A 60-year-old man with ischemic cardiomyopathy and palpitations is started on amiodarone. Which phase of the ventricular cardiac action potential (representing repolarization) is its primary site of action?",
+        "options": [
+            "Phase 0 - Rapid depolarization",
+            "Phase 2 - Plateau",
+            "Phase 3 - Repolarization",
+            "Phase 4 - Resting potential"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient presents with headache, palpitations and diaphoresis with elevated 24-hour urine metanephrine levels. Which of the following drugs is typically given preoperatively to manage this condition?",
+        "options": [
+            "Phenoxybenzamine",
+            "Esmolol",
+            "CCB",
+            "Labetalol"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A 35-year-old woman is diagnosed with migraine and has a family history of coronary artery disease. She has been previously treated with sumatriptan. What is the drug of choice for migraine prophylaxis in this patient?",
+        "options": [
+            "Propranolol",
+            "Topiramate",
+            "Ergotamine",
+            "Naratriptan"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient with tumor lysis syndrome has elevated uric acid levels and is prescribed with Pegloticase. What is the mechanism of action of Pegloticase?",
+        "options": [
+            "Xanthine oxidase inhibition",
+            "URAT-1 receptor inhibition",
+            "Oxidizes uric acid",
+            "Hydrolysis of uric acid"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A 40-year-old male patient presents with GERD. Which of the following drug helps in contraction of Lower esophageal sphincter and increase in gastric emptying?",
+        "options": [
+            "Metoclopramide",
+            "Pantoprazole",
+            "Vonoprazan",
+            "Sodium alginate"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient presents with white, reticular lace-like striae on the buccal mucosa and complains of a burning sensation when eating spicy food. Which of the following drugs is most likely responsible for this lichenoid eruption?",
+        "options": [
+            "Lithium",
+            "Beta blockers",
+            "Fluconazole",
+            "Ciprofloxacin"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient with history of hypertension presents with renal stones. He was started on hydrochlorothiazide. Which statement is true regarding the choice of drug?",
+        "options": [
+            "Increased calcium excretion",
+            "Decreased calcium excretion",
+            "Increased oxalate absorption",
+            "Decreased citrate excretion"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient with HIV is recently diagnosed with multidrug-resistant tuberculosis. What is the appropriate regimen, and what should the patient be monitored for?",
+        "options": [
+            "BPaLM; monitor for immune reconstitution syndrome",
+            "INH + Levofloxacin + Pyrazinamide + ethambutol, monitor for hepatotoxicity",
+            "INH + Levofloxacin + Streptomycin + Ethionamide, monitor for pyridoxine deficiency",
+            "INH + Clarithromycin + Pyrazinamide + Ethambutol, monitor for optic neuritis"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Physiology",
+        "question": "On an alveolar PO2-PCO2 diagram, normal ventilation-perfusion (V/Q) lies at the center curve. In a patient with a pulmonary embolism causing complete obstruction of blood flow (V/Q = infinity), the alveolar gas composition shifts towards which point?",
+        "options": [
+            "Point A (PO2 40, PCO2 45)",
+            "Point B (PO2 60, PCO2 45)",
+            "Point C (Normal: PO2 100, PCO2 40)",
+            "Point D/E (Shifted toward inspired air: PO2 150, PCO2 0)"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Physiology",
+        "question": "A patient has the following Starling forces measured at the capillary level: Capillary hydrostatic pressure: 18 mmHg, Capillary oncotic pressure: 27 mmHg, Interstitial oncotic pressure: 7 mmHg. If there is no net movement of fluid across the capillary wall, what is the value of the interstitial hydrostatic pressure?",
+        "options": [
+            "0 mmHg",
+            "+1 mmHg",
+            "+2 mmHg",
+            "-2 mmHg"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Physiology",
+        "question": "A patient flying to high altitude (3700 m) develops headache, nausea, dyspnea, and dizziness. What explains these symptoms?",
+        "options": [
+            "Hypoxia causing vasodilation",
+            "Hypoxia causing vasoconstriction",
+            "Metabolic acidosis causing edema",
+            "high PO2 causing vasoconstriction"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Physiology",
+        "question": "In an experimental study, blood glucose levels were elevated to 2-3 times the normal and maintained at that level. What is the most likely pattern of insulin secretion in response?",
+        "options": [
+            "Rapid rise followed by a fall",
+            "Gradual rise followed by a fall",
+            "Remains persistently elevated",
+            "Initial rise followed by sustained elevation"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Physiology",
+        "question": "In the sarcomere length-tension relationship curve, at which point is the maximum active tension generated due to optimal overlap between actin and myosin filaments?",
+        "options": [
+            "Point A (Overstretched, zero overlap)",
+            "Point B (Start of plateau)",
+            "Point C (Optimal overlap plateau)",
+            "Point D (Shortened, actin overlap)"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A 3-year-old child is brought to the emergency department with generalized convulsions following a high-grade fever. Which of the following is the most appropriate first-line medication to manage seizures in this acute febrile episode?",
+        "options": [
+            "Diazepam",
+            "Valproate",
+            "Fosphenytoin",
+            "Doxycycline / Amoxicillin"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A 6-month-old infant presents with frequent infections and failure to thrive. Tests show adenosine deaminase (ADA) deficiency. Which immunodeficiency disorder is most likely responsible?",
+        "options": [
+            "Severe Combined Immunodeficiency (SCID)",
+            "Hypogammaglobulinemia",
+            "DiGeorge Syndrome",
+            "Wiskott-Aldrich Syndrome"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A family pedigree reveals maternal inheritance where an affected mother passes the trait to all her children, and an affected father passes it to none. The affected individuals show progressive eye movement limitation, retinal pigment changes, and disturbances in cardiac conduction. Which of the following is the most probable diagnosis?",
+        "options": [
+            "Duchenne Muscular Dystrophy",
+            "Kearns-Sayre Syndrome",
+            "Friedreich Ataxia",
+            "Myotonic Dystrophy"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A 2-year-old child has choked on a peanut. What is the most appropriate immediate management?",
+        "options": [
+            "Chest compressions",
+            "Back blows",
+            "Abdominal thrusts",
+            "Endotracheal intubation"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A child demonstrates progressive neurological decline and a cherry-red spot on fundus examination. Enzyme analysis reveals a deficiency in hexosaminidase A. What is the most likely diagnosis?",
+        "options": [
+            "GM1 gangliosidosis",
+            "GM2 gangliosidosis",
+            "Niemann-Pick disease",
+            "Gaucher disease"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A child with coarse facial features and developmental delay is found to have a deficiency of α-L-iduronidase on enzyme testing. Which substances are expected to accumulate in this disorder?",
+        "options": [
+            "Dermatan sulfate + Chondroitin sulfate",
+            "Only Dermatan sulfate",
+            "Dermatan sulfate + Heparan sulfate",
+            "Heparan sulfate + Chondroitin sulfate"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A 7-month-old infant has just started complementary feeding using the 'katori method.' What is the recommended quantity and frequency of feeding during the first day?",
+        "options": [
+            "1/2 - 1 katori, 4 times daily",
+            "1/2 - 1 katori, 5 times daily",
+            "1½ - 1 katori, 6 times daily",
+            "1/2 - 1 katori, 8 times daily"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A neonate is born to an HIV-positive mother with a viral load of 1200 copies/mL. What is the recommended antiretroviral prophylaxis for the newborn?",
+        "options": [
+            "Nevirapine for 6 weeks with exclusive breastfeeding",
+            "Nevirapine + Zidovudine for 6 weeks with exclusive breastfeeding",
+            "No prophylaxis needed as mother is on ART",
+            "Nevirapine + Zidovudine for 12 weeks with exclusive breastfeeding"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A 5-year-old child with known chronic kidney disease presents with bowing of the legs. Lab results reveal: Normal calcium, Elevated phosphate, Increased alkaline phosphatase, Low 25(OH) Vitamin D. What is the most appropriate next intervention?",
+        "options": [
+            "Calcium supplementation with phosphate binder",
+            "Phosphate binder",
+            "Oral calcium with Vitamin D",
+            "Growth hormone therapy"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pediatrics",
+        "question": "A 1-day-old newborn with significant respiratory distress is admitted to the ICU. A chest radiograph reveals cystic radiolucencies (resembling bowel loops) in the left hemithorax with a mediastinal shift to the right. What is the most probable diagnosis based on the clinical and radiological findings?",
+        "options": [
+            "Congenital Pulmonary Airway Malformation (CPAM)",
+            "Congenital Diaphragmatic Hernia (CDH)",
+            "Congenital lobar emphysema",
+            "Neonatal pneumonia"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "Which receptor does Benralizumab act on?",
+        "options": [
+            "IL-5",
+            "IL-4",
+            "IL-1",
+            "TNF - α"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "What is the drug of choice for chemoprophylaxis in close contacts of a patient diagnosed with meningococcal meningitis?",
+        "options": [
+            "Doxycycline",
+            "Amoxicillin",
+            "Ciprofloxacin",
+            "Vancomycin"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "Which of the following, if given in large volumes, can lead to hyperchloremic metabolic acidosis?",
+        "options": [
+            "Dextrose in NS (DNS)",
+            "Normal saline (NS)",
+            "5% dextrose in water",
+            "Ringer lactate"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A 60-year-old man with ischemic cardiomyopathy and palpitations is started on amiodarone. Which phase of the ventricular cardiac action potential (representing repolarization) is its primary site of action?",
+        "options": [
+            "Phase 0 - Rapid depolarization",
+            "Phase 2 - Plateau",
+            "Phase 3 - Repolarization",
+            "Phase 4 - Resting potential"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient presents with headache, palpitations and diaphoresis with elevated 24-hour urine metanephrine levels. Which of the following drugs is typically given preoperatively to manage this condition?",
+        "options": [
+            "Phenoxybenzamine",
+            "Esmolol",
+            "CCB",
+            "Labetalol"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A 35-year-old woman is diagnosed with migraine and has a family history of coronary artery disease. She has been previously treated with sumatriptan. What is the drug of choice for migraine prophylaxis in this patient?",
+        "options": [
+            "Propranolol",
+            "Topiramate",
+            "Ergotamine",
+            "Naratriptan"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient with tumor lysis syndrome has elevated uric acid levels and is prescribed with Pegloticase. What is the mechanism of action of Pegloticase?",
+        "options": [
+            "Xanthine oxidase inhibition",
+            "URAT-1 receptor inhibition",
+            "Oxidizes uric acid",
+            "Hydrolysis of uric acid"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A 40-year-old male patient presents with GERD. Which of the following drug helps in contraction of Lower esophageal sphincter and increase in gastric emptying?",
+        "options": [
+            "Metoclopramide",
+            "Pantoprazole",
+            "Vonoprazan",
+            "Sodium alginate"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient presents with white, reticular lace-like striae on the buccal mucosa and complains of a burning sensation when eating spicy food. Which of the following drugs is most likely responsible for this lichenoid eruption?",
+        "options": [
+            "Lithium",
+            "Beta blockers",
+            "Fluconazole",
+            "Ciprofloxacin"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient with history of hypertension presents with renal stones. He was started on hydrochlorothiazide. Which statement is true regarding the choice of drug?",
+        "options": [
+            "Increased calcium excretion",
+            "Decreased calcium excretion",
+            "Increased oxalate absorption",
+            "Decreased citrate excretion"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Pharmacology",
+        "question": "A patient with HIV is recently diagnosed with multidrug-resistant tuberculosis. What is the appropriate regimen, and what should the patient be monitored for?",
+        "options": [
+            "BPaLM; monitor for immune reconstitution syndrome",
+            "INH + Levofloxacin + Pyrazinamide + ethambutol, monitor for hepatotoxicity",
+            "INH + Levofloxacin + Streptomycin + Ethionamide, monitor for pyridoxine deficiency",
+            "INH + Clarithromycin + Pyrazinamide + Ethambutol, monitor for optic neuritis"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Physiology",
+        "question": "On an alveolar PO2-PCO2 diagram, normal ventilation-perfusion (V/Q) lies at the center curve. In a patient with a pulmonary embolism causing complete obstruction of blood flow (V/Q = infinity), the alveolar gas composition shifts towards which point?",
+        "options": [
+            "Point A (PO2 40, PCO2 45)",
+            "Point B (PO2 60, PCO2 45)",
+            "Point C (Normal: PO2 100, PCO2 40)",
+            "Point D/E (Shifted toward inspired air: PO2 150, PCO2 0)"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Physiology",
+        "question": "A patient has the following Starling forces measured at the capillary level: Capillary hydrostatic pressure: 18 mmHg, Capillary oncotic pressure: 27 mmHg, Interstitial oncotic pressure: 7 mmHg. If there is no net movement of fluid across the capillary wall, what is the value of the interstitial hydrostatic pressure?",
+        "options": [
+            "0 mmHg",
+            "+1 mmHg",
+            "+2 mmHg",
+            "-2 mmHg"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Physiology",
+        "question": "A patient flying to high altitude (3700 m) develops headache, nausea, dyspnea, and dizziness. What explains these symptoms?",
+        "options": [
+            "Hypoxia causing vasodilation",
+            "Hypoxia causing vasoconstriction",
+            "Metabolic acidosis causing edema",
+            "high PO2 causing vasoconstriction"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Physiology",
+        "question": "In an experimental study, blood glucose levels were elevated to 2-3 times the normal and maintained at that level. What is the most likely pattern of insulin secretion in response?",
+        "options": [
+            "Rapid rise followed by a fall",
+            "Gradual rise followed by a fall",
+            "Remains persistently elevated",
+            "Initial rise followed by sustained elevation"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Physiology",
+        "question": "In the sarcomere length-tension relationship curve, at which point is the maximum active tension generated due to optimal overlap between actin and myosin filaments?",
+        "options": [
+            "Point A (Overstretched, zero overlap)",
+            "Point B (Start of plateau)",
+            "Point C (Optimal overlap plateau)",
+            "Point D (Shortened, actin overlap)"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Physiology",
+        "question": "A patient presents with fatigue, muscle cramps, and strong salt cravings. What is the most likely diagnosis?",
+        "options": [
+            "Addison's disease",
+            "Conn's disease",
+            "Cushing's disease",
+            "Hypopituitarism"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Physiology",
+        "question": "What acid-base disturbance is expected in a person trekking at high altitude due to hyperventilation?",
+        "options": [
+            "Metabolic acidosis",
+            "Metabolic alkalosis",
+            "Respiratory acidosis",
+            "Respiratory alkalosis"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Physiology",
+        "question": "A woman presenting with amenorrhea and galactorrhea is diagnosed with a pituitary adenoma and elevated prolactin levels. What is the most likely cause of her amenorrhea?",
+        "options": [
+            "Low GnRH",
+            "High pulsed LH",
+            "High FSHD",
+            "Inhibition of GnRH by prolactin"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Psychiatry",
+        "question": "Schizophrenia patient on haloperidol was responding well for last 2 years. Now presented with orofacial dyskinesia, choreiform, tick like movements, and dystonia features. What can be the probable diagnosis and treatment?",
+        "options": [
+            "Acute dystonia - Ropinirole",
+            "Tardive dyskinesia - Valbenazine",
+            "Akathesia - Propranalol",
+            "Oral tremor - amantadine"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Psychiatry",
+        "question": "A patient says that he follows the way birds fly whenever he is in an open place because god is giving him instructions through the birds. What is the diagnosis?",
+        "options": [
+            "Delusional perception",
+            "Visual hallucination",
+            "Delusional memory",
+            "Sudden Delusional ideas"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Psychiatry",
+        "question": "Mr. K was brought to a psychiatrist by his friend, saying that Mr. K needs everything to be in perfect order and has difficulty in getting rid of things stored with him, both of which are affecting his work quality. He is a perfectionist. However, Mr. K denies such complaints. What is the diagnosis?",
+        "options": [
+            "Narcisstic Personality",
+            "Obsessive Compulsive Personality Disorder",
+            "Paranoid Delusion",
+            "Dependent personality"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Psychiatry",
+        "question": "A patient is brought in by a social worker after a recent earthquake. He has been living in a town different from his place of origin and is unaware of how he traveled 110 km away from home. He cannot recall his identity. There's no substance abuse history. What is the most likely diagnosis?",
+        "options": [
+            "Dissociative amnesia",
+            "Dissociative fugue",
+            "DID",
+            "Selective amnesia"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Psychiatry",
+        "question": "A 21-year-old female presents with amnesia of events following her father's death in a road traffic accident. Symptoms have persisted for 2 weeks, and she experiences flashbacks. What is the most probable diagnosis?",
+        "options": [
+            "Dissociative disorder",
+            "Major depression",
+            "PTSD",
+            "Acute stress disorder"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Psychiatry",
+        "question": "A person attacks his co-worker, complaining that the co-worker has been plotting to harm him. He hears voices. On examination, the person is found to have a disorganized speech. What is the next step in this case?",
+        "options": [
+            "Refer for anger management.",
+            "Refer for psychiatric assessment and check if he is fit for trial.",
+            "He is not responsible because is mentally ill",
+            "Start immediate trials and punishment"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Radiology",
+        "question": "An imaging study of the urinary tract involves the intravenous injection of a contrast medium followed by serial X-rays, clearly delineating the pelvicalyceal system and ureters. What is correct regarding this modality?",
+        "options": [
+            "Non-invasive and gold standard of cancer",
+            "Non-invasive and can diagnose PUJ obstruction",
+            "Percutaneous method",
+            "Invasive and therapeutic for bladder lithiasis"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Radiology",
+        "question": "A chest radiograph reveals a dense, homogenous opacity in the right upper zone with an elevated horizontal fissure and tracheal deviation to the right. What is the most appropriate diagnosis?",
+        "options": [
+            "Collapse of right upper lobe",
+            "Consolidation of right upper lobe",
+            "Right lung abscess",
+            "Right upper lobe bronchogenic carcinoma"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Radiology",
+        "question": "A 35-year-old male presents with recurrent headaches. An MRI of the brain with contrast reveals a well-circumscribed, intensely enhancing extra-axial mass with a broad dural tail over the right cerebral convexity. What is the most likely diagnosis?",
+        "options": [
+            "Meningioma",
+            "Glioma",
+            "Medulloblastoma",
+            "Pilocystic astrocytoma"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Radiology",
+        "question": "A 32-year-old male presents with dysphagia and regurgitation. A barium swallow reveals a dilated esophagus tapering smoothly to a 'bird-beak' appearance at the gastroesophageal junction. Which investigation is considered the gold standard for confirming the diagnosis?",
+        "options": [
+            "CECT",
+            "Esophageal manometry",
+            "Endoscopy",
+            "NCCT"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Surgery",
+        "question": "A patient presents with dyspnea and tachycardia 7 days after undergoing knee replacement surgery. Which investigation will confirm the diagnosis?",
+        "options": [
+            "V/Q ratio",
+            "D-dimer",
+            "Chest X-ray",
+            "CT Pulmonary Angiography (CTPA)"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Surgery",
+        "question": "A 35-year-old man diagnosed with pheochromocytoma is scheduled for surgery. Which medication should be given as preoperative preparation?",
+        "options": [
+            "Clonidine",
+            "Phenoxybenzamine",
+            "Esmolol",
+            "Aspirin"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Surgery",
+        "question": "During a complex duodenal surgery, a vessel located directly posterior to the first part of the duodenum is accidentally severed, resulting in massive bleeding. Which vessel is most likely injured?",
+        "options": [
+            "Superior mesenteric artery",
+            "Inferior vena cava",
+            "Aorta",
+            "Portal vein"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Surgery",
+        "question": "A patient presents with painful, dark discoloration of the fingertips accompanied by swelling, blistering, and a foul-smelling discharge. What is the most likely diagnosis?",
+        "options": [
+            "Wet gangrene",
+            "Raynaud's phenomenon",
+            "Dry gangrene",
+            "Frostbite"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Surgery",
+        "question": "A patient presents with a large fungating tumor of the breast that has ulcerated through the skin and is firmly fixed to the underlying chest wall, with evidence of distant metastasis. According to TNM staging, what stage would this represent?",
+        "options": [
+            "Stage IIIB",
+            "Stage IIIC",
+            "Stage IVD",
+            "Stage IIB"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Surgery",
+        "question": "A 50-year-old patient presents with a slowly growing, painless neck mass at the angle of the mandible. Angiography reveals splaying of the internal and external carotid arteries ('Lyre sign'). What is the most likely diagnosis?",
+        "options": [
+            "Thyroid nodule",
+            "Lymphadenopathy",
+            "Carotid body tumor",
+            "Branchial cyst"
+        ],
+        "correct": 2
+    },
+    {
+        "subject": "Surgery",
+        "question": "A surgical knot is tied by passing one end of the suture through the loop twice on the first throw, followed by a single standard throw in the opposite direction. What type of knot is depicted?",
+        "options": [
+            "Surgeon's knot",
+            "Granny's knot",
+            "Square knot",
+            "Slip knot"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Surgery",
+        "question": "A 35-year-old male with stab wound to epigastrium, hypotension, guarding. What is the immediate intervention of choice?",
+        "options": [
+            "FAST",
+            "DPL",
+            "CT Scan",
+            "Exploratory Laparotomy"
+        ],
+        "correct": 3
+    },
+    {
+        "subject": "Surgery",
+        "question": "Based on Park's classification, which type of anorectal fistula tracks between the internal and external anal sphincters and opens onto the perianal skin, accounting for approximately 45% of cases?",
+        "options": [
+            "Intersphincteric",
+            "Suprasphincteric",
+            "Extrasphincteric",
+            "High transsphincteric"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Surgery",
+        "question": "A 56-year-old with chronic venous changes in lower limb. Which statement is true?",
+        "options": [
+            "Sclerotherapy is preferred",
+            "Eczema or lipodermatosclerosis may develop",
+            "Telangiectasia is uncommon",
+            "Venous ulcer not expected"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Surgery",
+        "question": "Regarding polydioxanone (PDS) suture material, which of the following is accurate?",
+        "options": [
+            "Non-absorbable",
+            "Monofilament",
+            "Braided multifilament",
+            "Derived from collagen"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Surgery",
+        "question": "A 3-year-old boy has painful urination and ballooning of the foreskin during micturition. On examination, the foreskin cannot be retracted over the glans. What is the most likely diagnosis?",
+        "options": [
+            "BXO",
+            "True phimosis",
+            "Recurrent balanoposthitis",
+            "Recurrent UTI"
+        ],
+        "correct": 1
+    },
+    {
+        "subject": "Surgery",
+        "question": "A woman presents with deep circumferential partial-thickness burns on her lower limb, leading to compromised distal circulation. Linear incisions are made through the burned, inelastic skin to relieve the compartmental pressure. What is the procedure?",
+        "options": [
+            "Escharotomy",
+            "Surgical debridement",
+            "Excision to healthy fat or fascia",
+            "Early skin grafting"
+        ],
+        "correct": 0
+    },
+    {
+        "subject": "Surgery",
+        "question": "A known case of anal carcinoma with mass near the anal opening comes for a follow up. Which of the following lymph nodes are most like involved?",
+        "options": [
+            "Superficial inguinal lymph nodes",
+            "Deep inguinal lymph nodes",
+            "External iliac lymph nodes",
+            "Internal iliac lymph nodes"
+        ],
+        "correct": 0
+    }
+];
 
         // State Variables
         let showBookmarksOnly = false;
@@ -1753,27 +4240,33 @@
         }
 
         // Routing Logic
-        function switchTab(target) {
+                        function switchTab(target) {
+            if(typeof examState !== 'undefined') clearInterval(examState.timerInterval);
             const btnAtlas = document.getElementById('tab-atlas');
             const btnFlash = document.getElementById('tab-flashcards');
             const btnQuiz = document.getElementById('tab-quiz');
+            const btnExam = document.getElementById('tab-exam'); // Added
             const btnNavComments = document.getElementById('nav-comments-btn');
             
             const viewAtlas = document.getElementById('view-atlas');
             const viewFlash = document.getElementById('view-flashcards');
             const viewQuiz = document.getElementById('view-quiz');
             const viewPyq = document.getElementById('view-pyq');
+            const viewPyq2025 = document.getElementById('view-pyq2025'); 
+            const viewExam = document.getElementById('view-exam'); // Added
             const commentsBox = document.getElementById('comments-section');
 
             // Hide all
-            [viewAtlas, viewFlash, viewQuiz, viewPyq].forEach(view => {
-                view.classList.remove('block');
-                view.classList.add('hidden');
+            [viewAtlas, viewFlash, viewQuiz, viewPyq, viewPyq2025, viewExam].forEach(view => {
+                if(view) {
+                    view.classList.remove('block');
+                    view.classList.add('hidden');
+                }
             });
 
             // Reset tab styles
-            [btnAtlas, btnFlash, btnQuiz].forEach(b => {
-                b.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer";
+            [btnAtlas, btnFlash, btnQuiz, btnExam].forEach(b => {
+                if(b) b.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer";
             });
 
             if (target === 'atlas') {
@@ -1797,11 +4290,21 @@
                 activeQuizIndex = 0;
                 initQuiz();
             } else if (target === 'pyq') {
-                // Show Pyq view
                 viewPyq.classList.remove('hidden'); viewPyq.classList.add('block');
                 commentsBox.classList.remove('block'); commentsBox.classList.add('hidden');
                 btnNavComments.classList.add('hidden');
                 initPyqSimulator();
+            } else if (target === 'pyq2025') {
+                viewPyq2025.classList.remove('hidden'); viewPyq2025.classList.add('block');
+                commentsBox.classList.remove('block'); commentsBox.classList.add('hidden');
+                btnNavComments.classList.add('hidden');
+                initPyq2025Simulator();
+                        } else if (target === 'exam') {
+                btnExam.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-rose-600 text-white shadow-lg cursor-pointer";
+                viewExam.classList.remove('hidden'); viewExam.classList.add('block');
+                commentsBox.classList.remove('block'); commentsBox.classList.add('hidden');
+                btnNavComments.classList.add('hidden');
+                initGrandExamView(); // <-- Changed this line
             }
         }
 
@@ -2140,6 +4643,334 @@
         function handleNextQuestion() {
             activeQuizIndex = (activeQuizIndex + 1) % quizDatabase.length;
             initQuiz();
+        }
+ let pyq2025State = {
+            activeSubject: 'All',
+            filteredList: [],
+            currentIndex: 0
+        };
+
+        function initPyq2025Simulator() {
+            const subjects = ['All', ...new Set(pyq2025Database.map(q => q.subject))];
+            const filterContainer = document.getElementById('pyq2025-subject-filters');
+            filterContainer.innerHTML = '';
+            
+            subjects.forEach(sub => {
+                const btn = document.createElement('button');
+                btn.innerText = sub;
+                btn.className = `px-3 py-1.5 text-xs font-bold uppercase rounded-lg border transition-all cursor-pointer ${
+                    pyq2025State.activeSubject === sub 
+                    ? 'bg-fuchsia-600 border-fuchsia-500 text-white' 
+                    : 'border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700'
+                }`;
+                btn.onclick = () => {
+                    pyq2025State.activeSubject = sub;
+                    initPyq2025Simulator(); 
+                };
+                filterContainer.appendChild(btn);
+            });
+
+            pyq2025State.filteredList = pyq2025State.activeSubject === 'All' 
+                ? [...pyq2025Database] 
+                : pyq2025Database.filter(q => q.subject === pyq2025State.activeSubject);
+            
+            pyq2025State.currentIndex = 0;
+            loadPyq2025();
+        }
+
+        function loadPyq2025() {
+            const current = pyq2025State.filteredList[pyq2025State.currentIndex];
+            const nextBtn = document.getElementById('pyq2025-next-btn');
+            const optionsBox = document.getElementById('pyq2025-options-container');
+            const qContainer = document.getElementById('pyq2025-question-container');
+            const progressBar = document.getElementById('pyq2025-progress-bar');
+            
+            const total = pyq2025State.filteredList.length;
+            const currentNum = pyq2025State.currentIndex + 1;
+            document.getElementById('pyq2025-progress-text').innerText = `Q ${currentNum} / ${total}`;
+            if(total > 0) progressBar.style.width = `${(currentNum / total) * 100}%`;
+
+            if (!current) {
+                qContainer.innerText = "No questions found for this subject.";
+                optionsBox.innerHTML = '';
+                nextBtn.classList.add('hidden');
+                return;
+            }
+
+            document.getElementById('pyq2025-badge').innerText = current.subject;
+            qContainer.innerText = current.question;
+            optionsBox.innerHTML = '';
+            nextBtn.classList.add('hidden');
+
+            current.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950 text-sm font-medium hover:bg-slate-900 transition duration-150 flex items-start gap-3 cursor-pointer group hover:border-slate-700";
+                btn.onclick = () => handlePyq2025Answer(idx, current.correct);
+                btn.innerHTML = `
+                    <span class="w-5 h-5 rounded-full border border-slate-700 bg-slate-900 text-[10px] font-bold inline-flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:border-slate-500 group-hover:text-white transition">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="text-slate-300 group-hover:text-slate-100 transition">${optText}</span>
+                `;
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function handlePyq2025Answer(selectedIdx, correctIdx) {
+            const optionsBox = document.getElementById('pyq2025-options-container');
+            const buttons = optionsBox.querySelectorAll('button');
+
+            buttons.forEach((btn, idx) => {
+                btn.onclick = null; 
+                btn.className = "w-full text-left p-4 rounded-xl border text-sm font-medium flex items-start gap-3 opacity-60";
+                
+                if (idx === correctIdx) {
+                    btn.className = "w-full text-left p-4 rounded-xl border border-fuchsia-500 bg-fuchsia-950/30 text-sm font-bold flex items-start gap-3 shadow-md shadow-fuchsia-950/50 opacity-100 text-fuchsia-400";
+                } else if (idx === selectedIdx) {
+                    btn.className = "w-full text-left p-4 rounded-xl border border-red-500 bg-red-950/30 text-sm font-medium flex items-start gap-3 opacity-100 text-red-400";
+                }
+            });
+
+            if (pyq2025State.currentIndex < pyq2025State.filteredList.length - 1) {
+                document.getElementById('pyq2025-next-btn').classList.remove('hidden');
+                document.getElementById('pyq2025-next-btn').innerText = "Next Question →";
+            } else {
+                document.getElementById('pyq2025-next-btn').classList.remove('hidden');
+                document.getElementById('pyq2025-next-btn').innerText = "Finish Module ↻";
+            }
+        }
+
+        function handleNextPyq2025() {
+            if (pyq2025State.currentIndex < pyq2025State.filteredList.length - 1) {
+                pyq2025State.currentIndex++;
+                loadPyq2025();
+            } else {
+                pyq2025State.currentIndex = 0;
+                loadPyq2025();
+            }
+        }
+                        // ==========================================
+        // GRAND EXAM SIMULATOR LOGIC
+        // ==========================================
+        let examState = {
+            questions: [],
+            userAnswers: [], // NEW: Tracks user choices
+            currentIndex: 0,
+            score: 0,
+            totalSelected: 20,
+            timeLeft: 0,
+            timerInterval: null,
+            selectedAnswer: null // Tracks current active selection
+        };
+
+        function initGrandExamView() {
+            clearInterval(examState.timerInterval);
+            document.getElementById('exam-setup-screen').classList.remove('hidden');
+            document.getElementById('exam-content-box').classList.add('hidden');
+            document.getElementById('exam-score-screen').classList.add('hidden');
+            document.getElementById('exam-progress-bar').style.width = '0%';
+        }
+
+        function startGrandExam(numQuestions) {
+            examState.totalSelected = numQuestions;
+            
+            let allQuestions = [
+                ...quizDatabase,
+                ...pyqDatabase,
+                ...(typeof pyq2025Database !== 'undefined' ? pyq2025Database : [])
+            ];
+
+            allQuestions = shuffleArray([...allQuestions]);
+            const actualLimit = Math.min(numQuestions, allQuestions.length);
+            
+            examState.questions = allQuestions.slice(0, actualLimit);
+            examState.userAnswers = new Array(actualLimit).fill(null); // Reset answers
+            examState.currentIndex = 0;
+            examState.score = 0;
+            examState.timeLeft = actualLimit * 60; // 1 minute per question
+
+            document.getElementById('exam-setup-screen').classList.add('hidden');
+            document.getElementById('exam-content-box').classList.remove('hidden');
+            
+            startTimer();
+            loadExamQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(examState.timerInterval);
+            updateTimerDisplay();
+            
+            examState.timerInterval = setInterval(() => {
+                examState.timeLeft--;
+                updateTimerDisplay();
+                
+                if (examState.timeLeft <= 0) {
+                    clearInterval(examState.timerInterval);
+                    handleTimeUp();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerEl = document.getElementById('exam-timer');
+            if(!timerEl) return;
+            
+            const minutes = Math.floor(examState.timeLeft / 60);
+            const seconds = examState.timeLeft % 60;
+            const formatted = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            timerEl.innerHTML = `⏱️ ${formatted}`;
+            
+            if (examState.timeLeft < 60 && examState.timeLeft > 0) {
+                timerEl.classList.remove('text-slate-300', 'bg-slate-800', 'border-slate-700');
+                timerEl.classList.add('text-red-400', 'bg-red-950/30', 'border-red-500/50', 'animate-pulse');
+            } else {
+                timerEl.classList.add('text-slate-300', 'bg-slate-800', 'border-slate-700');
+                timerEl.classList.remove('text-red-400', 'bg-red-950/30', 'border-red-500/50', 'animate-pulse');
+            }
+        }
+
+        function handleTimeUp() {
+            // Save current selection if they ran out of time before clicking next
+            if(examState.selectedAnswer !== null) {
+                examState.userAnswers[examState.currentIndex] = examState.selectedAnswer;
+                if (examState.selectedAnswer === examState.questions[examState.currentIndex].correct) {
+                    examState.score++;
+                }
+            }
+
+            const feedback = document.getElementById('exam-status-feedback');
+            const optionsBox = document.getElementById('exam-options-container');
+            const nextBtn = document.getElementById('exam-next-btn');
+
+            feedback.innerHTML = `<span class="text-rose-500 font-black flex items-center gap-1.5 text-base">⏰ Time's Up!</span>`;
+            
+            const buttons = optionsBox.querySelectorAll('button');
+            buttons.forEach(btn => btn.onclick = null); 
+
+            nextBtn.classList.remove('hidden');
+            nextBtn.innerText = "View Final Score 🏆";
+            nextBtn.onclick = showExamScore; // Override click to skip straight to score
+        }
+
+        function loadExamQuestion() {
+            const current = examState.questions[examState.currentIndex];
+            const nextBtn = document.getElementById('exam-next-btn');
+            const optionsBox = document.getElementById('exam-options-container');
+            const qContainer = document.getElementById('exam-question-container');
+            const progressBar = document.getElementById('exam-progress-bar');
+            const feedback = document.getElementById('exam-status-feedback');
+            
+            examState.selectedAnswer = null; // Reset selection state
+
+            const total = examState.questions.length;
+            const currentNum = examState.currentIndex + 1;
+            document.getElementById('exam-progress-text').innerText = `Q ${currentNum} / ${total}`;
+            progressBar.style.width = `${(currentNum / total) * 100}%`;
+
+            document.getElementById('exam-badge').innerText = current.subject || 'MIXED';
+            qContainer.innerText = current.question;
+            optionsBox.innerHTML = '';
+            feedback.innerHTML = '';
+            
+            nextBtn.classList.add('hidden');
+            nextBtn.onclick = handleNextExamQuestion; // Ensure default behavior
+
+            current.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950 text-sm font-medium hover:bg-slate-900 transition duration-150 flex items-start gap-3 cursor-pointer group hover:border-slate-700 exam-opt-btn";
+                btn.onclick = () => selectExamAnswer(idx);
+                btn.innerHTML = `
+                    <span class="w-5 h-5 rounded-full border border-slate-700 bg-slate-900 text-[10px] font-bold inline-flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:border-slate-500 group-hover:text-white transition">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="text-slate-300 group-hover:text-slate-100 transition">${optText}</span>
+                `;
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function selectExamAnswer(selectedIdx) {
+            examState.selectedAnswer = selectedIdx;
+            const optionsBox = document.getElementById('exam-options-container');
+            const buttons = optionsBox.querySelectorAll('.exam-opt-btn');
+
+            // Visually highlight only the selected option
+            buttons.forEach((btn, idx) => {
+                if (idx === selectedIdx) {
+                    btn.className = "w-full text-left p-4 rounded-xl border border-rose-500 bg-rose-950/30 text-sm font-bold flex items-start gap-3 shadow-md shadow-rose-950/50 opacity-100 text-rose-400 exam-opt-btn";
+                } else {
+                    btn.className = "w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950 text-sm font-medium flex items-start gap-3 opacity-60 exam-opt-btn";
+                }
+            });
+
+            const nextBtn = document.getElementById('exam-next-btn');
+            nextBtn.classList.remove('hidden');
+            if (examState.currentIndex < examState.questions.length - 1) {
+                nextBtn.innerText = "Save & Next →";
+            } else {
+                nextBtn.innerText = "Submit Exam 🏆";
+            }
+        }
+
+        function handleNextExamQuestion() {
+            // Save answer and calculate score
+            examState.userAnswers[examState.currentIndex] = examState.selectedAnswer;
+            const currentQ = examState.questions[examState.currentIndex];
+            
+            if (examState.selectedAnswer === currentQ.correct) {
+                examState.score++;
+            }
+
+            // Move forward
+            if (examState.currentIndex < examState.questions.length - 1) {
+                examState.currentIndex++;
+                loadExamQuestion();
+            } else {
+                showExamScore();
+            }
+        }
+
+        function showExamScore() {
+            clearInterval(examState.timerInterval);
+            document.getElementById('exam-content-box').classList.add('hidden');
+            const scoreScreen = document.getElementById('exam-score-screen');
+            scoreScreen.classList.remove('hidden');
+            
+            const total = examState.questions.length;
+            document.getElementById('exam-final-score').innerText = `${examState.score} / ${total}`;
+            
+            let message = "Keep studying and revising!";
+            let percentage = (examState.score / total) * 100;
+
+            if (percentage >= 90) message = "Exceptional performance! You are mastering the material.";
+            else if (percentage >= 75) message = "Great job! You're on a very solid track.";
+            else if (percentage >= 60) message = "Good effort. Review the specific subjects you missed.";
+            
+            document.getElementById('exam-final-message').innerText = message;
+
+            // Generate Answer Review
+            const reviewContainer = document.getElementById('exam-review-container');
+            reviewContainer.innerHTML = '<h4 class="text-white font-bold mb-4 border-b border-slate-700 pb-2">Exam Review</h4>';
+            
+            examState.questions.forEach((q, i) => {
+                const userAns = examState.userAnswers[i];
+                const isCorrect = userAns === q.correct;
+                
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border text-sm ${isCorrect ? 'bg-emerald-950/20 border-emerald-900/50' : 'bg-rose-950/20 border-rose-900/50'}`;
+                
+                let userOptText = (userAns !== null && userAns !== undefined) ? q.options[userAns] : "Unanswered";
+                let correctOptText = q.options[q.correct];
+
+                card.innerHTML = `
+                    <div class="font-bold text-slate-200 mb-2">Q${i+1}: ${q.question}</div>
+                    <div class="text-slate-400 mb-1 font-medium">Your Answer: <span class="${isCorrect ? 'text-emerald-400' : 'text-rose-400'}">${userOptText}</span></div>
+                    ${!isCorrect ? `<div class="text-emerald-400 font-bold">Correct Answer: ${correctOptText}</div>` : ''}
+                    ${q.explanation ? `<div class="mt-2 text-xs text-slate-500 italic border-t border-slate-800/50 pt-2">${q.explanation}</div>` : ''}
+                `;
+                reviewContainer.appendChild(card);
+            });
         }
 
         // Boot Init
