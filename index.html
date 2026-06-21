@@ -66,8 +66,12 @@
                 <button onclick="filterSystem('ent')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-teal-900/50 text-teal-400 hover:bg-teal-950/30 transition-all cursor-pointer">ENT</button>
                 <button onclick="filterSystem('ophth')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-orange-900/50 text-orange-400 hover:bg-orange-950/30 transition-all cursor-pointer">Ophthalmology</button>
                 <button onclick="filterSystem('derma')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-indigo-900/50 text-indigo-400 hover:bg-indigo-950/30 transition-all cursor-pointer">Dermatology</button>
-           <button onclick="toggleBookmarksOnly()" id="bookmark-filter-btn" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-amber-900/50 text-amber-400 hover:bg-amber-950/30 cursor-pointer">Show Bookmarks Only</button>
-            
+           <button onclick="toggleBookmark(${triad.id})" class="text-xl cursor-pointer transition-colors ${isBookmarked ? 'text-pink-500' : 'text-slate-600'}">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="none">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+</button>
+
         </div>
 
             <div id="atlas-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
@@ -875,13 +879,17 @@
         }
     });
 
-    // 2. Sync the bookmark button visual state
+        // 2. Sync the bookmark button visual state (Border-only highlight)
     const bookmarkBtn = document.getElementById('bookmark-filter-btn');
-    if (bookmarkBtn) { // Safety check
+    if (bookmarkBtn) {
         if (showBookmarksOnly) {
-            bookmarkBtn.classList.add('bg-amber-900', 'border-amber-600', 'text-white');
+            // Apply border-only highlight
+            bookmarkBtn.classList.add('border-amber-500', 'text-amber-400');
+            bookmarkBtn.classList.remove('border-amber-900/50');
         } else {
-            bookmarkBtn.classList.remove('bg-amber-900', 'border-amber-600', 'text-white');
+            // Revert to original muted border
+            bookmarkBtn.classList.remove('border-amber-500', 'text-amber-400');
+            bookmarkBtn.classList.add('border-amber-900/50');
         }
     }
 
