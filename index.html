@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEET PG Master Atlas with Sidhu</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .custom-scrollbar::-webkit-scrollbar {
@@ -307,6 +308,8 @@
     </main>
 
     <script>
+        const supabase = supabase.createClient('https://urnnwbaqqmwrgthgrfgr.supabase.co/rest/v1/', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVybm53YmFxcW13cmd0aGdyZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMjc1MTcsImV4cCI6MjA5NzYwMzUxN30.ZsPenOGs0G7ZM8KnC5qy0QpXRHPrOy-7_2gkbBL8O34');
+        
         // Existing Triads Data
         const triadsData = [
             {
@@ -4216,12 +4219,54 @@
         // --- SUPABASE MOCK FOR COMMENTS ---
         const getHeaders = () => ({});
         async function fetchComments() {
-            const feed = document.getElementById('comments-feed');
-            feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">Comments feature available upon backend connection.</div>`;
-        }
+    const feed = document.getElementById('comments-feed');
+    
+    // Using exact table name 'Comments'
+    const { data, error } = await supabase
+        .from('Comments')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        feed.innerHTML = `<div class="text-rose-500 text-center py-4">Error loading suggestions: ${error.message}</div>`;
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        feed.innerHTML = `<div class="text-center text-slate-600 py-4 italic">No suggestions yet. Be the first!</div>`;
+        return;
+    }
+
+    feed.innerHTML = data.map(item => `
+        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="font-bold text-emerald-400 text-[10px]">${escapeHTML(item.name || 'Anonymous')}</div>
+            <div class="text-slate-300 mt-0.5">${escapeHTML(item.comment || '')}</div>
+        </div>
+    `).join('');
+    
+    document.getElementById('comment-count').innerText = `${data.length} Suggestions`;
+}
         async function postComment() {
-            alert("Database connected needed to save.");
-        }
+    const nameInput = document.getElementById('commenter-name');
+    const textInput = document.getElementById('commenter-text');
+    
+    if (!nameInput.value || !textInput.value) {
+        alert("Please enter both a name and a suggestion!");
+        return;
+    }
+
+    // Using exact table name 'Comments'
+    const { error } = await supabase
+        .from('Comments')
+        .insert([{ name: nameInput.value, comment: textInput.value }]);
+
+    if (error) {
+        alert("Error posting: " + error.message);
+    } else {
+        textInput.value = ''; // Clear text area
+        fetchComments(); // Refresh the feed
+    }
+}
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
         }
