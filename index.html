@@ -720,22 +720,35 @@
         }
         function toggleBookmarksOnly() {
     showBookmarksOnly = !showBookmarksOnly;
+    
+    // Call filterSystem instead of renderAtlas.
+    // This forces the UI to re-evaluate the "active" states of all buttons 
+    // and correctly color the bookmark button.
     const currentSys = localStorage.getItem('activeSystem') || 'all';
     filterSystem(currentSys); 
 }
+
         function renderAtlas() {
     const grid = document.getElementById('atlas-grid');
     const search = document.getElementById('atlas-search').value.toLowerCase();
     const activeSys = localStorage.getItem('activeSystem') || 'all';
+    
+    // JSON.parse logic is here!
     const bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
     
     grid.innerHTML = '';
     
     triadsData.filter(triad => {
+        // Logic for Name or Element search
         const matchesSearch = triad.name.toLowerCase().includes(search) || 
                              (triad.elements && triad.elements.some(e => e.toLowerCase().includes(search)));
+        
+        // Logic for System filter
         const matchesSys = (activeSys === 'all' || triad.system === activeSys);
+        
+        // Logic for Bookmark filter
         const matchesBookmark = (!showBookmarksOnly || bookmarks.includes(triad.id));
+        
         return matchesSearch && matchesSys && matchesBookmark;
     }).forEach(triad => {
         const isBookmarked = bookmarks.includes(triad.id);
@@ -757,11 +770,7 @@
                 <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
                     ${triad.system}
                 </span>
-                // Replace the button section inside renderAtlas with this:
-<button onclick="toggleBookmark(${triad.id})" 
-        class="text-xl cursor-pointer hover:scale-125 transition-transform duration-200 z-20 relative ${isBookmarked ? 'text-pink-500' : 'text-slate-600'}">
-    ♥
-</button>
+                <button onclick="toggleBookmark(${triad.id})" class="text-xl cursor-pointer ${isBookmarked ? 'text-amber-400' : 'text-slate-600'}">★</button>
             </div>
             <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
@@ -780,25 +789,21 @@
     });
 }
 
-
         function toggleBookmark(id) {
-    // FIX: Changed || '' to || '[]' so JSON.parse receives valid data
     let bookmarks = JSON.parse(localStorage.getItem('myBookmarks') || '[]');
-    
-    // Ensure id is treated as a string to match how you save them
-    const idStr = String(id);
-    
-    if (bookmarks.includes(idStr)) {
-        bookmarks = bookmarks.filter(b => b !== idStr);
+    if (bookmarks.includes(id)) {
+        bookmarks = bookmarks.filter(b => b !== id);
     } else {
-        bookmarks.push(idStr);
+        bookmarks.push(id);
     }
-    
     localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
     
-    // Refresh the UI
-    renderAtlas(); 
+    // This uses the system currently saved in memory, 
+    // ensuring the UI stays consistent after starring/unstarring.
+    const currentSys = localStorage.getItem('activeSystem') || 'all';
+    filterSystem(currentSys); 
 }
+
 
 
         function switchTab(target) {
