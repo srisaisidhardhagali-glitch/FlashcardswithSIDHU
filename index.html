@@ -53,7 +53,11 @@
     <main class="max-w-7xl mx-auto px-4 py-8">
         
         <section id="view-atlas" class="block space-y-8">
-            <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-800/60">
+    <div class="pb-2">
+        <input type="text" id="atlas-search" placeholder="Search triads..." oninput="renderAtlas()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:border-blue-500 text-white">
+    </div>
+    <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-800/60">
+        </div>
                 <button onclick="filterSystem('all')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-700 bg-slate-800 text-white transition-all cursor-pointer">All Specialties</button>
                 <button onclick="filterSystem('medicine')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-blue-900/50 text-blue-400 hover:bg-blue-950/30 transition-all cursor-pointer">Internal Medicine</button>
                 <button onclick="filterSystem('surgery')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-red-900/50 text-red-400 hover:bg-red-950/30 transition-all cursor-pointer">General Surgery</button>
