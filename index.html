@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET PG Master Atlas with Sidhu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
+
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black p-2 rounded-lg text-lg tracking-wider shadow-md shadow-orange-500/20">▲ TRIAD</div>
+                <div>
+                    <h1 class="text-xl font-extrabold text-white tracking-tight bg-clip-text bg-gradient-to-r from-white to-slate-300">NEET PG Master Atlas with Sidhu</h1>
+                    <p class="text-xs text-slate-400 font-medium">Ultimate Revision & Self-Assessment Matrix</p>
+                </div>
+            </div>
+            
+            <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex gap-1 shadow-inner">
+                <button onclick="switchTab('atlas')" id="tab-atlas" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-blue-600 text-white shadow-lg cursor-pointer">
+                    📚 Study Atlas
+                </button>
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer">
+                    ⚡ Flashcard Recall
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer">
+                    🎯 Exam Simulator
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <section id="view-atlas" class="block space-y-8">
+            <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-800/60">
+                <button onclick="filterSystem('all')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-700 bg-slate-800 text-white transition-all cursor-pointer">All Specialties</button>
+                <button onclick="filterSystem('medicine')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-blue-900/50 text-blue-400 hover:bg-blue-950/30 transition-all cursor-pointer">Internal Medicine</button>
+                <button onclick="filterSystem('surgery')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-red-900/50 text-red-400 hover:bg-red-950/30 transition-all cursor-pointer">General Surgery</button>
+                <button onclick="filterSystem('obg')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-purple-900/50 text-purple-400 hover:bg-purple-950/30 transition-all cursor-pointer">Obstetrics & Gynae</button>
+                <button onclick="filterSystem('peds')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-pink-900/50 text-pink-400 hover:bg-pink-950/30 transition-all cursor-pointer">Pediatrics</button>
+                <button onclick="filterSystem('ent')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-teal-900/50 text-teal-400 hover:bg-teal-950/30 transition-all cursor-pointer">ENT</button>
+                <button onclick="filterSystem('ophth')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-orange-900/50 text-orange-400 hover:bg-orange-950/30 transition-all cursor-pointer">Ophthalmology</button>
+                <button onclick="filterSystem('derma')" class="sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-indigo-900/50 text-indigo-400 hover:bg-indigo-950/30 transition-all cursor-pointer">Dermatology</button>
+            </div>
+
+            <div id="atlas-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+        </section>
+
+        <section id="view-flashcards" class="hidden max-w-2xl mx-auto space-y-6">
+            <div class="text-center space-y-2 mb-6">
+                <h2 class="text-2xl font-black text-white">Active Recall Matrix</h2>
+                <p class="text-sm text-slate-400">Two components of a key NEET PG triad are displayed below. Can you mentally trigger the missing triad criteria?</p>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <span id="flashcard-system-badge" class="px-3 py-1 text-xs font-black uppercase tracking-widest text-indigo-400 bg-indigo-950/40 border border-indigo-900/50 rounded-md">SPECIALTY</span>
+                    <span id="flashcard-title" class="text-sm font-extrabold text-slate-300">Triad Name</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 my-4" id="flashcard-slots-container"></div>
+
+                <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+                    <button onclick="revealFlashcardSecret()" id="flashcard-reveal-btn" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl text-sm transition duration-150 shadow-md shadow-indigo-950 cursor-pointer">
+                        👁️ Reveal Missing Component
+                    </button>
+                    <button onclick="generateNextFlashcard()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-sm transition border border-slate-700 cursor-pointer">
+                        Next Flashcard ⚡
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-quiz" class="hidden max-w-3xl mx-auto">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <div>
+                        <span id="quiz-subject-badge" class="px-3 py-1 text-xs font-black uppercase tracking-widest text-white rounded-md">SUBJECT</span>
+                        <h3 class="text-lg font-bold text-white mt-2">Clinical Scenario Evaluation</h3>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-slate-400 font-bold uppercase">Progress</p>
+                        <p class="text-sm font-black text-amber-400" id="quiz-progress-text">Question 1 of 5</p>
+                    </div>
+                </div>
+
+                <div id="quiz-question-container" class="text-slate-200 text-base font-medium leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner">
+                    Loading medical scenario...
+                </div>
+
+                <div id="quiz-options-container" class="space-y-3"></div>
+
+                <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+                    <div id="quiz-status-feedback" class="text-sm font-bold w-full mr-4"></div>
+                    <button onclick="handleNextQuestion()" id="quiz-next-btn" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black rounded-xl text-sm transition shadow-lg shrink-0 hidden cursor-pointer">
+                        Next Scenario →
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const triadsData = [
+            {
+                id: 1,
+                name: "Beck's Triad (Acute Cardiac Tamponade)",
+                system: "medicine",
+                colorClass: "border-blue-500 text-blue-400 bg-blue-950/20",
+                elements: ["Hypotension with Narrow Pulse Pressure", "Jugular Venous Distension (JVD)", "Muffled / Distant Heart Sounds"],
+                mechanism: "Occurs when fluid, blood, or inflammatory exudate accumulates quickly inside the tight, non-yielding fibroelastic pericardial space. As volume increases, the elevated intrapericardial pressure rapidly overcomes normal low-pressure right heart chambers, impeding systemic venous return and compressing all four chambers during diastole.",
+                pearl: "Differentiating cardiac tamponade from a tension pneumothorax is a classic board trap. Tamponade features completely normal, equal bilateral vesicular breath sounds, whereas tension pneumothorax features a unilateral absence of breath sounds and hyper-resonance to percussion."
+            },
+            {
+                id: 2,
+                name: "Wernicke's Encephalopathy Triad",
+                system: "medicine",
+                colorClass: "border-blue-500 text-blue-400 bg-blue-950/20",
+                elements: ["Ophthalmoplegia / Nystagmus", "Cerebellar Ataxia", "Global Confusion / Dementia"],
+                mechanism: "Driven by acute, severe deficiency of Thiamine (Vitamin B1). Thiamine pyrophosphate is an absolute metabolic cofactor required for glucose utilization pathways, specifically within key enzyme networks like pyruvate dehydrogenase. Depletion arrests ATP production, causing cell death and localized symmetric necrotic tracking within the mammillary bodies.",
+                pearl: "Never administer intravenous dextrose/glucose loads before administering intravenous thiamine. The carbohydrate load forces rapid glucose utilization, instantly exhausting any tiny leftover thiamine reserves, triggering permanent brainstem necrosis."
+            },
+            {
+                id: 3,
+                name: "Cushing's Triad (Increased Intracranial Pressure)",
+                system: "medicine",
+                colorClass: "border-blue-500 text-blue-400 bg-blue-950/20",
+                elements: ["Hypertension with Widened Pulse Pressure", "Reflex Bradycardia", "Bradypnea / Irregular Breathing"],
+                mechanism: "A physiological nervous response to brain ischemia caused by critically high intracranial pressure (ICP). Elevated ICP compresses local cerebral microvasculature, cutting off oxygen delivery to the brainstem. The central vasomotor center reacts with a massive sympathetic storm to elevate mean arterial pressure above the ICP to restore flow.",
+                pearl: "Cushing's Triad is a late, ominous sign of neurological decompensation. It strongly indicates impending uncal or transtentorial brain herniation."
+            },
+            {
+                id: 4,
+                name: "Charcot's Triad (Acute Ascending Cholangitis)",
+                system: "surgery",
+                colorClass: "border-red-500 text-red-400 bg-red-950/20",
+                elements: ["Right Upper Quadrant (RUQ) Pain", "Obstructive Jaundice", "High Fever with Spikes & Rigors"],
+                mechanism: "Requires the simultaneous presence of complete biliary tree obstruction (typically due to choledocholithiasis, strictures, or tumors) and an active bacterial infection within the stagnant bile column (classically driven by E. coli, Klebsiella, or Enterococcus species).",
+                pearl: "Left untreated, this pattern rapidly expands into Reynolds' Pentad by adding hypotension/septic shock and altered mental status. Requires ERCP decompression."
+            },
+            {
+                id: 5,
+                name: "Borchardt's Triad (Acute Gastric Volvulus)",
+                system: "surgery",
+                colorClass: "border-red-500 text-red-400 bg-red-950/20",
+                elements: ["Excruciating Epigastric Pain", "Violent Retching without Emesis", "Absolute Inability to Pass a Nasogastric Tube"],
+                mechanism: "Occurs when the stomach rotates more than 180 degrees along its organo-axial or mesenteric-axial lines. This creates a closed-loop obstruction at both the cardia and pylorus, leading to massive gastric distension and strangulation.",
+                pearl: "A true surgical emergency. Requires immediate operative exploration, detorsion, and gastropexy to avoid necrosis."
+            },
+            {
+                id: 6,
+                name: "Endometriosis Classic Triad",
+                system: "obg",
+                colorClass: "border-purple-500 text-purple-400 bg-purple-950/20",
+                elements: ["Severe Dysmenorrhea", "Deep Dyspareunia", "Dyschezia / Cyclic Pelvic Pain"],
+                mechanism: "Driven by the implantation and growth of functional endometrial tissue (stroma and glands) outside the uterine boundaries, most commonly tracking across the ovaries, uterosacral ligaments, and pouch of Douglas.",
+                pearl: "Classically presents as 'powder-burn' hyperpigmented peritoneal lesions or as unilocular ovarian cysts filled with altered blood, known as Endometriomas ('chocolate cysts')."
+            },
+            {
+                id: 7,
+                name: "Meigs' Syndrome Triad",
+                system: "obg",
+                colorClass: "border-purple-500 text-purple-400 bg-purple-950/20",
+                elements: ["Benign Ovarian Solid Fibroma", "Transudative Ascites", "Pleural Effusion (Classically Right-Sided)"],
+                mechanism: "The large solid tumor exudes fluid from its surface or physically compresses pelvic lymphatics, leading to transudative ascites. This fluid then migrates superiorly into the pleural cavity through microscopic transdiaphragmatic lymphatics.",
+                pearl: "In Meigs' Syndrome, the fluid accumulation resolves entirely and permanently following simple surgical resection of the benign ovarian fibroma."
+            },
+            {
+                id: 8,
+                name: "Intussusception Triad",
+                system: "peds",
+                colorClass: "border-pink-500 text-pink-400 bg-pink-950/20",
+                elements: ["Intermittent Severe Colicky Pain", "Palpable Sausage-Shaped Mass in the RUQ", "Red Currant Jelly Stools per Rectum"],
+                mechanism: "Occurs when a segment of the bowel (the intussusceptum) invaginates or telescopes into an adjacent distal segment (the intussuscipiens), most commonly at the ileocecal valve, compromising local mesenteric blood flow.",
+                pearl: "Most common cause of obstruction in infants. Ultrasound is diagnostic, showing a characteristic target or doughnut sign."
+            },
+            {
+                id: 9,
+                name: "Meniere's Disease Triad",
+                system: "ent",
+                colorClass: "border-teal-500 text-teal-400 bg-teal-950/20",
+                elements: ["Paroxysmal Whirling Vertigo", "Fluctuating Sensorineural Hearing Loss", "Roaring Low-Pitched Tinnitus"],
+                mechanism: "Caused by idiopathic endolymphatic hydrops, which represents an over-accumulation of endolymph within the membranous labyrinth, distending scalar spaces and causing Reissner's membrane micro-tears.",
+                pearl: "Audiometry typically confirms a characteristic fluctuating low-frequency sensory neural deficit pattern."
+            },
+            {
+                id: 10,
+                name: "Congenital Glaucoma Triad",
+                system: "ophth",
+                colorClass: "border-orange-500 text-orange-400 bg-orange-950/20",
+                elements: ["Epiphora (Excessive Tearing)", "Severe Photophobia", "Persistent Blepharospasm"],
+                mechanism: "Caused by an underlying developmental defect within the anterior chamber angle of the eye, which creates a mechanical sheet block (Barkan's membrane) that blocks aqueous humor drainage.",
+                pearl: "Elevated pressure stretches the elastic infantile globe, leading to an macro-cornea presentation known as Buphthalmos. Goniotomy is initial choice if cornea is clear."
+            },
+            {
+                id: 11,
+                name: "Virchow's Triad (Venous Thrombosis)",
+                system: "surgery",
+                colorClass: "border-red-500 text-red-400 bg-red-950/20",
+                elements: ["Endothelial Injury", "Stasis of Blood Flow", "Hypercoagulability"],
+                mechanism: "The three primary physiological categories that contribute to the formation of thrombi within venous vessels. Endothelial disruptions expose subendothelial collagen; immobilization disrupts normal laminar flow; alterations in clotting cascades trigger thrombosis.",
+                pearl: "Crucial for evaluating risk factors of Deep Vein Thrombosis (DVT) and pulmonary embolisms post-operatively."
+            },
+            {
+                id: 12,
+                name: "Hutchinson's Triad (Congenital Syphilis)",
+                system: "peds",
+                colorClass: "border-pink-500 text-pink-400 bg-pink-950/20",
+                elements: ["Hutchinson's Teeth (Notched Incisors)", "Interstitial Keratitis", "Sensorineural Eighth Nerve Deafness"],
+                mechanism: "Manifests during late congenital syphilis infection due to localized chronic active spirochetal inflammation (Treponema pallidum) within ectodermal tissues and sensory organ cranial pathways.",
+                pearl: "Interstitial keratitis typically surfaces during puberty around ages 5 to 20; structural dental abnormalities present during permanent dentition eruption."
+            },
+            {
+                id: 13,
+                name: "Samter's Triad (Aspirin-Exacerbated Respiratory Disease)",
+                system: "medicine",
+                colorClass: "border-blue-500 text-blue-400 bg-blue-950/20",
+                elements: ["Asthma / Bronchospasm", "Aspirin Sensitivity", "Nasal Polyposis"],
+                mechanism: "Driven by deregulation of the arachidonic acid cascade. Inhibition of cyclooxygenase-1 (COX-1) shifts metabolism entirely toward the lipoxygenase pathway, causing systemic overproduction of proinflammatory leukotrienes.",
+                pearl: "Avoid nonselective NSAIDs at all costs. Leukotriene receptor antagonists like Montelukast are excellent clinical choices here."
+            },
+            {
+                id: 14,
+                name: "Reiter's Triad (Reactive Arthritis)",
+                system: "medicine",
+                colorClass: "border-blue-500 text-blue-400 bg-blue-950/20",
+                elements: ["Urethritis", "Conjunctivitis", "Asymmetric Arthritis"],
+                mechanism: "An autoimmune, HLA-B27 associated molecular mimicry pattern reacting following specific genitourinary infections (Chlamydia trachomatis) or gastrointestinal events (Salmonella, Shigella, Campylobacter).",
+                pearl: "Remember the classic board-prep mnemonic phrase: 'Can't see, can't pee, can't climb a tree'."
+            },
+            {
+                id: 15,
+                name: "Dieulafoy's Triad (Acute Appendicitis)",
+                system: "surgery",
+                colorClass: "border-red-500 text-red-400 bg-red-950/20",
+                elements: ["Hyperesthesia in Right Iliac Fossa", "Skin Tenderness", "Muscular Guarding at McBurney's Point"],
+                mechanism: "Arises due to localized visceral and subsequent somatic parietal peritoneal inflammation triggered by luminal appendiceal appendicolith or lymphoid obstruction.",
+                pearl: "Often forgotten but carries massive diagnostic weight during primary physical screening before cross-sectional imaging."
+            },
+            {
+                id: 16,
+                name: "Alport Syndrome Triad",
+                system: "peds",
+                colorClass: "border-pink-500 text-pink-400 bg-pink-950/20",
+                elements: ["Hereditary Nephritis (Hematuria)", "Sensorineural Hearing Loss", "Ocular Defects (Anterior Lenticonus)"],
+                mechanism: "An X-linked dominant mutation in the COL4A5 gene, disrupting the production of Type IV Collagen alpha chains. This weakens structural basement membranes in the glomerulus, cochlea, and lens.",
+                pearl: "Electron microscopy displays a pathognomonic alternating thinning and thickening of the GBM, often referred to as a 'basket-weave' appearance."
+            },
+            {
+                id: 17,
+                name: "Saint's Triad",
+                system: "medicine",
+                colorClass: "border-blue-500 text-blue-400 bg-blue-950/20",
+                elements: ["Cholelithiasis", "Hiatus Hernia", "Diverticulosis"],
+                mechanism: "A multi-disease coexistence pattern highlighting shared structural weaknesses and high systemic pressure etiologies, primarily correlated with low-fiber western diets and connective tissue aging.",
+                pearl: "Forces physicians to avoid diagnostic overshadowing; managing one component should prompt vigilance for the other two items."
+            },
+            {
+                id: 18,
+                name: "Rokitansky's Triad (Endometrioma)",
+                system: "obg",
+                colorClass: "border-purple-500 text-purple-400 bg-purple-950/20",
+                elements: ["Ovarian Cystic Mass", "Adhesions to Pelvic Sidewall", "Fixation of the Uterus"],
+                mechanism: "Chronic cyclic structural bleeding from ectopic endometrial implants provokes extensive local peritoneal inflammation, fibrotic tissue reactions, and robust anatomical adhesions.",
+                pearl: "This profound structural fixation is what directly causes the severe deep pelvic dyspareunia reported by these patients."
+            },
+            {
+                id: 19,
+                name: "Gradenigo's Triad (Petrositis)",
+                system: "ent",
+                colorClass: "border-teal-500 text-teal-400 bg-teal-950/20",
+                elements: ["Suppurative Otorrhea", "Deep Retro-orbital Pain (CN V)", "Ipsilateral Abducens Palsy (CN VI)"],
+                mechanism: "An aggressive tracking complication of acute otitis media or mastoiditis spreading medially into the petrous apex of the temporal bone, trapping the trigeminal ganglion and the adjacent abducens nerve in Dorello's canal.",
+                pearl: "An absolute ENT emergency. Failure to recognize leads to cavernous sinus thrombosis or meningitis. Requires high-dose IV antibiotics + surgery."
+            },
+            {
+                id: 20,
+                name: "Melkersson-Rosenthal Triad",
+                system: "derma",
+                colorClass: "border-indigo-500 text-indigo-400 bg-indigo-950/20",
+                elements: ["Recurrent Orofacial Edema", "Ipsilateral Facial Nerve Palsy", "Lingua Plicata (Fissured Tongue)"],
+                mechanism: "An uncommon neuro-mucocutaneous granulomatous disorder characterized by non-caseating granulomas tracking within minor lymphatic paths and neural sheaths.",
+                pearl: "The fissured tongue is congenital and present in only 30-40% of cases, making the full clinical triad a rare find."
+            }
+        ];
+
+        const quizDatabase = [
+            {
+                subject: "ENT",
+                color: "bg-teal-600",
+                question: "A 43-year-old corporate defense attorney presents with a 6-month history of recurrent, sudden episodes of intense rotatory vertigo that typically last between 2 to 4 hours per attack. He notes that these debilitating spells are preceded by a sensation of severe fluid fullness and a fluctuating roaring low-pitched tinnitus in his left ear. Pure-tone audiometry confirms a sensory impairment targeting lower octaves. Which of the following defines the fundamental underlying pathophysiology?",
+                options: [
+                    "Mechanical displacement of canalith debris inside the posterior canal",
+                    "Idiopathic endolymphatic hydrops creating fluid over-accumulation in the membranous labyrinth",
+                    "Slow-growing acoustic schwannoma within the internal auditory meatus",
+                    "Acute viral-mediated neuro-inflammatory tracking of the superior vestibular branch"
+                ],
+                correct: 1,
+                explanation: "The case outlines Meniere's Disease Triad (vertigo, fluctuating low-frequency SNHL, tinnitus). The core pathology is endolymphatic hydrops, an abnormal distension of the endolymphatic fluid system."
+            },
+            {
+                subject: "Ophthalmology",
+                color: "bg-orange-600",
+                question: "A 4-month-old infant is brought to the outpatient clinic due to constant watery drainage from both eyes, intense crying when exposed to ambient indoor lighting, and persistent tight closure of the eyelids. Physical examination under sedation confirms significant enlargement of the corneal diameters (buphthalmos) with mild localized clouding. What is the definitive initial surgical management of choice if the cornea remains sufficiently clear?",
+                options: [
+                    "Direct surgical Trabeculectomy with Mitomycin C adjunct",
+                    "Goniotomy targeting mechanical division of Barkan's membrane",
+                    "Transscleral Diode Laser Cyclophotocoagulation",
+                    "Nd:YAG Laser Peripheral Iridotomy"
+                ],
+                correct: 1,
+                explanation: "The presentation matches the Congenital Glaucoma Triad (epiphora, photophobia, blepharospasm). If the cornea is clear enough to permit visual cross-orientation, a Goniotomy is performed to open up the outflow pathways."
+            },
+            {
+                subject: "Internal Medicine",
+                color: "bg-blue-600",
+                question: "A 48-year-old factory assembly supervisor is brought to the trauma center following a severe crushing injury to his upper thorax. On primary survey, he is tachycardic and hypotensive with a blood pressure of 82/42 mmHg. His internal jugular veins are engorged up to the angle of the mandible. Direct chest auscultation reveals normal, clear bilateral vesicular breath sounds, but heart sounds are faint, distant, and muffled. What process is driving this clinical presentation?",
+                options: [
+                    "Traumatic rupture of a bicuspid aortic valve causing massive failure",
+                    "Fluid accumulation within the rigid pericardial space restricting diastolic ventricular filling",
+                    "High positive pressure within a unilateral hemothorax causing respiratory arrest",
+                    "Transmural right ventricular free-wall rupture secondary to hidden disease"
+                ],
+                correct: 1,
+                explanation: "The features identify Beck's Triad (hypotension, distended neck veins, muffled heart sounds), pathognomonic for cardiac tamponade. Clear equal breath sounds rule out tension pneumothorax, confirming fluid tracking inside the pericardium."
+            },
+            {
+                subject: "General Surgery",
+                color: "bg-red-600",
+                question: "A 59-year-old male presents with sudden, excruciating upper abdominal pain accompanied by severe, repetitive retching but zero production of gastric vomitus. The emergency surgical resident attempts to insert a standard nasogastric tube to achieve decompression but encounters a solid, absolute mechanical resistance at the distal gastroesophageal junction and fails. What is the immediate definitive management required for this condition?",
+                options: [
+                    "Urgent endoscopic retrograde cholangiopancreatography (ERCP)",
+                    "Immediate surgical exploration, operative detorsion, and gastropexy",
+                    "Emergent ultrasound-guided percutaneous pigtail catheter insertion",
+                    "High-dose intravenous proton pump inhibitor infusion and close monitoring"
+                ],
+                correct: 1,
+                explanation: "The scenario highlights Borchardt's Triad (epigastric pain, unproductive retching, inability to pass an NG tube), verifying an acute Gastric Volvulus. It is a closed-loop strangulating emergency requiring emergent open or laparoscopic exploration, detorsion, and fixative gastropexy."
+            },
+            {
+                subject: "General Surgery",
+                color: "bg-red-600",
+                question: "A 64-year-old female presents to the ER with spiking fevers up to 103.5°F, severe rigors, and a 2-day history of progressive right upper quadrant pain. On evaluation, her sclerae are deep yellow. Lab analysis confirms marked leukocytosis and elevated direct bilirubin. She is hypotensive (BP 88/50 mmHg) and appears highly confused during orientation questioning. What is the immediate next step in management after initiating fluid resuscitation and broad-spectrum antibiotics?",
+                options: [
+                    "Emergent open cholecystectomy with peritoneal lavage",
+                    "Biliary decompression via Urgent ERCP",
+                    "HIDA scan to rule out cystic duct obstruction",
+                    "High-dose steroid therapy for autoimmune hepatitis flare"
+                ],
+                correct: 1,
+                explanation: "This patient exhibits Charcot's triad expanded into Reynolds' Pentad (RUQ pain, jaundice, fever + hypotension, altered mental status), indicating severe acute ascending cholangitis. Decompression of the blocked biliary column via urgent ERCP is life-saving."
+            },
+            {
+                subject: "Internal Medicine",
+                color: "bg-blue-600",
+                question: "A 52-year-old chronic alcoholic male is brought to the clinic by his family. On examination, he displays prominent horizontal nystagmus, a wide-based uncoordinated gait (ataxia), and profound global confusion, answering questions with false stories (confabulation). Dextrose fluid resuscitation is ordered. What rule must be strictly applied before introducing glucose solutions?",
+                options: [
+                    "Administer high-dose IV thiamine prior to glucose infusion",
+                    "Obtain an emergent non-contrast head CT scan",
+                    "Infuse 20% mannitol bolus over 30 minutes",
+                    "Confirm serum magnesium levels are within reference limits"
+                ],
+                correct: 0,
+                explanation: "The signs complete Wernicke's Encephalopathy Triad (ophthalmoplegia/nystagmus, ataxia, confusion). Infusing glucose before administering thiamine (Vitamin B1) will instantly deplete remaining cofactor reserves, precipitating irreversible brainstem necrosis."
+            },
+            {
+                subject: "Internal Medicine",
+                color: "bg-blue-600",
+                question: "A 34-year-old male presents with severe asthma exacerbations, a long-standing history of recurrent nasal congestion, and facial pressure. Nasal endoscopy reveals extensive bilateral ethmoidal polyposis. He reports a history of severe bronchospasms after taking over-the-counter pain relievers for a headache. What metabolic cascade error causes this condition?",
+                options: [
+                    "Overproduction of cysteinyl leukotrienes via the 5-lipoxygenase pathway",
+                    "Complete genetic deficiency of alpha-1 antitrypsin",
+                    "IgE-mediated type 1 hypersensitivity against salicylic acid",
+                    "Defective production of secretory IgA across mucous membranes"
+                ],
+                correct: 0,
+                explanation: "The presentation fits Samter's Triad (asthma, aspirin sensitivity, nasal polyps). Inhibiting COX-1 shunts arachidonic acid entirely into the lipoxygenase pathway, yielding excessive, bronchoconscriptive leukotriene levels."
+            },
+            {
+                subject: "Obstetrics & Gynae",
+                color: "bg-purple-600",
+                question: "A 26-year-old nulliparous female presents with chronic pelvic pain that worsens significantly during menstruation. She describes deep pain during sexual intercourse and painful defecation that follows a cyclic monthly pattern. Pelvic ultrasound reveals a unilocular, thick-walled ovarian mass filled with homogeneous low-level echoes. What is the classic name for these focal structures?",
+                options: [
+                    "Theca lutein cysts",
+                    "Brenner tumors",
+                    "Chocolate cysts (Endometriomas)",
+                    "Dermoid cysts"
+                ],
+                correct: 2,
+                explanation: "The clinical presentation represents the classic triad of Endometriosis (dysmenorrhea, dyspareunia, dyschezia). The ultrasound details describe an Endometrioma, commonly known as a chocolate cyst."
+            },
+            {
+                subject: "Pediatrics",
+                color: "bg-pink-600",
+                question: "An 8-month-old infant is brought to the ER with sudden episodes of inconsolable crying during which he draws his knees up to his chest, followed by periods of complete lethargy. Physical exam reveals a palpable sausage-shaped mass in the right upper quadrant. The mother notes a dark red, mucoid bowel movement resembling fruit jelly. What is the pathognomonic diagnostic sign expected on an abdominal ultrasound?",
+                options: [
+                    "The 'Whirlpool' sign of mesenteric twisting",
+                    "The 'Target' or 'Doughnut' sign representing telescoped bowel loops",
+                    "The 'Mercedes-Benz' gas shadow sign",
+                    "The 'Double-Bubble' sign of proximal distension"
+                ],
+                correct: 1,
+                explanation: "This case matches the Intussusception Triad (colicky pain, sausage-shaped mass, currant jelly stools). Ultrasound is the diagnostic gold standard, classically showing the target/doughnut sign."
+            },
+            {
+                subject: "Internal Medicine",
+                color: "bg-blue-600",
+                question: "A 29-year-old HLA-B27 positive male presents with painful, asymmetric swelling of his left knee and right ankle. He reports a burning sensation during urination and bilateral conjunctival injection following an acute diarrheal illness 3 weeks ago. What is the classic diagnostic triad associated with this reactive pathology?",
+                options: [
+                    "Urethritis, Conjunctivitis, Asymmetric Arthritis",
+                    "Nephritis, Sensorineural Deafness, Cataracts",
+                    "Aortitis, Iritis, Symmetric Polyarthritis",
+                    "Fever, Splenomegaly, Leukopenia"
+                ],
+                correct: 0,
+                explanation: "The presentation identifies Reiter's Triad of Reactive Arthritis (urethritis, conjunctivitis, arthritis), which typically occurs following a venereal or enteric infection."
+            },
+            {
+                subject: "General Surgery",
+                color: "bg-red-600",
+                question: "A 19-year-old medical student is evaluated for suspected acute appendicitis. The examining surgeon notes that the patient exhibits exquisite skin hypersensitivity and severe muscle guarding when light pressure is applied across the right iliac fossa (McBurney's point). Which historical triad emphasizes these skin hypersensitivity and localized guarding signs?",
+                options: [
+                    "Charcot's Triad",
+                    "Dieulafoy's Triad",
+                    "Borchardt's Triad",
+                    "Virchow's Triad"
+                ],
+                correct: 1,
+                explanation: "Dieulafoy's Triad for acute appendicitis includes hyperesthesia in the right iliac fossa, skin tenderness, and muscular guarding at McBurney's point."
+            },
+            {
+                subject: "Pediatrics",
+                color: "bg-pink-600",
+                question: "A 12-year-old boy is evaluated for progressive high-frequency hearing loss and recurrent episodes of gross hematuria following mild upper respiratory tract infections. Slit-lamp examination reveals anterior lenticonus. Genetic analysis reveals a mutation in the COL4A5 gene. What ultrastructural finding is characteristic of this patient's glomerular basement membrane?",
+                options: [
+                    "Subepithelial 'humps' and dense immune deposits",
+                    "Alternating thinning and thickening producing a 'basket-weave' appearance",
+                    "Diffuse, uniform thinning of the lamina densa below 150 nm",
+                    "Subendothelial tram-track splitting due to mesangial interposition"
+                ],
+                correct: 1,
+                explanation: "The clinical presentation depicts Alport Syndrome Triad (hereditary nephritis, sensorineural deafness, and ocular defects like anterior lenticonus). The pathognomonic GBM finding under electron microscopy is a 'basket-weave' pattern."
+            },
+            {
+                subject: "Pediatrics",
+                color: "bg-pink-600",
+                question: "A 7-year-old child presents with interstitial keratitis, sensorineural eighth nerve deafness, and distinct central notches along the cutting edges of the permanent upper central incisors. What is the primary causative organism responsible for this presentation?",
+                options: [
+                    "Chlamydia trachomatis serovars L1-L3",
+                    "Treponema pallidum",
+                    "Toxoplasma gondii",
+                    "Cytomegalovirus (CMV)"
+                ],
+                correct: 1,
+                explanation: "The presentation describes Hutchinson's Triad (notched teeth, interstitial keratitis, 8th nerve deafness), which is pathognomonic for late congenital syphilis caused by Treponema pallidum."
+            },
+            {
+                subject: "Obstetrics & Gynae",
+                color: "bg-purple-600",
+                question: "A 56-year-old postmenopausal female presents with progressive abdominal distension. Imaging reveals a large, solid, benign ovarian fibroma and significant ascites. Chest X-ray demonstrates a prominent right-sided pleural effusion. Cytological analysis of the pleural fluid confirms a transudative fluid profile free of malignant cells. What is the expected course of this fluid accumulation following surgical resection of the ovarian mass?",
+                options: [
+                    "The ascites and pleural fluid will permanently and completely resolve",
+                    "The pleural effusion requires lifelong chest-tube drainage",
+                    "The fluid will shift to the contralateral pleural space",
+                    "The condition will progress to low-grade ovarian carcinoma"
+                ],
+                correct: 0,
+                explanation: "The scenario describes Meigs' Syndrome Triad (benign ovarian fibroma, ascites, pleural effusion). A defining characteristic of this syndrome is the spontaneous, complete resolution of fluid tracking following simple excision of the fibroma."
+            },
+            {
+                subject: "Internal Medicine",
+                color: "bg-blue-600",
+                question: "A 74-year-old retired pilot undergoes a routine health check. A chest X-ray incidentally reveals a large sliding hiatal hernia. A screening colonoscopy demonstrates multiple outpouchings in the sigmoid colon (diverticulosis), and an abdominal ultrasound identifies multiple gallstones (cholelithiasis). The patient is completely asymptomatic. What clinical triad represents this exact constellation of findings?",
+                options: [
+                    "Saint's Triad",
+                    "Beck's Triad",
+                    "Cushing's Triad",
+                    "Virchow's Triad"
+                ],
+                correct: 0,
+                explanation: "Saint's Triad is the co-existence of cholelithiasis, hiatus hernia, and diverticulosis. It serves as a reminder to avoid diagnostic overshadowing."
+            },
+            {
+                subject: "ENT",
+                color: "bg-teal-600",
+                question: "A 9-year-old child with a history of inadequately treated acute otitis media presents with persistent foul-smelling ear drainage, severe deep retro-orbital pain, and a noticeable inward deviation of the ipsilateral eye during forward gaze. Examination confirms lateral rectus muscle weakness. What anatomical structure is the site of active infection?",
+                options: [
+                    "The squamous portion of the temporal bone",
+                    "The petrous apex of the temporal bone (Petrositis)",
+                    "The infratemporal fossa via the jugular foramen",
+                    "The cribriform plate of the ethmoid bone"
+                ],
+                correct: 1,
+                explanation: "The patient displays Gradenigo's Triad (otorrhea, deep retro-orbital pain in CN V distribution, and CN VI palsy due to compression in Dorello's canal). This indicates petrositis—an infection tracking into the petrous apex of the temporal bone."
+            },
+            {
+                subject: "Dermatology",
+                color: "bg-indigo-600",
+                question: "A 24-year-old female presents with her third episode of acute, asymmetric right-sided facial paralysis. Examination reveals prominent, non-pitting, painless edema localized to both lips. Upon inspection of her oral cavity, the dorsum of her tongue displays deep, interconnected grooves and fissures. What is the diagnosis?",
+                options: [
+                    "Sjögren's Syndrome",
+                    "Melkersson-Rosenthal Syndrome",
+                    "Ramsay Hunt Syndrome",
+                    "Behcet's Disease"
+                ],
+                correct: 1,
+                explanation: "The combination of recurrent facial nerve palsy, orofacial edema, and a fissured tongue (lingua plicata) defines the classic Melkersson-Rosenthal Triad."
+            },
+            {
+                subject: "General Surgery",
+                color: "bg-red-600",
+                question: "A 68-year-old male undergoes a total hip arthroplasty. On post-operative day 3, he experiences sudden onset unilateral calf pain and swelling. Venous duplex ultrasound reveals a non-compressible popliteal vein. Which underlying triad summarizes the general predisposing risk categories for this patient's venous thrombosis?",
+                options: [
+                    "Virchow's Triad (Endothelial injury, Stasis, Hypercoagulability)",
+                    "Beck's Triad (Hypotension, JVD, Muffled heart sounds)",
+                    "Charcot's Triad (Fever, RUQ pain, Jaundice)",
+                    "Dieulafoy's Triad (Hyperesthesia, Tenderness, Guarding)"
+                ],
+                correct: 0,
+                explanation: "Virchow's Triad dictates the three categories contributing to venous thrombosis: endothelial injury (surgical trauma), stasis (post-operative immobilization), and hypercoagulability (tissue injury activation cascades)."
+            },
+            {
+                subject: "Internal Medicine",
+                color: "bg-blue-600",
+                question: "A 55-year-old female is admitted to the ICU following an acute intracranial hemorrhage. Over the last hour, her blood pressure rises from 130/80 mmHg to 185/65 mmHg (widened pulse pressure). Her heart rate drops simultaneously from 74 bpm to 42 bpm, and her respiratory pattern becomes highly irregular and shallow. What does this clinical triad indicate?",
+                options: [
+                    "Early hypovolemic shock requiring rapid volume replacement",
+                    "Critically elevated Intracranial Pressure (ICP) with impending brain herniation",
+                    "Acute myocardial infarction complicated by cardiogenic shock",
+                    "Systemic anaphylactic reaction to medication infusions"
+                ],
+                correct: 1,
+                explanation: "The combination of hypertension (with a widened pulse pressure), reflex bradycardia, and bradypnea/irregular breathing constitutes Cushing's Triad, an ominous sign of critically elevated intracranial pressure."
+            }
+        ];
+
+        let activeQuizIndex = 0;
+        let currentFlashcardTriad = null;
+        let hiddenElementIndex = 0;
+
+        function renderAtlas() {
+            const grid = document.getElementById('atlas-grid');
+            grid.innerHTML = '';
+            
+            triadsData.forEach(triad => {
+                const card = document.createElement('div');
+                card.className = `triad-item data-${triad.system} bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg hover:border-slate-700 transition duration-200`;
+                
+                let elementBlocks = '';
+                triad.elements.forEach((el, index) => {
+                    elementBlocks += `
+                        <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-center text-sm font-bold flex flex-col justify-center min-h-[64px] hover:border-slate-700 transition">
+                            <span class="text-[10px] uppercase tracking-widest block text-slate-500 mb-1">Component 0${index+1}</span>
+                            <span class="text-slate-200">${el}</span>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-md ${triad.colorClass}">
+                            ${triad.system}
+                        </span>
+                        <span class="text-xs font-bold text-slate-600">ID: #${triad.id}</span>
+                    </div>
+                    <h3 class="text-base font-extrabold text-white mb-4 tracking-tight">${triad.name}</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                        ${elementBlocks}
+                    </div>
+                    <div class="space-y-3 pt-3 border-t border-slate-800/60">
+                        <p class="text-xs text-slate-400 leading-relaxed text-justify">
+                            <strong class="text-slate-300 font-bold">Pathophysiology:</strong> ${triad.mechanism}
+                        </p>
+                        <div class="bg-amber-950/20 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs text-amber-300/90 leading-relaxed">
+                            <strong class="font-extrabold block text-amber-400 mb-0.5">EXAM PEARL:</strong> ${triad.pearl}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function switchTab(target) {
+            const btnAtlas = document.getElementById('tab-atlas');
+            const btnFlash = document.getElementById('tab-flashcards');
+            const btnQuiz = document.getElementById('tab-quiz');
+            
+            const viewAtlas = document.getElementById('view-atlas');
+            const viewFlash = document.getElementById('view-flashcards');
+            const viewQuiz = document.getElementById('view-quiz');
+
+            [viewAtlas, viewFlash, viewQuiz].forEach(view => {
+                view.classList.remove('block');
+                view.classList.add('hidden');
+            });
+
+            [btnAtlas, btnFlash, btnQuiz].forEach(b => {
+                b.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 text-slate-400 hover:text-slate-200 cursor-pointer";
+            });
+
+            if (target === 'atlas') {
+                btnAtlas.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-blue-600 text-white shadow-lg cursor-pointer";
+                viewAtlas.classList.remove('hidden');
+                viewAtlas.classList.add('block');
+            } else if (target === 'flashcards') {
+                btnFlash.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-indigo-600 text-white shadow-lg cursor-pointer";
+                viewFlash.classList.remove('hidden');
+                viewFlash.classList.add('block');
+                generateNextFlashcard();
+            } else if (target === 'quiz') {
+                btnQuiz.className = "px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-all duration-200 bg-purple-600 text-white shadow-lg cursor-pointer";
+                viewQuiz.classList.remove('hidden');
+                viewQuiz.classList.add('block');
+                initQuiz();
+            }
+        }
+
+        function filterSystem(sys) {
+            const buttons = document.querySelectorAll('.sys-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText.toLowerCase().includes(sys) || (sys === 'all' && btn.innerText.toLowerCase().includes('all'))) {
+                    btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg bg-slate-800 border border-slate-600 text-white transition-all cursor-pointer";
+                } else {
+                    btn.className = "sys-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-900 transition-all cursor-pointer";
+                }
+            });
+
+            const items = document.querySelectorAll('.triad-item');
+            items.forEach(item => {
+                if (sys === 'all' || item.classList.contains(`data-${sys}`)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function generateNextFlashcard() {
+            const randomIndex = Math.floor(Math.random() * triadsData.length);
+            currentFlashcardTriad = triadsData[randomIndex];
+            hiddenElementIndex = Math.floor(Math.random() * 3);
+
+            document.getElementById('flashcard-system-badge').innerText = currentFlashcardTriad.system.toUpperCase();
+            document.getElementById('flashcard-title').innerText = currentFlashcardTriad.name;
+
+            const slotsContainer = document.getElementById('flashcard-slots-container');
+            slotsContainer.innerHTML = '';
+
+            currentFlashcardTriad.elements.forEach((el, idx) => {
+                const row = document.createElement('div');
+                if (idx === hiddenElementIndex) {
+                    row.id = "flashcard-hidden-target";
+                    row.className = "p-4 rounded-xl border border-dashed border-indigo-500/40 bg-indigo-950/10 flex flex-col justify-center items-center min-h-[76px] transition duration-300";
+                    row.innerHTML = `
+                        <span class="text-[10px] uppercase tracking-widest block text-indigo-400/70 mb-1 font-bold">Component 0${idx+1} [MISSING]</span>
+                        <span class="text-indigo-400/50 font-black text-sm tracking-widest animate-pulse">???????</span>
+                    `;
+                } else {
+                    row.className = "p-4 rounded-xl border border-slate-800 bg-slate-950 flex flex-col justify-center min-h-[76px]";
+                    row.innerHTML = `
+                        <span class="text-[10px] uppercase tracking-widest block text-slate-500 mb-1 font-medium">Component 0${idx+1}</span>
+                        <span class="text-slate-200 font-bold text-sm">${el}</span>
+                    `;
+                }
+                slotsContainer.appendChild(row);
+            });
+
+            document.getElementById('flashcard-reveal-btn').disabled = false;
+            document.getElementById('flashcard-reveal-btn').classList.remove('opacity-40');
+        }
+
+        function revealFlashcardSecret() {
+            if (!currentFlashcardTriad) return;
+            const target = document.getElementById('flashcard-hidden-target');
+            const targetSecretText = currentFlashcardTriad.elements[hiddenElementIndex];
+
+            target.className = "p-4 rounded-xl border border-emerald-500/50 bg-gradient-to-r from-emerald-950/30 to-slate-950 flex flex-col justify-center min-h-[76px] transition-all duration-300 scale-[1.01]";
+            target.innerHTML = `
+                <span class="text-[10px] uppercase tracking-widest block text-emerald-400 mb-1 font-black">✓ Component 0${hiddenElementIndex+1} Recalled</span>
+                <span class="text-white font-extrabold text-sm">${targetSecretText}</span>
+            `;
+
+            document.getElementById('flashcard-reveal-btn').disabled = true;
+            document.getElementById('flashcard-reveal-btn').classList.add('opacity-40');
+        }
+
+        function initQuiz() {
+            const current = quizDatabase[activeQuizIndex];
+            
+            const badge = document.getElementById('quiz-subject-badge');
+            badge.innerText = current.subject;
+            badge.className = `px-3 py-1 text-xs font-black uppercase tracking-widest text-white rounded-md ${current.color}`;
+            
+            document.getElementById('quiz-progress-text').innerText = `Question ${activeQuizIndex + 1} of ${quizDatabase.length}`;
+            document.getElementById('quiz-question-container').innerText = current.question;
+            
+            const optionsBox = document.getElementById('quiz-options-container');
+            optionsBox.innerHTML = '';
+            
+            current.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950 text-sm font-medium hover:bg-slate-900 transition duration-150 flex items-start gap-3 cursor-pointer group hover:border-slate-700";
+                btn.onclick = () => checkQuizAnswer(idx);
+                btn.innerHTML = `
+                    <span class="w-5 h-5 rounded-full border border-slate-700 bg-slate-900 text-[10px] font-bold inline-flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:border-slate-500 group-hover:text-white transition">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="text-slate-300 group-hover:text-slate-100 transition">${opt}</span>
+                `;
+                optionsBox.appendChild(btn);
+            });
+
+            document.getElementById('quiz-status-feedback').innerHTML = '';
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+        }
+
+        function checkQuizAnswer(selectedIdx) {
+            const current = quizDatabase[activeQuizIndex];
+            const optionsBox = document.getElementById('quiz-options-container');
+            const buttons = optionsBox.querySelectorAll('button');
+            const feedback = document.getElementById('quiz-status-feedback');
+
+            buttons.forEach((btn, idx) => {
+                btn.onclick = null;
+                btn.className = "w-full text-left p-4 rounded-xl border text-sm font-medium flex items-start gap-3 opacity-60";
+                
+                if (idx === current.correct) {
+                    btn.className = "w-full text-left p-4 rounded-xl border border-emerald-500 bg-emerald-950/30 text-sm font-bold flex items-start gap-3 shadow-md shadow-emerald-950/50 opacity-100";
+                } else if (idx === selectedIdx) {
+                    btn.className = "w-full text-left p-4 rounded-xl border border-red-500 bg-red-950/30 text-sm font-medium flex items-start gap-3 opacity-100";
+                }
+            });
+
+            if (selectedIdx === current.correct) {
+                feedback.innerHTML = `<span class="text-emerald-400 font-black flex items-center gap-1.5 text-base">✓ Correct Evaluation</span>`;
+            } else {
+                feedback.innerHTML = `<span class="text-red-400 font-black flex items-center gap-1.5 text-base">✗ Incorrect Interpretation</span>`;
+            }
+
+            const expCard = document.createElement('div');
+            expCard.className = "mt-3 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400 leading-relaxed text-justify shadow-inner";
+            expCard.innerHTML = `<strong class="text-slate-200 block mb-1 font-bold text-sm">Pathophysiological Explanation:</strong> ${current.explanation}`;
+            feedback.appendChild(expCard);
+
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function handleNextQuestion() {
+            activeQuizIndex = (activeQuizIndex + 1) % quizDatabase.length;
+            initQuiz();
+        }
+
+        window.onload = function() {
+            renderAtlas();
+        };
+    </script>
+</body>
+</html>
